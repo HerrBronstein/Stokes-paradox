@@ -1,0 +1,466 @@
+\chapter{Dérivation de modèles 2D à partir de modèles 3D}
+
+Dans ce chapitre, nous allons étudier la convergence des solutions 3D vers des solutions 2D des problèmes de Laplace, Poisson et Stokes, dans un premier temps sur l'espace entier puis dans un second temps en domaine extérieur. Cela nous permettra d'expliciter sous quelles conditions est ce qu'il est possible de retrouver des solutions 2D (au comportement potentiellement pathologique) à partir de solutions 3D (ne développant pas de paradoxe comme nous avons vu au chapitre précédent).\\
+L'intuition de ce chapitre repose sur le fait qu'une solution 2D peut être interprétée comme une solution 3D invariante suivant un axe. En utilisant cette interprétation, nous allons tenter de faire apparaître une invariance par différentes façons suivant la géométrie du domaine.
+
+
+\section{Réduction de dimension sur l'espace entier}
+
+Nous allons modifier le terme source $F$ considéré dans les équations posées sur $\R^3$, de sorte à ce que son support s'étire suivant $z$. Nous faisons cela de sorte à ce qu'en nous plaçant dans le plan $\{ (x,y,z) \in \R^3, \ z = 0 \}$ le support semble être un cylindre infini de section $\text{supp}(F(\cdot,\cdot,0))$. \\ 
+Pour cela, nous considérons une fonction $f : \R^2 \longrightarrow \R $ agissant sur $x,y$ et une fonction de troncature dépendant d'un paramètre $\epsilon$ agissant sur $z$.
+Nous considérons un terme source 3D de la forme $f_{\epsilon}(x,y,z) = f(x,y)\zeta_{\epsilon}(z) $, où $f \in C^{\infty}_c(\R^2)$ et $\zeta \in C^{\infty}_c(\R) $ une fonction plateau de la forme :
+$$ \zeta(z) = \begin{cases}
+    1 \quad &\text{ si } z \in [-1,1] \\
+    0 &\text{ si } |z| > 2
+\end{cases}$$
+Puis nous définissons la fonction troncature suivante, 
+$$ \zeta_{\epsilon}(z) = \zeta ( \epsilon z) = \begin{cases}
+    1 \quad &\text{ si } z \in [-\frac{1}{\epsilon},\frac{1}{\epsilon}] \\
+    0 &\text{ si } |z| > \frac{2}{\epsilon}
+\end{cases} $$
+En faisant $\epsilon \to 0$, nous élargissons le support de $\zeta_{\epsilon}$ jusqu'à $\R$ entier. A la limite, nous avons $\displaystyle \underset{\epsilon \to 0}{\lim} \zeta_{\epsilon} (z) = \zeta(0) = 1 $.
+Cela mène à un terme source ne dépendant plus que de $(x,y)$ à la limite $\epsilon \to 0$. \\
+Posons $u_{\epsilon} = G \star f_{\epsilon} $ pour l'équation de Poisson et $u^{\epsilon}_{j} = \mathscr{S}_{ij} \star f_i^{\epsilon} $ pour l'équation de Stokes.\\
+Pour éviter d'éventuelles ambiguités, nous préciserons parfois la dimension de la solution par des indices : $u^{(3)}$ pour la solution en dimension 3 et $u^{(2)}$ pour la solution en dimension 2.
+
+\subsection{Equation de Poisson}
+
+Pour l'équation de Poisson, nous allons établir le résultat suivant concernant la convergence de solutions du problème 3D vers des solutions du problème 2D :
+\begin{theorembox}
+    \begin{theorem}
+        \textbf{Convergence : Problème de Poisson} \\
+        Soit $u_{\epsilon}$ solution du problème de Poisson volumique dans $\R^3$ :
+        $$\begin{cases}
+            -\Delta u^{(3)}_{\epsilon} = f_{\epsilon} \quad &\text{ dans } \R^3 \\
+            u^{(3)}_{\epsilon}(\mathbf{x}) \longrightarrow 0 &\text{ lorsque } |\mathbf{x}| \to +\infty
+        \end{cases}$$
+        Avec $f_{\epsilon} := f \otimes \zeta_{\epsilon}$, où $f \in C^{\infty}_c(\R^2)$ et $\zeta_{\epsilon} \in C^{\infty}_c(\R)$ est une fonction plateau de $[-\frac{1}{\epsilon},\frac{1}{\epsilon}]$. \\
+        \\
+        Alors :
+        $$\forall (x,y) \in \R^2, \ u^{(3)}_{\epsilon}(x,y,0) \xrightarrow[\epsilon \to 0]{} u^{(2)}(x,y) \quad \Leftrightarrow \quad \int_{\R^2} f \ dx = 0 $$ 
+        \\
+        Où $u^{(2)}$ est la solution du problème de Poisson volumique 2D pour le terme source $f$.
+    \end{theorem}
+\end{theorembox}
+\begin{proof}
+Posons $X = (x,y,z)$. En partant de la formule de représentation dans $\R^3$, nous définissons :
+$$ u^{(3)}_{\epsilon}(X) = \int_{\R^3} G^{(3)}(X - \xi) f_{\epsilon}(\xi) \ d\xi $$
+Nous allons chercher à étudier la convergence de cette expression $\epsilon \to 0$.
+\begin{align*}
+    u^{(3)}_{\epsilon}(X) = \int_{\R^3} G^{(3)}(X - \xi)f_{\epsilon}(\xi) \ d\xi &= \int_{\R^3} G^{(3)}(X - \xi) f(\xi_1,\xi_2)\zeta_{\epsilon}(\xi_3) \ d\xi \\
+    &= \int_{\R^3} \frac{1}{4\pi |X - \xi|} f(\xi_1,\xi_2)\zeta_{\epsilon}(\xi_3) \ d\xi \\
+    &= \int_{\R^2} f(\xi') \int_{\R} \frac{\zeta_{\epsilon}(\xi_3)}{4\pi \sqrt{|X' - \xi'|^2 + (z - \xi_3)^2}} \ d\xi_3 d\xi'
+\end{align*}
+Où $X' = (x,y)$ et $\xi' = (\xi_1,\xi_2)$.
+Nous définissons ensuite le noyau $K_{\epsilon}$ de la façon suivante : 
+$$ K_{\epsilon}(X',\xi') = \int_{\R} \frac{\zeta_{\epsilon}(\xi_3)}{4\pi \sqrt{|X' - \xi'|^2 + (z - \xi_3)^2}} \ d\xi_3 $$ 
+Puisque nous nous intéressons à la convergence ponctuelle et que nous souhaitons observer l'apparition d'une invariance suivant $z$, nous allons (arbitrairement) nous placer dans le plan $z=0$. Le noyau s'écrit alors :
+\begin{align*}
+    K_{\epsilon}(X,\xi) = \int_{\R} \frac{\zeta_{\epsilon}(\xi_3)}{4\pi \sqrt{|X' - \xi'|^2 + \xi_{3}^2}} \ d \xi_3 &= \int_{-\frac{1}{\epsilon}}^{\frac{1}{\epsilon}} \frac{1}{4\pi \sqrt{|X' - \xi'|^2 + \xi_3^2}} \ d\xi_3 + \int_{\frac{1}{\epsilon} < |\xi_3| < \frac{2}{\epsilon}} \frac{\zeta_{\epsilon}(\xi_3)}{4\pi \sqrt{|X' - \xi'|^2 + \xi_3^2}} \ d\xi_3\\
+    &:= I_{\epsilon} + R_{\epsilon}
+\end{align*}
+Avec la définition du noyau nous pouvons alors écrire $u^{(3)}_{\epsilon}$ sous la forme :
+$$ u^{(3)}_{\epsilon}(X) = \int_{\R^2} f(\xi') K_{\epsilon}(X',\xi') \ d\xi' $$
+Premièrement, intéressons nous au comportement du noyau sur le plateau $[-\frac{1}{\epsilon},\frac{1}{\epsilon}]$ :
+\begin{align*}
+    I_{\epsilon} = \int_{-\frac{1}{\epsilon}}^{\frac{1}{\epsilon}} \frac{\zeta_{\epsilon} (\xi_3)}{4\pi \sqrt{|X' - \xi'|^2 + \xi_3^2}} \ d\xi_3 &= \int_{-\frac{1}{\epsilon}}^{\frac{1}{\epsilon}} \frac{1}{4\pi \sqrt{|X' - \xi'|^2 + \xi_3^2}} \ d\xi_3 \\
+    &= \frac{1}{4\pi} \Big[ \text{arsinh}\Big( \frac{\xi_3}{|X' - \xi'|} \Big) \Big]_{-\frac{1}{\epsilon}}^{\frac{1}{\epsilon}} \\
+    &= \frac{1}{2\pi} \text{arsinh}\Big(\frac{1}{\epsilon |X' - \xi'|}\Big)
+\end{align*}
+Remarquons alors que $\text{arsinh}(t) = \ln(t + \sqrt{1 + t^2})$, cela permet de donner la forme suivante à la contribution sur le plateau : 
+\begin{align*}
+    I_{\epsilon} = \frac{1}{2\pi} \ln\bigg( \frac{1}{\epsilon |X' - \xi'|} + \sqrt{1 + \frac{1}{\epsilon^2 |X' - \xi'|^2}} \bigg) &= \frac{1}{2\pi} \ln \bigg( \frac{1}{\epsilon |X' - \xi'|} \Big(1 + \sqrt{1 + \epsilon^2 |X' - \xi'|^2}\Big) \bigg) \\
+    &= - \frac{1}{2\pi} \ln (\epsilon |X' - \xi'|) + \frac{1}{2\pi} \ln \big( 1 + \sqrt{1 + \epsilon^2 |X' - \xi'|^2} \big) \\
+    &= -\frac{1}{2\pi} \Big( \ln |X' - \xi'| + \ln\epsilon \Big) + \frac{1}{2\pi}\ln\big( 1 + \sqrt{1 + \epsilon |X' - \xi'|^2}\big)
+\end{align*}
+En remplaçant directement $K_{\epsilon}$ par son expression dans le calcul de $u^{(3)}_{\epsilon}$ nous nous retrouvons avec :
+\begin{align*}
+    u^{(3)}_{\epsilon}(x,y,0) &= \int_{\R^2} f(\xi')K_{\epsilon}(X,\xi) \ d\xi' \\
+    &= - \frac{1}{2\pi}\int_{\R^2} f(\xi')\ln |X' - \xi'| \ d\xi' - \frac{1}{2\pi} \ln \epsilon \int_{\R^2} f(\xi') \ d\xi' + \frac{1}{2\pi}\int_{\R^2} f(\xi')\Big(\ln \big(1 + \sqrt{1 + \epsilon^2 |X' - \xi'|^2}\big) + R_{\epsilon}\Big) \ d\xi' \\
+    &= - \frac{1}{2\pi}\int_{\R^2} f(\xi')\ln |X' - \xi'| \ d\xi' - \frac{1}{2\pi} \ln \epsilon \int_{\R^2} f(\xi') \ d\xi' + \frac{1}{2\pi}\int_{\R^2} f(\xi')C_{\epsilon}(X,\xi) d \xi'
+\end{align*}
+Où nous notons $C_{\epsilon} := \ln \big(1 + \sqrt{1 + \epsilon^2 |X' - \xi'|^2}\big) + R_{\epsilon}$ le reste associé à la contribution de la fonction $\zeta_{\epsilon}$ sur les bords du plateau et au terme d'intégration de $K_{\epsilon}$.\\
+En prenant un terme source $f$ à moyenne nulle, nous voyons le terme divergent $\ln \epsilon$ disparaître : 
+$$ u_{\epsilon}^{(3)}(x,y,0) = - \frac{1}{2\pi}\int_{\R^2} f(\xi')\ln |X' - \xi'| \ d\xi' + \frac{1}{2\pi}\int_{\R^2} f(\xi')C_{\epsilon}(X',\xi') d \xi' $$
+Maintenant, nous pouvons faire tendre $\epsilon \to 0$ sans prendre le risque de faire diverger $u^{(3)}_{\epsilon}$. \\
+\\
+Il nous faut maintenant étudier le terme de reste $C_{\epsilon}$ pour conclure à une convergence et obtenir une estimation de vitesse de convergence. \\
+Puisque $C_{\epsilon} = R_{\epsilon} + \frac{1}{2\pi} \ln \big(1 + \sqrt{1 + \epsilon^2 |X' - \xi'|^2} \big) $, nous allons nous concentrer sur l'étude du comportement de $R_{\epsilon}$, étant donné que $\ln \big(1 + \sqrt{1 + \epsilon^2 |X' - \xi'|^2}\big) \xrightarrow[\epsilon \to 0]{} \ln 2 $ et combiné avec l'hypothèse de $f$ à moyenne nulle cela fera tendre ce même terme vers 0. \\
+La contribution sur la zone de transition $R_{\epsilon}$ est difficilement quantifiable étant donné que nous n'avons pas choisi une fonction plateau explicite. Rappelons son expression : 
+$$ R_{\epsilon} = \int_{\frac{1}{\epsilon} < |\xi_3| < \frac{2}{\epsilon} } \frac{\zeta_{\epsilon}(\xi_3)}{4\pi \sqrt{r^2 + \xi_3^2}} \ d\xi_3 $$
+\\
+Nous allons maintenant faire une remarque importante concernant le choix de la fonction de troncature $\zeta_{\epsilon}$ :\\
+La fonction plateau n'est pas fixée, nous savons simplement que cette dernière est nulle pour $|\xi_3| \geq \frac{2}{\epsilon}$ et égale à 1 pour $|\xi_3| \leq \frac{1}{\epsilon} $. Le comportement de transition entre le plateau et la partie nulle n'est pas explicitement connu, dans ce cas
+nous ne pouvons pas évaluer précisément $R_{\epsilon}$ et étudier sa limite. Au mieux, nous pouvons donner une borne supérieure à ce terme mais sans pour autant en conclure sa convergence :
+\begin{align*}
+    |R_{\epsilon}| &\leq \int_{\frac{1}{\epsilon}<|\xi_3| < \frac{2}{\epsilon}} \frac{\|\zeta\|_{L^{\infty}}}{4\pi \sqrt{|X' - \xi'|^2 + \xi_3^2}} d\xi_3 \\
+    &\leq \frac{\|\zeta\|_{L^{\infty}}}{4\pi \sqrt{|X' - \xi'|^2 + \frac{1}{\epsilon^2}}}  \int_{\frac{1}{\epsilon}<|\xi_3| < \frac{2}{\epsilon}} \ d\xi_3 \\
+    &= \frac{\|\zeta\|_{L^{\infty}}}{2\pi \sqrt{\epsilon^2 |X' - \xi'|^2 + 1}}
+\end{align*}
+Nous savons au moins que le terme $R_{\epsilon}$ n'explose pas lorsque $\epsilon \to 0$,
+mais nous ne pouvons pas conclure quant à sa limite éventuelle. Dans cette situation, la solution $u^{(3)}_{\epsilon}$ s'écrit :
+\begin{align*}
+    u_{\epsilon}^{(3)}(x,y,0) &= u^{(2)}(x,y) + \frac{1}{2\pi} \int_{\R^2} f(\xi') C_{\epsilon} \ d\xi' \\
+    &\xrightarrow[\epsilon \to 0]{} u^{(2)}(x,y) + \frac{1}{2\pi} \int_{\R^2} f(\xi') \mathcal{O}(1) \ d\xi' 
+\end{align*}
+Nous retrouvons alors la solution du problème 2D en plus d'un terme qui n'est pas nécessairement nul.
+Cela ne permet donc pas de conclure quant à une convergence ponctuelle vers la solution 2D. \\
+Il faudrait au moins que nous poussions contrôler le terme de reste à l'aide d'une puissance de $\epsilon$ pour obtenir sa convergence.
+Une intuition pour tenter de résoudre ce problème pourrait provenir de la forme du support du terme source. En effet, nous cherchons à étirer le support du terme source à l'aide de la fonction plateau $\zeta$, de sorte à introduire une invariance suivant la direction $z$. De cette façon, nous nous ramenons à un problème 
+2D à partir d'un problème 3D. Nous souhaitons faire en sorte que les variations de direction $z$ soient négligeables pour nous ramener à la solution du problème 2D et mieux comprendre l'apparition de cette dernière. Dans la définition de la fonction $\zeta_{\epsilon}$, la fonction vaut 1 si $|t| \leq \frac{1}{\epsilon}$ et 0 si $|t| \geq \frac{2}{\epsilon}$.
+Cela donne une fonction plateau dont, pour tout $\epsilon$, la partie de transition entre 1 et 0 est de mesure deux fois plus grande que le plateau $\zeta_{\epsilon} = 1$. Lorsque $\epsilon \to 0$, le terme $R_{\epsilon}$ de la contribution sur cette zone de transition est difficile à étudier étant donné que le support d'intégration s'étire dans les directions $z$ et $-z$ à vitesse $\frac{1}{\epsilon}$. Cela donne alors une partie de transition qui ne devient pas négligeable devant le plateau. \\
+Nous pourrions alors choisir une fonction $\zeta_{\epsilon}$ dont la partie transition $0 < \zeta_{\epsilon} < 1$ soit de mesure constante. Fixons $\delta > 0$, nous définissons la fonction plateau $\tilde{\zeta}_{\epsilon}$ de la façon suivante :
+$$ \tilde{\zeta}_{\epsilon}(t) = \begin{cases}
+    1 \quad  &\text{ si } \ |t| \leq \frac{1}{\epsilon} \\
+    0 &\text{ si } \ |t| \geq \frac{1}{\epsilon} + \delta
+\end{cases} $$
+De cette manière, la nouvelle fonction plateau admet un intervalle de transition entre 1 et 0 de chaque côté de mesure constante égale à $\delta$. Quitte à normaliser cette dernière fonction, nous pouvons également supposer $\|\tilde{\zeta}_{\epsilon}\|_{L^{\infty}} = 1$.
+Reprennons les calculs d'estimation concernant $R_{\epsilon}$ : 
+\begin{align*}
+    |R_{\epsilon}| \leq \int_{\frac{1}{\epsilon} < |t| < \frac{1}{\epsilon} + \delta } \frac{|\tilde{\zeta}_{\epsilon}(t)|}{4\pi \sqrt{|X' - \xi'|^2 + t^2}} \ dt &\leq \frac{1}{4\pi \sqrt{|X' - \xi'|^2 + \frac{1}{\epsilon^2}}} \| \tilde{\zeta}_{\epsilon} \|_{L^{\infty}} \int_{\frac{1}{\epsilon} < |t| < \frac{1}{\epsilon} + \delta } \ dt \\
+    &= \frac{\delta}{2\pi \sqrt{|X' - \xi'|^2 + \frac{1}{\epsilon^2}}} \\
+    &= \frac{\epsilon \delta}{2\pi \sqrt{\epsilon^2 |X' - \xi'|^2 + 1}} \xrightarrow[\epsilon \to 0]{} 0
+\end{align*}
+Alors nous pouvons conclure quant à la convergence du terme de reste :
+\begin{align*}
+    \int_{\R^2} f(\xi') C_{\epsilon}(X',\xi') \ d\xi' &= \frac{1}{2\pi} \int_{\R^2} f(\xi')\ln(1 + \sqrt{1 + \epsilon^2 |X' - \xi'|^2}) \ d\xi' + \int_{\R^2} f(\xi') R_{\epsilon} \ d\xi' \\
+    &\xrightarrow[\epsilon \to 0]{} \frac{\ln 2}{2\pi} \int_{\R^2} f(\xi') \ d\xi' + \int_{\R^2} f(\xi') \ 0 \ d\xi' = 0
+\end{align*}
+En conclusion, pour le choix de $\tilde{\zeta}_{\epsilon}$ comme fonction plateau et sous l'hypothèse $f$ à moyenne nulle, nous avons la convergence suivante :
+$$u_{\epsilon}^{(3)}(x,y,0) \xrightarrow[\epsilon \to 0]{} u^{(2)}(x,y) $$
+Au passage, nous pouvons donner une estimation de vitesse de convergence, directement fournie par le terme $C_{\epsilon}$. En effet, nous avons :
+\begin{align*}
+    u^{(3)}(x,y,0) - u^{(2)}(x,y) &= \int_{\R^2} f(\xi') C_{\epsilon}(X',\xi') \ d\xi' \\
+    &= \int_{\R^2} f(\xi') \ln\big(1 + \sqrt{1 + \epsilon^2 |X' - \xi'|^2}\big) \ d\xi' + \int_{\R^2} f(\xi') R_{\epsilon} \ d\xi'
+\end{align*}
+Le second terme donne l'estimation suivante : 
+\begin{align*}
+    \bigg| \int_{\R^2} f(\xi') R_{\epsilon} \ d\xi' \bigg| &\leq \int_{\R^2} |f(\xi')| \frac{\epsilon \delta}{2\pi \sqrt{\epsilon^2|X' - \xi'|^2 + 1}} \ d\xi' \\
+    &\leq \frac{1}{2\pi} \epsilon \delta \|f\|_{L^1(\R^2)}
+\end{align*}
+Et le premier terme :
+\begin{align*}
+    \bigg| \int_{\R^2}  f(\xi') \ln\big(1 + \sqrt{1 + \epsilon^2 |X' - \xi'|^2}\big) \ d\xi' \bigg| &= \bigg| \int_{\R^2} f(\xi') \Big( \ln 2 + \frac{1}{4}\epsilon^2 |X' - \xi'|^2 + o\big(\epsilon^2|X - \xi'|^2\big) \Big) \ d\xi' \bigg| \\
+    &\leq \epsilon^2 \int_{\R^2} |f(\xi')| |X - \xi'|^2 \ d\xi' + o(\epsilon^2)
+\end{align*}
+L'intégrande de cette dernière inégalité est bien définie puisque $f \in C^{\infty}_c(\R^2)$, donc $\xi' \mapsto f(\xi')|X' - \xi'|^2 \in C^0_c(\R^2)$. Nous obtenons alors la borne suivante pour la convergence :
+$$ \big| u^{(3)}_{\epsilon}(x,y,0) - u^{(2)}(x,y) \big| \leq \epsilon^2 \int_{\R^2} |f(\xi')| |X' - \xi'|^2 \ d\xi' + o(\epsilon^2) + \frac{1}{2\pi}\epsilon \delta \|f\|_{L^1(\R^2)} $$
+Maintenant, pour montrer la réciproque de l'équivalence du théorème, nous allons montrer que si $f$ est à moyenne non nulle alors $u^{(3)}_{\epsilon}(x,y,0)$ diverge. Cela revient donc simplement à montrer la contraposée de la réciproque. \\ 
+Supposons que $\displaystyle \int_{\R^2} f(y) \ dy \neq 0$. Nous pouvons écrire la solution $u^{(3)}_{\epsilon}(x,y,0)$ comme précédemment (l'écriture ne dépendant d'aucune hypothèse) : 
+$$ u^{(3)}_{\epsilon}(x,y,0) = u^{(2)}(x,y) - \frac{1}{2\pi}\ln \epsilon \int_{\R^2} f(\xi') \ d\xi' + \frac{1}{2\pi} \int_{\R^2} f(\xi') C_{\epsilon}(X',\xi') \ d\xi' $$
+Nous savons que le terme $\displaystyle \int_{\R^2} f(\xi')C_{\epsilon}(X',\xi') \ d\xi'$ est borné mais ne tend pas vers 0 et le terme $\displaystyle \frac{1}{2\pi} \ln \epsilon \int_{\R^2} f(\xi') \ d\xi' $ n'a pas de raison de ne pas exploser lorsque $\epsilon \to 0$ en l'absence d'hypothèse sur la moyenne de $f$. En particulier, puisque nous supposons que $f$ est à moyenne non nulle, alors le terme $\ln \epsilon$ reste présent et le terme à droite n'a aucune chance de le compenser.
+Ainsi, nous avons nécessairement :
+$$ u^{(3)}_{\epsilon}(x,y,0) \xrightarrow[\epsilon \to 0]{} + \infty$$
+Nous pouvons en conclure que si la moyenne de $f$ est non nulle, alors $u_{\epsilon}^{(3)}$ diverge grossièrement, ce qui conclut la démonstration du théorème.
+\end{proof}
+Il est intéressant ici de faire le parallèle l'étude du comportement asymptotique réalisée précédemment. Nous avions pu conclure que sous l'hypothèse du terme source $f$ à moyenne nulle les solutions du problème de Poisson et Stokes en 2D n'explosaient pas à l'infini (permettant ainsi de respecter le comportement prescrit par le problème). Autrement dit, l'hypothèse du terme source à moyenne nulle 
+permet d'éliminer asymptotiquement le terme responsable de la divergence logarithmique de la solution 2D de l'équation. Dans l'étude de la convergence des solutions 3D vers les solutions 2D, nous voyons que sous cette hypothèse il est possible de retrouver la solution 2D en considérant un problème 3D devenant invariant suivant une direction.
+
+\begin{remarkbox}
+    \begin{remark}
+        Dans la démonstration du théorème, nous aurions pu être tentés d'étudier directement la convergence du noyau $K_{\epsilon}$ vers la solution fondamentale du problème 2D, ainsi nous aurions pu directement conclure sans
+        nous embêter à choisir un type de fonction de troncature précis. Toutefois, cette démarche ne permet pas de conclure à une convergence vers $u^{(2)}$ étant donné que cette étude aurait conduit à l'introduction de termes de reste qui ne convergent pas nécessairement vers 0.
+    \end{remark}
+\end{remarkbox}
+
+
+
+
+
+
+\subsection{Equation de Stokes}
+
+Par analogie directe avec le problème de Poisson, nous allons établir maintenant le théorème suivant fournissant une condition nécessaire et suffisante de convergence pour le problème de Stokes volumique :
+
+\begin{theorembox}
+    \begin{theorem}
+        \textbf{Convergence : Problème de Stokes} \\
+        Soit $u_{\epsilon}$ solution du problème de Stokes volumique dans $\R^3$ :
+        $$\begin{cases}
+            -\Delta u_{\epsilon} + \nabla p_{\epsilon} = f_{\epsilon} \quad &\text{ dans } \R^3 \\
+            \text{div}(u_{\epsilon}) = 0 &\text{ dans } \R^3 \\
+            u_{\epsilon}(\mathbf{x}),p_{\epsilon}(\mathbf{x}) \longrightarrow 0 &\text{ lorsque } |\mathbf{x}| \to +\infty
+        \end{cases}$$
+        Avec $f_{\epsilon} := 
+        \begin{pmatrix}
+            f_1(x,y)\zeta_{\epsilon}(z) \\
+            f_2(x,y)\zeta_{\epsilon}(z) \\ 
+            0
+        \end{pmatrix}$, 
+        où $f_i \in C^{\infty}_c(\R^2)$ et $\zeta_{\epsilon} \in C^{\infty}_c(\R)$ est une fonction plateau de $[-\frac{1}{\epsilon},\frac{1}{\epsilon}]$. \\
+        \\
+        Alors :
+        $$\forall (x,y) \in \R^2, \ u_{\epsilon}(x,y,0) \xrightarrow[\epsilon \to 0]{} u^{(2)}(x,y) \quad \Leftrightarrow \quad \int_{\R^2} f_i \ dx = 0, \quad 1 \leq  i \leq 2 $$ 
+        \\
+        Où $u^{(2)}$ est le champ des vitesses solution du problème de Stokes volumique 2D pour le terme source $f = (f_1,f_2)$.
+    \end{theorem}
+\end{theorembox}
+
+\begin{proof}
+    
+Nous allons reprendre le même raisonnement pour l'équation de Stokes maintenant. Nous gardons la même fonction $\tilde{\zeta}_{\epsilon}$ définie précédemment, nous définissons le terme source de l'équation de Stokes par :
+$$ f^{\epsilon}(x,y,z) = \begin{pmatrix}
+    f_1(x,y)\tilde{\zeta}_{\epsilon}(z) \\
+    f_2(x,y)\tilde{\zeta}_{\epsilon}(z) \\
+    f_3(x,y)\tilde{\zeta}_{\epsilon}(z)
+\end{pmatrix} = \begin{pmatrix}
+    f_1(x,y)\tilde{\zeta}_{\epsilon}(z) \\
+    f_2(x,y)\tilde{\zeta}_{\epsilon}(z) \\
+    0
+\end{pmatrix} $$
+De cette façon, en prenant la limite, $f^{\epsilon}(x,y,z) \xrightarrow[\epsilon \to 0]{} f(x,y) = \begin{pmatrix}
+    f_1(x,y) \\
+    f_2(x,y)
+\end{pmatrix}$. Le terme source $f^{\epsilon}$ converge vers un terme source 2D indépendant de $z$. 
+Pour $1 \leq i,j \leq 2$, la solution pour le champ des vitesses sur $\R^3$ de l'équation de Stokes avec second membre $f^{\epsilon}$ est donné par la convolution :
+$$ u^{\epsilon}_i(X) = \int_{\R^3} \mathscr{S}_{ij}(X-\xi)f_j^{\epsilon}(\xi) \  d \xi $$
+De la même manière que pour l'équation de Poisson, nous pouvons faire apparaître un noyau $K_{ij}^{\epsilon}$ dans la formulation de la solution 3D :
+$$ u^{\epsilon}_i(X) = \int_{\R^2} f_j(\xi') \int_{\R} \mathscr{S}_{ij}(X-\xi)\tilde{\zeta}_{\epsilon}(\xi_3) \  d \xi_3 d \xi ' = \int_{\R^2} f_j(\xi') K_{ij}^{\epsilon}(X,\xi') d \xi' $$
+Avec le noyau défini par :
+\begin{align*}
+    K_{ij}^{\epsilon}(X,\xi') &= \int_{\R} \frac{1}{8\pi} \bigg( \frac{\delta_{ij}}{|X - \xi|} + \frac{(X_i - \xi_i)(X_j - \xi_j)}{|X - \xi|^3} \bigg)\tilde{\zeta}_{\epsilon}(\xi_3) \ d\xi_3 \\
+    &= \frac{1}{8\pi} \int_{\R}  \bigg( \frac{\delta_{ij}}{\sqrt{|X' - \xi'|^2 + (z - \xi_3)^2}} + \frac{(X_i - \xi_i)(X_j - \xi_j)}{\big(|X' - \xi'|^2 + (z - \xi_3)^2\big)^{\frac{3}{2}}} \bigg) \tilde{\zeta}_{\epsilon}(\xi_3) \ d\xi_3
+\end{align*}
+De la même manière que précédemment, nous nous intéressons au plan $z = 0$. Ainsi le noyau $K_{ij}^{\epsilon}$ se réecrit : 
+$$K_{ij}^{\epsilon}(X',\xi') = \frac{1}{8\pi} \int_{\R}  \bigg( \frac{\delta_{ij}}{\sqrt{|X' - \xi'|^2 + \xi_3^2}} + \frac{(X_i - \xi_i)(X_j - \xi_j)}{\big(|X' - \xi'|^2 + \xi_3^2\big)^{\frac{3}{2}}} \bigg) \tilde{\zeta}_{\epsilon}(\xi_3) \ d\xi_3 := I_{ij}^{\epsilon} + R_{ij}^{\epsilon} $$
+De la même façon que pour l'équation de Poisson, nous faisons apparaître la contribution $I_{ij}^{\epsilon}$ sur le plateau et la contribution $R_{ij}^{\epsilon}$ sur la transition du plateau.
+Nous réutilisons le fait que la contribution $\tilde{\zeta}_{\epsilon}$ tende vers 0 pour $\frac{1}{\epsilon} < |\xi_3| < \frac{1}{\epsilon} + \delta$ lorsque $\epsilon \to 0$ pour nous concentrer sur l'étude de la convergence du noyau $K_{ij}^{\epsilon}$ sur le plateau $[-\frac{1}{\epsilon},\frac{1}{\epsilon}]$. 
+Rappelons que la première partie du noyau $K_{ij}^{\epsilon}$ est identique au noyau pour l'équation de Poisson, donc la contribution du premier terme sur les bords du plateau a déjà été traitée précédemment. Il n'est pas compliqué de faire de même pour le terme restant :
+\begin{align*}
+    \bigg| \int_{\frac{1}{\epsilon} < |t| < \frac{1}{\epsilon} + \delta} \frac{(X_i - \xi_i)(X_j - \xi_j)}{\big(|X' - \xi'|^2 + t^2\big)^{\frac{3}{2}}} \tilde{\zeta}_{\epsilon}(\xi_3) \ dt \bigg| &\leq 2\delta \frac{|(X_i - \xi_i)(X_j - \xi_j)|}{\Big(|X' - \xi'|^2 + \frac{1}{\epsilon^2}\Big)^{\frac{3}{2}}} \|\tilde{\zeta}_{\epsilon}\|_{L^{\infty}} \\
+    &= 2\delta \epsilon^3 \frac{|(X_i - \xi_i)(X_j - \xi_j)|}{\big(\epsilon^2 |X' - \xi'|^2 + 1\big)^{\frac{3}{2}}} \xrightarrow[\epsilon \to 0]{} 0
+\end{align*}
+Et donc nous pouvons écrire :
+\begin{align*}
+    |R_{ij}^{\epsilon}| &\leq \frac{\delta \epsilon}{4\pi} \bigg( \frac{1}{\sqrt{\epsilon^2 |X' - \xi'|^2 + 1}} + \epsilon^2 \frac{|(X_i - \xi_i)(X_j - \xi_j)|}{\big(\epsilon^2 |X' - \xi'|^2 + 1\big)^{\frac{3}{2}}} \bigg) \xrightarrow[\epsilon \to 0]{} 0
+\end{align*}
+Nous allons alors concentrer l'étude de convergence du noyau sur la contribution $I_{ij}^{\epsilon}$ du plateau.
+$$ I_{ij}^{\epsilon} = \frac{1}{8\pi} \int_{-\frac{1}{\epsilon}}^{\frac{1}{\epsilon}} \frac{\delta_{ij}}{\sqrt{|X' - \xi'|^2 + \xi_3^2}} + \frac{(X_i - \xi_i)(X_j - \xi_j)}{\big(|X' - \xi'|^2 + \xi_3^2\big)^{\frac{3}{2}}} \ d\xi_3 $$
+La première partie de l'intégrale se traite comme pour l'équation de Poisson avec la fonction arsinh :
+\begin{align*}
+    \int_{-\frac{1}{\epsilon}}^{\frac{1}{\epsilon}} \frac{\delta_{ij}}{\sqrt{|X' - \xi'|^2 + t^2}} \ dt = 2\text{arsinh}\Big( \frac{1}{\epsilon |X' - \xi'|} \Big)\delta_{ij} &= 2 \ln\bigg( \frac{1}{\epsilon |X' - \xi'|} + \sqrt{1 + \frac{1}{\epsilon |X' - \xi'|}} \bigg)\delta_{ij} \\
+    &= 2\Big( -  \ln |X' - \xi'| - \ln \epsilon + \ln(1 + \sqrt{1 + \epsilon^2 |X' - \xi'|^2}) \Big) \delta_{ij} 
+\end{align*}
+Pour la deuxième partie de l'intégrale, remarquons dans un premier temps que :
+$$ \frac{d}{dt} \frac{t}{\sqrt{1 + t^2}} = \frac{\sqrt{1 + t^2} - t \frac{2t}{2\sqrt{1 + t^2}}}{1 + t^2} = \frac{1 + t^2 - t^2}{(1 + t^2)^{\frac{3}{2}}} = \frac{1}{(1 + t^2)^{\frac{3}{2}}} $$
+Et ainsi, puisque $1 \leq i,j \leq 2$, nous avons :
+\begin{align*}
+    \int_{-\frac{1}{\epsilon}}^{\frac{1}{\epsilon}} \frac{(X_i - \xi_i)(X_j - \xi_j)}{(|X' - \xi'|^2 + \xi_3^2)^{\frac{3}{2}}} \ d\xi_3 &= (X_i - \xi_i)(X_j - \xi_j) \int_{-\frac{1}{\epsilon}}^{\frac{1}{\epsilon}} \frac{1}{(|X' - \xi'|^2 + \xi_3^2)^{\frac{3}{2}}} \ d\xi_3 \\
+    &= (X_i - \xi_i)(X_j - \xi_j) \frac{1}{|X' - \xi'|^2} \bigg[ \frac{\xi_3}{\sqrt{|X' - \xi'|^2 + \xi_3^2}} \bigg]_{-\frac{1}{\epsilon}}^{\frac{1}{\epsilon}} \\
+    &=  \frac{2}{\sqrt{\epsilon^2 |X' - \xi'|^2 + 1}} \frac{(X_i - \xi_i)(X_j - \xi_j)}{|X' - \xi'|^2}
+\end{align*}
+En regroupant les contributions nous pouvons écrire :
+\begin{align*}
+    I_{ij}^{\epsilon} &= \frac{1}{8\pi}\bigg(2\Big( -  \ln |X' - \xi'| - \ln \epsilon +  \ln(1 + \sqrt{1 + \epsilon^2 |X' - \xi'|^2}) \Big) \delta_{ij} + 2\frac{(X_i - \xi_i)(X_j - \xi_j)}{|X' - \xi'|^2\sqrt{1 + \epsilon^2 |X' - \xi'|^2}} \bigg) \\
+    &= \frac{1}{4\pi} \bigg( -  \ln |X' - \xi'| - \ln \epsilon +  \ln(1 + \sqrt{1 + \epsilon^2 |X' - \xi'|^2}) \delta_{ij} + \frac{(X_i - \xi_i)(X_j - \xi_j)}{|X' - \xi'|^2\sqrt{1 + \epsilon^2 |X' - \xi'|^2}} \bigg)\\
+    &:= \mathscr{S}_{ij}^{\epsilon}(X' - \xi') - \frac{1}{4\pi}\ln \epsilon \ \delta_{ij} + \ln (1 + \sqrt{1 + \epsilon^2 |X' - \xi'|^2})\delta_{ij}
+\end{align*}
+Où nous avons défini $\mathscr{S}_{ij}^{\epsilon}$ de la façon suivante :
+$$\mathscr{S}_{ij}^{\epsilon}(X' - \xi') := \frac{1}{4\pi}\bigg( - \delta_{ij}\ln |X' - \xi'| + \frac{(X_i - \xi_i)(X_j - \xi_j)}{|X' - \xi'|^2\sqrt{1 + \epsilon^2 |X' - \xi'|^2}}  \bigg) \xrightarrow[\epsilon \to 0]{} \frac{1}{4\pi}\bigg( - \delta_{ij}\ln r + \frac{(X_i - \xi_i)(X_j - \xi_j)}{|X' - \xi'|^2}\bigg) = \mathscr{S}_{ij}^{(2)} $$
+Maintenant en injectant $K_{ij}^{\epsilon}$ dans l'expression de $u_i^{\epsilon}$ nous nous retrouvons avec :
+\begin{align*}
+    u_i^{\epsilon}(x,y,0) &= \int_{\R^2} f_j(\xi') (I_{ij}^{\epsilon} + R_{ij}^{\epsilon}) \ d\xi' \\ 
+    &= \int_{\R^2} \mathscr{S}_{ij}^{\epsilon}(X' - \xi')f_j(\xi') \ d\xi' - \frac{1}{4\pi}\delta_{ij}\ln \epsilon \int_{\R^2} f_j(\xi') \ d\xi' + \int_{\R^2} f_j(\xi')\Big( \ln(1 + \sqrt{1 + \epsilon^2 |X' - \xi'|^2}) \delta_{ij} + R_{ij}^{\epsilon}\Big) \ d\xi' \\
+    &= u^{(2)}(x,y) - \frac{1}{4\pi}\ln \epsilon \int_{\R^2} f_i(\xi') \ d\xi' + \int_{\R^2} f_j(\xi')C_{ij}^{\epsilon} \ d\xi'
+\end{align*}
+Comme précédemment, remarquons que si pour $1 \leq i \leq 2$, $f_i$ est à moyenne nulle, alors le terme divergent $\ln \epsilon$ disparaît. Maintenant pour l'autre terme de reste, nous avons noté $C_{ij}^{\epsilon} := R_{ij}^{\epsilon} + \ln(1 + \sqrt{1 + \epsilon^2 |X' - \xi'|^2})\delta_{ij}$. Nous montrons sans difficultés que sous 
+l'hypothèse du terme source à moyenne nulle, l'intégrale du reste contre le terme source tend vers 0 lorsque $\epsilon \to 0$ : 
+\begin{align*}
+    \int_{\R^2} f_j(\xi') C_{ij}^{\epsilon} \ d\xi' &= \int_{\R^2} f_i(\xi') \Big(R_{ij}^{\epsilon} + \ln(1 + \sqrt{1 + \epsilon^2 |X' - \xi'|^2})\delta_{ij}\Big) \ d\xi' \\
+    &\xrightarrow[\epsilon \to 0]{} \int_{\R^2} f_j(\xi') \ 0 \ d\xi' + \ln 2 \int_{\R^2} f_i(\xi') \ d\xi' = 0
+\end{align*}
+Cela fournit au passage une estimation de convergence.
+Ainsi, si les deux premières composantes de $f$ sont à moyenne nulle, nous nous retrouvons avec la convergence ponctuelle de la solution 3D vers la solution 2D :
+$$u_i^{\epsilon}(x,y,0) \xrightarrow[\epsilon \to 0]{} u_i^{(2)}(x,y) $$
+Nous allons maintenant montrer que la convergence n'a lieu que si le terme souce est à moyenne nulle, de la même façon qu'avec l'équation de Poisson. \\
+Supposons que $f$ ne soit pas à moyenne nulle. La solution $u_i^{\epsilon}$ s'écrit :
+$$ u_i^{\epsilon}(x,y,0) = u^{(2)}_i(x,y) - \frac{1}{4\pi} \ln \epsilon \int_{\R^2} f_j(\xi') \ d\xi' + \int_{\R^2} f_j(\xi')C_{ij}^{\epsilon} \ d\xi' $$
+Sans l'hypothèse sur la moyenne de $f$, nous nous retrouvons dans la même situation que lorsque nous essayions d'approcher le problème 2D pour l'équation de Poisson, c'est à dire que le terme de reste ne converge pas.
+Au mieux nous avons $ \underset{\epsilon \to 0}{\lim} R_{ij}^{\epsilon} = \mathcal{O}(1)$, et donc le terme $\displaystyle \int_{\R^2} f_j(\xi')C_{ij}^{\epsilon} \ d\xi'$ ne converge pas nécessairement vers 0, nous pouvons montrer que ce dernier est borné :
+\begin{align*}
+    \bigg| \int_{\R^2} f_j(\xi')C_{ij}^{\epsilon} \ d\xi' \bigg| &= \bigg| \int_{\R^2} f_j(\xi')\Big(R_{ij}^{\epsilon} + \ln\big(1 + \sqrt{1 + \epsilon^2 |X' - \xi'|^2}\big) \Big) \ d\xi' \bigg| \\
+    &\leq \int_{\R^2} |f_j(\xi')R_{ij}^{\epsilon}| \ d\xi' + \int_{\R^2} |f(\xi')|\ln\big(1 + \sqrt{1 + c^2} \big) \ d\xi' \\
+    &\leq \Big( \underset{\epsilon > 0}{\sup}|R_{ij}^{\epsilon}| + \ln\big( 1 + \sqrt{1 + c^2} \big)\Big) \|f_j\|_{L^{\infty}}
+\end{align*}
+Nous utilisons le fait que puisque nous cherchons à étudier le cas $\epsilon \to 0$, alors $\epsilon |X' - \xi'| \leq c$ avec $c > 0$, et puisque $R_{ij}^{\epsilon} \xrightarrow[\epsilon \to 0]{} 0$ continûment alors $R_{ij}^{\epsilon}$ est borné pour tout $\epsilon$.
+Donc d'une part $u_i^{\epsilon}$ ne converge pas 
+forcément vers $u_i^{(2)}$ mais nous pouvons également montrer que $u_i^{\epsilon} \xrightarrow[\epsilon \to 0]{} \infty$. Nous pouvons voir cela assez simplement en écrivant $u_i^{\epsilon}$ après avoir estimé le terme de reste (qui ne peut pas compenser le comportement de $\ln \epsilon$).
+$$u_i^{\epsilon}(x,y,0) = u_i^{(2)}(x,y) - \frac{1}{4\pi}\ln \epsilon \int_{\R^2} f_j(\xi') \ d\xi' + \mathcal{O}(1) $$
+Puisque $f_j$ n'est pas nécessairement à moyenne nulle, le terme $\ln \epsilon$ n'a pas de raison de disparaître, et donc puisque $\ln \epsilon \xrightarrow[\epsilon \to 0]{} - \infty$, la solution $u_i^{\epsilon}$ explose lorsque $\epsilon \to 0$.\\
+Finalement, nous pouvons déduire que la convergence a lieu si et seulement si $f$ est à moyenne nulle, donc dans le cas où le paradoxe n'a pas lieu.
+\end{proof}
+Cette convergence apparaît donc dans le cas où le paradoxe de Stokes asymptotique n'a pas lieu. 
+Cela signifierait que le paradoxe de Stokes empêcherait d'approcher les solutions 2D par des solutions 3D, bien que nous nous plaçions dans un contexte favorable à l'apparition de ces dernières. 
+Dans le cadre général, le modèle 2D ne peut ainsi être obtenu que mathématiquement lors de la dérivation des solutions fondamentales. D'un point de vue physique, le modèle 2D n'apparaîtrait que lorsque le paradoxe ne se produit pas, et donc 
+cela laisserait entrevoir le fait que le modèle 2D ne soit pas complètement cohérent physiquement, car ne pouvant pas être retrouvé en toutes circonstances dans les situations physiques faisant intervenir des modèles 2D (quasi-invariance suivant une direction), étant donné que les écoulements planaires au sens mathématique n'existent que lorsque 
+le mouvement du fluide est négligeable suivant une direction de l'espace.
+
+
+
+
+
+\section{Réduction en domaine extérieur}
+
+Après nous être penchés sur le cas du problème posé sur l'espace entier avec second membre, nous avons pu conclure qu'il n'était possible d'avoir une convergence des solutions 3D vers les solutions 3D qu'à partir du moment où le paradoxe ne se produisait pas (c'est à dire dès que la moyenne du terme source était nulle).
+Cela nous mène naturellement à nous poser la question de savoir comment se comporte la convergence lorsque nous considérons un domaine extérieur. Plus précisément, sous quelles conditions la convergence a t-elle lieu et peut-on donner des estimations de convergence ? \\
+Dans la section précédente, nous procédions en utilisant un terme source défini sur $\R^3$ : $f_{\epsilon}(x,y,z) = f(x,y)\zeta_{\epsilon}(z) $, et qui développe une invariance suivant la direction $z$ lorsque $\epsilon \to 0$. De cette façon, en choisissant que $f$ soit à moyenne nulle, nous pouvions retrouver 
+la solution 2D par convergence ponctuelle. Dans le contexte du domaine extérieur, nous ne pouvons pas procéder de cette façon, étant donné que le problème, formulé en domaine extérieur dans le paradoxe, est homogène. Il n'y a donc pas de terme source permettant de nous ramener à une situation 2D. Nous allons adopter une nouvelle approche, en définissant un terme source à partir de la solution 
+tronquée dans un voisinage du complémentaire du domaine puis en regardant dans une région suffisamment éloignée du bord intérieur, de sorte à ce que la solution admette la même formule de représentation que la solution sur l'espace entier.
+Nous formalisons cela de la façon suivante en considérant le problème de Stokes : \\
+$$\begin{cases}
+    \Delta u - \nabla p = 0 \quad &\text{ dans } \R^3 \backslash \mathscr{C} \\
+    \nabla \cdot u = 0 &\text{ dans } \R^3 \backslash \mathscr{C} \\
+    u = u^* &\text{ sur } \partial \mathscr{C} \\
+    \underset{|\mathbf{x}|\to +\infty}{\lim} u(\mathbf{x}) = 0
+\end{cases}$$
+Où nous notons $\mathscr{C} = \big\{ (x,y,z) \in \R^3 \ | \ x^2 + y^2 \leq 1 \big\} $ le cylindre droit infini de section $\mathbb{S}^1$. Nous allons chercher à approcher ce cylindre infini en posant $\mathscr{C}_{\epsilon} = \big\{ (x,y,z) \in \R^3 \ | \ x^2 + y^2 \leq 1, \ |z| \leq \frac{1}{\epsilon} \big\} $. De cette façon, nous allons approcher le problème posé sur un domaine extérieur en le reformulant autour de $\mathscr{C}_{\epsilon}$ :
+$$\begin{cases}
+    \Delta u_{\epsilon} - \nabla p_{\epsilon} = 0 \quad &\text{ dans } \R^3 \backslash \mathscr{C}_{\epsilon} \\
+    \nabla \cdot u_{\epsilon} = 0 &\text{ dans } \R^3 \backslash \mathscr{C}_{\epsilon} \\
+    u_{\epsilon} = u^* &\text{ sur } \partial \mathscr{C}_{\epsilon} \\
+    \underset{|\mathbf{x}| \to \infty}{\lim} u(\mathbf{x}) = 0
+\end{cases}$$
+Soit $\mathscr{V}_{\epsilon}$ un voisinage de $\mathscr{C}_{\epsilon}$. Nous allons définir $\zeta_{\epsilon}$ la fonction plateau du complémentaire de $\mathscr{V}_{\epsilon}$, 
+$$\zeta_{\epsilon}(x) = \begin{cases}
+    1 \quad &\text{ si } x \in \R^3 \backslash \mathscr{V}_{\epsilon} \\
+    0 &\text{ si } x \in \mathscr{C}_{\epsilon}
+\end{cases} $$ \\
+Dans cette zone comprise entre la frontière de $\mathscr{V}_{\epsilon}$ et $\mathscr{C}_{\epsilon}$, nous allons définir un terme source $f_{\epsilon}$ à partir de $u_{\epsilon}$, de sorte à nous ramener à l'équation sur le domaine entier : $\Delta v - \nabla p = f_{\epsilon}$
+De cette façon, en regardant $v$ dans une région suffisamment éloignée de $\partial \mathscr{V}_{\epsilon}$, nous pourrons utiliser la formule de représentation $v = \mathscr{S} \star f_{\epsilon}$ et étudier le passage 3D vers 2D en faisant tendre $\epsilon$ vers 0.
+
+
+
+\subsection{Equation de Poisson}
+
+Considérons le problème de Poisson posé en domaine extérieur :
+$$\begin{cases}
+    -\Delta u = 0 \quad &\text{ dans } \R^3 \backslash \mathscr{C} \\
+    u = u^* &\text{ sur } \partial \mathscr{C} \\
+    \underset{|\mathbf{x}| \to \infty}{\lim} u(\mathbf{x}) = 0 
+\end{cases}$$
+Comme annoncé en introduction, nous allons approcher le cylindre infini $\mathscr{C}$ par le cylindre $\mathscr{C}_{\epsilon} = \big\{ (x,y,z) \in \R^3 \ | \ x^2 + y^2 \leq 1, \ |z| \leq \frac{1}{\epsilon} \big\} $.
+Cela nous conduit au nouveau problème de Poisson en domaine extérieur approché :
+$$\begin{cases}
+    -\Delta u_{\epsilon} = 0 \quad &\text{ dans } \R^3 \backslash \mathscr{C}_{\epsilon} \\
+    u_{\epsilon} = u^* &\text{ sur } \partial \mathscr{C}_{\epsilon} \\
+    \underset{|\mathbf{x}| \to \infty}{\lim} u_{\epsilon}(\mathbf{x}) = 0 
+\end{cases}$$
+Nous allons nous ramener à un problème sur l'espace entier $\R^3$, pour ensuite utiliser la formule de représentation classique donnée par la convolution du terme source avec la fonction de Green.
+Pour nous ramener à un tel problème, nous allons devoir définir un terme source permettant de compenser la contribution de la solution à l'intérieur du cylindre $\mathscr{C}_{\epsilon}$. Nous disposons de $u_{\epsilon}$ solution du problème extérieur, alors nous 
+alors considérer $u_{\epsilon}^{int}$ la solution du problème de Laplace dans $\mathscr{C}_{\epsilon}$ :
+$$\begin{cases}
+    -\Delta u_{\epsilon}^{int} = 0 \quad &\text{ dans } \mathscr{C}_{\epsilon}\\
+    u_{\epsilon}^{int} = u^* \quad &\text{ sur } \partial \mathscr{C}_{\epsilon}
+\end{cases}$$ 
+De cette façon, nous définissons :
+$$\bar{u}_{\epsilon} = 
+\begin{cases}
+    u^{int}_{\epsilon} &\text{ dans } \mathscr{C}_{\epsilon} \\
+    u_{\epsilon} &\text{ dans } \R^3 \backslash \mathscr{C}_{\epsilon}
+\end{cases} $$
+Solution du problème sur l'espace entier, définie à partir des contribution à l'intérieur et à l'extérieur de $\mathscr{C}_{\epsilon}$.
+Nous allons calculer $\Delta \bar{u}_{\epsilon}$ afin de chercher pour quel terme source $\bar{u}_{\epsilon}$ vérifie l'équation de Poisson sur $\R^3$. Etant donné que $\bar{u}_{\epsilon}$ est construite par recollement de deux solutions sur des domaines différents, nous allons
+considérer une formulation au sens des distributions. Bien que les deux problèmes se recollent continûment par la condition sur $\partial \mathscr{C}_{\epsilon}$, $\bar{u}_{\epsilon}$ n'a à priori aucune raison d'être régulière et le calcul des dérivées pourrait faire appraître des termes discontinus. \\
+Soit $\varphi \in \mathcal{D}(\R^3)$ :
+\begin{align*}
+    \big< -\Delta \bar{u}_{\epsilon}, \varphi \big> = -\big< \bar{u}_{\epsilon}, \Delta \varphi \big> = -\int_{\mathscr{C}_{\epsilon}} u_{\epsilon}^{int} \Delta \varphi \ dx - \int_{\R^3 \backslash \mathscr{C}_{\epsilon}} u_{\epsilon} \Delta \varphi \ dx
+\end{align*}
+En effectuant deux intégrations par parties, nous allons tenter de faire apparaître le terme source distributionnel.
+\begin{align*}
+    \big< -\Delta \bar{u}_{\epsilon}, \varphi \big> &= \int_{\mathscr{C}_{\epsilon}} \nabla u_{\epsilon}^{int} \cdot \nabla \varphi \ dx - \int_{\partial \mathscr{C}_{\epsilon}} u_{\epsilon}^{int} \partial_{n_{2}} \varphi \ d\sigma + \int_{\R^3 \backslash \mathscr{C}_{\epsilon}} \nabla u_{\epsilon} \cdot \nabla \varphi \ dx - \int_{\partial \mathscr{C}_{\epsilon}} u_{\epsilon} \partial_{n_{1}} \varphi \ d\sigma \\
+    &= \int_{\partial \mathscr{C}_{\epsilon}} \partial_{n_2} u_{\epsilon}^{int} \varphi \ d\sigma + \int_{\partial \mathscr{C}_{\epsilon}} \partial_{n_1} u_{\epsilon} \varphi \ d\sigma  - \int_{\partial \mathscr{C}_{\epsilon}} u_{\epsilon}^{int} \partial_{n_{2}} \varphi \ d\sigma - \int_{\partial \mathscr{C}_{\epsilon}} u_{\epsilon} \partial_{n_{1}} \varphi \ d\sigma \\
+    &= \int_{\partial \mathscr{C}_{\epsilon}} (\partial_{n_1} u_{\epsilon} + \partial_{n_2}u^{int}_{\epsilon})\varphi \ d\sigma - \int_{\partial \mathscr{C}_{\epsilon}} u^* \partial_{n_1}\varphi + u^* \partial_{n_2}\varphi \ d\sigma
+\end{align*}
+Où $n_1$ et $n_2$ sont respectivement les normales sortantes au domaine extérieur et intérieur.
+En remarquant que $\Delta u_{\epsilon} = 0$ dans $\R^3 \backslash \mathscr{C}_{\epsilon}$ et $\Delta u_{\epsilon}^{int} = 0$ dans $\mathscr{C}_{\epsilon}$, les termes volumiques disparaîssent. Il ne reste que les contributions à la surface $\partial \mathscr{C}_{\epsilon}$.
+Remarquons maintenant que les normales $n_1$ et $n_2$ sont opposées, nous avons $n_2 = - n_1$. Nous notons dans la suite $n_1 = n$. Ainsi, nous avons :
+$$\big< -\Delta \bar{u}_{\epsilon}, \varphi \big> = \int_{\partial \mathscr{C}_{\epsilon}} \llbracket \partial_n \bar{u}_{\epsilon} \rrbracket_{\partial \mathscr{C}_{\epsilon}} \varphi \ d\sigma = \int_{\R^3} \llbracket \partial_n \bar{u}_{\epsilon} \rrbracket_{\partial \mathscr{C}_{\epsilon}} \delta_{\partial \mathscr{C}_{\epsilon}} \varphi \ dx = \big< \llbracket \partial_n \bar{u}_{\epsilon} \rrbracket_{\partial \mathscr{C_{\epsilon}}} \delta_{\partial \mathscr{C}_{\epsilon}}, \varphi \big>, \quad \forall \varphi \in \mathcal{D}(\R^3) $$
+Où nous notons $\llbracket \cdot \rrbracket_S$ le saut à travers une interface $S$.
+Donc au sens des distributions, $\bar{u}_{\epsilon}$ vérifie le problème suivant :
+$$\begin{cases}
+    -\Delta \bar{u}_{\epsilon} = \llbracket \partial_n \bar{u}_{\epsilon} \rrbracket_{\partial \mathscr{C_{\epsilon}}} \delta_{\partial \mathscr{C}_{\epsilon}}  \quad &\text{ dans } \R^3 \\
+    \bar{u}_{\epsilon}(\mathbf{x}) \longrightarrow 0 &\text{ lorsque } |\mathbf{x}| \to +\infty
+\end{cases}$$
+Par la formule de représentation pour le problème volumique, nous pouvons écrire :
+\begin{align*}
+    \bar{u}_{\epsilon}(X) = \int_{\R^3} G^{(3)}(X - \xi)\llbracket \partial_n \bar{u}_{\epsilon} \rrbracket_{\partial \mathscr{C}_{\epsilon}}(\xi) \delta_{\partial \mathscr{C}_{\epsilon}}(\xi) \ d\xi &= \int_{\partial \mathscr{C}_{\epsilon}} G^{(3)}(X - \xi)\llbracket \partial_n \bar{u}_{\epsilon} \rrbracket_{\partial \mathscr{C}_{\epsilon}}(\xi) d\sigma(\xi)
+\end{align*}
+Notons $\partial \mathscr{C}_{\epsilon} = \Sigma_{\epsilon} \cup \Gamma^{+} \cup \Gamma^{-} $, où $\Sigma_{\epsilon} = \mathbb{S}^1 \times [-\frac{1}{\epsilon}, \frac{1}{\epsilon}]$ est la paroie latérale et $\Gamma^{\pm} = \big\{ x^2 + y^2 \leq 1 \big\} \times \big\{ \pm \frac{1}{\epsilon} \big\} $ les paroies supérieures et inférieures de $\mathscr{C}_{\epsilon}$.
+Nous décomposons alors $\bar{u}_{\epsilon}$ en une somme de contributions :
+\begin{align*}
+    \bar{u}_{\epsilon}(X) &= \int_{\Sigma_{\epsilon}} G^{(3)}(X - \xi)\llbracket \partial_n \bar{u}_{\epsilon} \rrbracket_{\partial \mathscr{C}_{\epsilon}}(\xi)  \ d\xi + \int_{\Gamma^{\pm}} G^{(3)}(X - \xi)\llbracket \partial_n \bar{u}_{\epsilon} \rrbracket_{\partial \mathscr{C}_{\epsilon}}(\xi) \ d\xi \\
+    &= \int_{\mathbb{S}^1} \int_{-\frac{1}{\epsilon}}^{\frac{1}{\epsilon}} \frac{\llbracket \partial_n \bar{u}_{\epsilon} \rrbracket(\xi',\xi_3) }{4\pi\sqrt{r^2 + \xi_3^2}} \ d\xi_3 d\sigma(\xi') + \int_{\overline{B}(0,1)} \frac{\llbracket \partial_n \bar{u}_{\epsilon} \rrbracket(\xi',\pm \frac{1}{\epsilon})}{4\pi \sqrt{r^2 + \frac{1}{\epsilon^2}}} \ d\xi' \\
+    &:= \int_{\mathbb{S}^1} I_{\epsilon}(\xi') \ d\sigma(\xi') + R_{\epsilon}
+\end{align*}
+Ainsi, par analogie directe avec la convergence du problème volumique considéré à la section précédente, si nous parvenons à montrer que $I_{\epsilon}$ converge vers la fonction de Green 2D contre le terme source et que $R_{\epsilon} \xrightarrow[\epsilon \to 0]{} 0$ alors nous pourrons conclure que la solution 3D converge vers la solution 2D. En particulier, nous allons devoir montrer que le terme de saut des dérivées normales $\llbracket \partial_n \bar{u}_{\epsilon} \rrbracket$ devient invariant
+suivant sa dernière variable et que le terme de reste associé aux contributions sur les sommets du cylindre tendent bien vers 0. \\
+Intéressons nous à aux contributions sur les extrémités du cylindre, remarquons que ces dernières se réecrivent simplement sous la forme :
+\begin{align*}
+    R_{\epsilon} = \int_{\overline{B}(0,1)} \frac{\llbracket \partial_n \bar{u}_{\epsilon} \rrbracket (\xi',\pm \frac{1}{\epsilon})}{4\pi \sqrt{r^2 + \frac{1}{\epsilon^2}}} \ d\xi' = \int_{\overline{B}(0,1)} \epsilon \frac{\llbracket \partial_n \bar{u}_{\epsilon} \rrbracket (\xi',\pm \frac{1}{\epsilon})}{4\pi \sqrt{\epsilon^2r^2 + 1}} \ d\xi'
+\end{align*}
+Ainsi, pour assurer la convergence, il suffirait de montrer qu'il existe une majoration uniforme en $\epsilon$ au terme $\llbracket \partial_n\bar{u}_{\epsilon} \rrbracket (\xi',\pm \frac{1}{\epsilon})$. De cette façon, toutes les conditions seraient réunies pour prendre la limite sous le signe intégral et avoir $R_{\epsilon} \xrightarrow[\epsilon \to 0]{} 0$. \\
+En ce qui concerne la contribution sur la paroie latérale $\Sigma_{\epsilon}$, nous allons travailler sur le terme suivant :
+\begin{align*}
+    I_{\epsilon} = \int_{-\frac{1}{\epsilon}}^{\frac{1}{\epsilon}} \frac{\llbracket \partial_n \bar{u}_{\epsilon}\rrbracket (\xi',\xi_3)}{4\pi \sqrt{r^2 + \xi_3^2}} \ d\xi_3
+\end{align*}
+Ici, si nous parvenons à montrer que $\llbracket \partial_n \bar{u}_{\epsilon} \rrbracket$ devient invariant suivant $\xi_3$ ou bien qu'asymptotiquement nous pouvons décomposer ce dernier sous la forme $\llbracket \partial_n \bar{u}_{\epsilon} \rrbracket(\xi',\xi_3) = \llbracket \partial_n \bar{u_{\epsilon}} \rrbracket(\xi',0) + r_{\epsilon}(\xi',\xi_3)$, avec $r_{\epsilon}(\xi',\xi_3) \xrightarrow[\epsilon \to 0]{} 0$, alors il sera possible d'avancer des hypothèses pour que la convergence ait lieu.
+Supposons par exemple que nous ayons la décomposition précédente, alors nous pourrions écrire :
+\begin{align*}
+    I_{\epsilon} &= \int_{-\frac{1}{\epsilon}}^{\frac{1}{\epsilon}} \frac{\llbracket \partial_n \bar{u}_{\epsilon}\rrbracket(\xi',0)}{4\pi \sqrt{r^2 + \xi_3^2}} \ d\xi_3 + \int_{-\frac{1}{\epsilon}}^{\frac{1}{\epsilon}} \frac{r_{\epsilon}(\xi',\xi_3)}{4\pi \sqrt{r^2 + \xi_3^2}} \ d\xi_3 \\
+    &= - \frac{1}{2\pi} \llbracket \partial_n \bar{u}_{\epsilon}\rrbracket(\xi',0) \Big( \ln r + \ln \epsilon - \ln\big( 1 + \sqrt{1 + (\epsilon r)^2} \big) \Big) + \int_{-\frac{1}{\epsilon}}^{\frac{1}{\epsilon}} \frac{r_{\epsilon}(\xi',\xi_3)}{4\pi \sqrt{r^2 + \xi_3^2}} \ d\xi_3
+\end{align*}
+En écrivant $\bar{u}_{\epsilon}$ nous aurions alors :
+$$ \bar{u}_{\epsilon}(x,y,0) = \int_{\R^2} -\frac{1}{2\pi}\ln |X' - \xi'|\llbracket \partial_n \bar{u}_{\epsilon} \rrbracket(\xi',0) \delta_{\mathbb{S}^1}(\xi') \ d\xi' - \frac{1}{2\pi}\ln \epsilon \int_{\mathbb{S}^1} \llbracket \partial_n \bar{u}_{\epsilon} \rrbracket(\xi') \ d\sigma(\xi') + \tilde{R}_{\epsilon}$$
+Avec $\displaystyle \tilde{R}_{\epsilon} = \frac{1}{2\pi}\int_{\mathbb{S}^1} \llbracket \partial_n \bar{u}_{\epsilon} \rrbracket(\xi',0) \ln\big( 1 + \sqrt{1 + (\epsilon r)^2} \big) \ d\sigma(\xi') + \int_{\mathbb{S}^1} \int_{-\frac{1}{\epsilon}}^{\frac{1}{\epsilon}} \frac{r_{\epsilon}(\xi',\xi_3)}{4\pi \sqrt{r^2 + \xi_3^2}} \ d\xi_3 d\sigma(\xi') + R_{\epsilon}$ \\
+Si nous voulions nous rapprocher du raisonnement de la section précédente, il faudrait supposer que pour tout $\epsilon > 0$, $\displaystyle \int_{\mathbb{S}^1} \llbracket \partial_n \bar{u}_{\epsilon} \rrbracket = 0 $, et ainsi le terme $\ln \epsilon$ disparaîtrait. Avec cette hypothèse, nous avons également :
+$$ \int_{\mathbb{S}^1} \llbracket \partial_n \bar{u}_{\epsilon} \rrbracket(\xi') \ln\big( 1 + \sqrt{1 + (\epsilon r)^2} \big) \ d\sigma(\xi') \xrightarrow[\epsilon \to 0]{} 0 $$
+En supposant que nous parvenons à montrer une majoration uniforme en $\epsilon$ du terme $\llbracket \partial_n \bar{u}_{\epsilon} \rrbracket(\xi',\pm \frac{1}{\epsilon}) $, nous aurions $R_{\epsilon} \xrightarrow[\epsilon \to 0]{} 0$. \\
+Il ne manquerait alors qu'à chercher sous quelles conditions sur $r_{\epsilon}$ la convergence du terme de reste au développement aurait lieu :
+$$ \int_{-\frac{1}{\epsilon}}^{\frac{1}{\epsilon}} \frac{r_{\epsilon}(\xi',\xi_3)}{4\pi \sqrt{r^2 + \xi_3}} \ d\xi_3 \xrightarrow[\epsilon \to 0]{} 0 $$
+Sous toutes ces suppositions et hypothèses, il reste compliqué d'établir vers quel problème est ce que la solution 3D volumique recollée $\bar{u}_{\epsilon}$ convergerait. Dans la formule de représentation utilisée, le terme source dépend directement du comportement de $\partial_n\bar{u}_{\epsilon}$ au voisinage de $\mathbb{S}^1$. Nous essayons de déterminer le comportement de $\bar{u}_{\epsilon}$ à partir du comportmeent de $\partial_n \bar{u}_{\epsilon}$, ce qui n'est pas possible.
+Pour tenter de contourner cette difficulté, prenons comme condition de bord $u^* = 1$. Alors nous pouvons prendre comme solution intérieur $u^{int}_{\epsilon} = 1 $. Ainsi, le saut s'écrit $\llbracket \partial_n \bar{u}_{\epsilon} \rrbracket = \partial_n u_{\epsilon}$. L'hypothèse de moyenne nulle se réecrirait alors $\displaystyle \int_{\mathbb{S}^1} \partial_n u_{\epsilon} = 0 $. La dérivée normale de la solution du problème extérieur approché $u_{\epsilon}$ devrait donc être à moyenne nulle sur le cercle unité si nous souhaitons avoir une chance
+d'obtenir une convergence lorsque $\epsilon \to 0$.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% A partir de cette formule de représentation, nous allons nous appuyer sur l'étude précedente réalisée sur l'espace entier. Nous avions vu que pour un terme source à moyenne nulle sur suivant ses deux premières variables suivant $\R^2$ et devenant invariant suivant $z$, alors la solution 3D convergeait vers la solution 2D.
+% Nous retrouvons en particulier le même type de noyau intégral sur le segment $[-\frac{1}{\epsilon}, \frac{1}{\epsilon}]$. Si nous parvenons à montrer que le saut $\llbracket \partial_n u^* \rrbracket$ à travers $\partial \mathscr{C}_{\epsilon}$ devient invariant suivant $z$ lorsque $\epsilon \to 0$, alors nous pourrons nous ramener aux conditions 
+% de convergence sur l'espace entier en faisant l'hypothèse $\displaystyle \int_{\partial \mathbb{S}^1} \llbracket \partial_n u^* \rrbracket \ ds = 0$.\\
+% Réecrivons $\bar{u}_{\epsilon}$ sous la forme suivante :
+% $$\bar{u}_{\epsilon}(x,y,0) = \int_{\partial \mathbb{S}^1} \int_{-\frac{1}{\epsilon}}^{\frac{1}{\epsilon}} \frac{1}{4\pi \sqrt{r^2 + t^2}} \llbracket \partial_n u^* \rrbracket_{\partial \mathscr{C}_{\epsilon}}(\xi',t) \ dt ds(\xi') $$
+% Lorsque $\epsilon \ll 1$, le cylindre $\mathscr{C}_{\epsilon}$ se retrouve fortement étiré suivant l'axe vertical $z$. Devant le cylindre, le saut vertical de $\llbracket \partial_n u^* \rrbracket$ devient constant étant donné le changement d'échelle vertical.
+% Ainsi mathématiquement cela peut se traduire par le fait que $z \mapsto \llbracket \partial_n u^* \rrbracket(x,y,z)$ est constante : $\llbracket \partial_n u^* \rrbracket(x,y,z) \underset{\epsilon \ll 1}{\sim} \llbracket \partial_n u^* \rrbracket(x,y,0) $.
+% Alors :
+% $$\bar{u}_{\epsilon}(x,y,0) \underset{\epsilon \ll 1}{\sim} \int_{\partial \mathbb{S}^1} \llbracket \partial_n u^* \rrbracket(\xi',0) \int_{-\frac{1}{\epsilon}}^{\frac{1}{\epsilon}} \frac{1}{4\pi \sqrt{r^2 + t^2}} \ dt ds(\xi') = \int_{\partial \mathbb{S}^1} \llbracket \partial_n u^* \rrbracket(\xi',0) \frac{1}{2\pi} \ln\bigg( \frac{1}{\epsilon r} + \sqrt{1 + \frac{1}{(\epsilon r)^2}}\bigg) \ ds(\xi') $$
+% Et ainsi lorsque $\epsilon \ll 1$ la solution $\bar{u}_{\epsilon}$ peut se réecrire : 
+% $$ \bar{u}_{\epsilon}(x,y,0) \sim \int_{\partial \mathbb{S}^1} \llbracket \partial_n u^* \rrbracket_{\partial \mathbb{S}^1}(\xi') G^{(2)}(X' - \xi') \ ds(\xi') - \frac{1}{2\pi}\ln \epsilon \int_{\partial \mathbb{S}^1} \llbracket \partial_n u^* \rrbracket \ ds + \frac{1}{2\pi}\int_{\partial \mathbb{S}^1} \llbracket \partial_n u^* \rrbracket \ln \big(1 + \sqrt{1 + (\epsilon r)^2}\big) \ ds $$
+% Et maintenant, nous nous retrouvons dans l'exacte même situation que pour le problème volumique considéré à la section précédente. Nous savons alors que la convergence vers $u^{(2)}$ n'a lieu que si le terme source est à moyenne nulle.
+% Ici la convergence n'a donc lieu que si $\displaystyle \int_{\partial \mathbb{S}^1}\llbracket \partial_nu^*\rrbracket_{\partial \mathbb{S}^1} \ ds = 0$.\\
+% Autrement dit, la convergence s'opère seulement si le saut des dérivées normales sur $\partial \mathbb{S}^1$ est à moyenne nulle.
+% Dans ce cas, nous nous retrouvons alors avec :
+% $$ \bar{u}_{\epsilon}(x,y,0) \xrightarrow[\epsilon \to 0]{} u^{(2)}(x,y) $$
+% Où $u^{(2)}$ est la solution du problème :
+% $$\begin{cases}
+%     - \Delta u^{(2)} = \llbracket \partial_n u^*\rrbracket_{\partial \mathbb{S}^1} \delta_{\partial \mathbb{S}^1} \quad &\text{ dans } \R^2 \\
+%     u^{(2)}(\mathbf{x}) \longrightarrow 0 &\text{ lorsque } |\mathbf{x}| \to +\infty
+% \end{cases}$$
+% Nous avons montré dans un chapitre précédent l'existence et l'unicité des solutions de l'équation de Poisson sur tout domaine $\Omega$. Cela signifie que la décomposition $\bar{u}(u)_{\epsilon} = u_{\epsilon}^{int}\1_{\mathscr{C}_{\epsilon}} + u_{\epsilon}\1_{\R^3 \backslash \mathscr{C}_{\epsilon}}$ est unique. En particulier, $u^{(2)}$ est l'unique solution du problème 2D
+
+
+
+
+\subsection{Equation de Stokes}

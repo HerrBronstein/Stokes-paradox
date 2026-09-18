@@ -1,0 +1,139 @@
+\chapter{Formulation du paradoxe de Stokes et Laplace}
+
+\section{Ecriture et validité du modèle}
+
+
+Nous allons nous intéresser à l'apparition du paradoxe de Stokes dans l'écriture du modèle de Stokes posé sur un domaine extérieur.
+L'équation de Stokes s'écrit, dans $\Omega$ domaine exterieur (définit comme complémentaire d'un compact de $\R^d$, $d = 2 \text{ ou } 3$) :
+$$\begin{cases}
+    - \mu \Delta u + \nabla p = f &\text{dans } \Omega \\
+    \nabla \cdot u = 0 &\text{dans } \Omega \\
+    u = v^* &\text{sur } \partial \Omega \\
+    \underset{|x| \to +\infty}{\lim}u(x) = 0
+\end{cases}$$
+Ce modèle peut être vu comme une linéarisation des équations de Navier-Stokes (qui comportent le terme d'advection non-linéaire $\nabla u \cdot u$) valable dans le cadre d'écoulement à faible vitesse dans des milieux relativement visqueux, ou autrement dit, pour des écoulement à faible nombre de Reynolds ($Re \ll 1$). \\
+Dans ce cadre, les termes non-linéaires associés aux forces inertielles peuvent être négligés devant les termes associés à la viscosité (voir annexes).
+
+\vspace{1em}
+
+Considérons par exemple un corps rigide $\mathscr{B}$ aux paroies imperméables en faible mouvement de translation $v_0$ et rotation $\omega$.
+Le cadre d'approximation décrit précédemment est en vigueur sous la condition \cite{Galdi} :
+$$\max\Big(|v_0|,|\omega|\delta(\mathscr{B})\Big) \ll \frac{\nu}{\delta(\mathscr{B})} $$
+Où $\delta(\mathscr{B})$ est le diamètre de $\mathscr{B}$ et $\nu := \frac{\mu}{\rho} $ est la viscosité cinématique. \\
+Dans ce cas, le modèle de Stokes, avec $f = 0$ et $v^* = v_0 + \omega \times x$, décrit le mouvement du fluide par rapport à un reférentiel associé à $\mathscr{B}$.\\
+\\
+Remarquons que la description du mouvement d'un fluide par ce modèle n'est en réalité physiquement cohérente qu'au voisinage d'une paroie, où les effets de viscosité sont prédominants. Cela n'est plus le cas dès lors que l'on considère des distances plus importantes par rapport à la paroie extérieure, où les effets de viscosité deviennent moins importants. \\
+Afin de montrer un premier paradoxe physique associé à ce modèle, considérons par exemple la boule unité $\mathscr{B} \subset \R^3$ avec des paroies imperméables et animée par une faible vitesse de translation $v_0$ (vérifiant la condition précédemment explicitée), sans vitesse de rotation.
+Nous pouvons décrire le mouvement du fluide par le modèles de Stokes, en prenant $\Omega = \R^3 \backslash \overline{\mathscr{B}}$, $f=0$ et $v^* = v_0$.\\
+Dans ce cas précis, nous disposons d'une solution explicite dérivée par Stokes en 1851 :
+\begin{align*}
+    u(x) &= \frac{3}{4} \nabla \times \bigg( |x|^2 \nabla \times \frac{v_0}{|x|} \bigg) + \frac{1}{4} \nabla \times \nabla \times \bigg( \frac{v_0}{|x|} \bigg) \\
+    p(x) &= \frac{3}{2} v_0 \cdot \nabla \bigg( \frac{1}{|x|} \bigg)
+\end{align*}
+En utilisant cette solution, nous pouvons calculer la force exercée par le fluide sur la paroi $\mathscr{B}$ et trouver des résultats cohérents avec l'expérience.
+Néanmoins nous remarquons que cette solution comporte une symétrie $u(-x) = u(x)$, ce qui signifie qu'il n'y a pas de sillage derrière $\mathscr{B}$ dans ce mouvement précis, ce qui semble contradictoire avec les observations de ce type d'écoulement.
+
+
+
+
+
+
+
+
+
+\section{Dérivation du paradoxe}
+
+\subsection{Stokes}
+
+Nous allons désormais formuler le paradoxe mathématique tel que formulé initialement par Stokes en 1851. Ce paradoxe stipule qu'il n'existe pas d'écoulement à faible nombre de Reynolds non-trivial autour d'un cylindre infini en translation, ou de façon équivalente, que le seul écoulement de Stokes possible autour d'un disque en translation dans le plan est l'écoulement nul.
+Pour cela nous allons considérer cette fois un cylindre droit infini $C$, soumis à une vitesse de translation constante, sans mouvement de rotation. Par cette expérience de pensée, nous pouvons tout à fait considérer que le mouvement du fluide est invariant suivant une direction, l'axe du cylindre. La vitesse étant indépendante de cette direction, nous
+pouvons utiliser l'invariance de cet écoulement suivant cet axe pour se réduire à l'étude d'une coupe du cylindre et considérer uniquement l'écoulement autour de cette tranche (d'où la formulation équivalente dans le plan). Nous considérons ainsi un écoulement 2D pour décrire un écoulement 3D invariant suivant une direction. \\
+Le paradoxe provient alors du fait que les solutions fondamentales dans $\R^2$ et $\R^3$ de ces équations sont de natures radicalement différentes, comme nous allons le voir dans le chapitre dédié aux fonctions de Green de l'équation de Stokes. Une singularité se créee dans le passage de la dimension 3 à la dimension 2, ce qui mène à des incohérences. 
+Nous le verrons dans les chapitres suivant, qu'il s'agîsse de l'équation de Poisson ou Stokes, dans $\R^2$ il n'est pas possible d'imposer des conditions au bord non nulles et une condition de décroissance asymptotique sur les solutions d'un problème extérieur.
+
+\vspace{1em}
+
+Nous allons maintenant formuler mathématiquement le paradoxe, pour cela considérons $C = \{ (x,y,z) \in \R^3 \ | \ x^2 + y^2 \leq 1 \} $ le cynlindre infini se déplaçant en translation à vitesse $v_0$ et sans rotation, dans une direction perpendiculaire à son axe.
+Dans cette situation, le mouvement du fluide est décrit suivant 2 degrés de liberté, nous pouvons ainsi considérer que le mouvement est planaire.
+Pour un écoulement planaire incompressible, nous disposons de la fonction de courant $\psi : \R^2 \to \R $ vérifiant :
+$$ u = \nabla^{\perp}\psi $$
+Nous nous plaçons dans le plan orthogonal à l'axe du cylindre $C$, que nous définissons en coordonnées polaires. Dans ce cas, le gradient s'exprime par $\nabla = \big(\partial_r, \frac{1}{r}\partial_{\theta}\big) $. La vitesse s'exprime de cette façon à partir de la fonction de courant $\psi$ :
+$$v_r = \frac{1}{r} \partial_{\theta} \psi, \quad v_{\theta} = -\partial_r \psi $$
+Nous posons alors $\Omega = \big\{ x \in \R^2 \ | \ x_1^2 + x_2^2 > 1 \big\}$ et nous pouvons utiliser le modèle de Stokes avec $f=0$ et $v^* = v_0$.\\
+En prenant le rotationnel de l'équation nous obtenons :
+$$\text{Curl} \big( \nabla p - \mu \Delta u \big) =  \text{Curl}( \nabla p) - \mu \text{Curl}(\Delta u) = -\mu \text{Curl}(\Delta u) = 0 $$
+Puis en inversant les opérateurs laplacien et rotationnel nous obtenons :
+$$\Delta \big( \text{Curl}(u) \big) = 0$$
+Mais remarquons que $\text{Curl}(u) = \text{Curl} (\nabla^{\perp}\psi) = - \Delta \psi$\\
+Nous obtenons ainsi :
+$$\Delta \Delta \psi = 0$$
+Nous pouvons réecrire le système de Stokes avec la fonction de courant :
+$$\begin{cases}
+    \Delta^2 \psi = 0 \quad &\text{ dans } \Omega \\
+    \partial_{\theta} \psi = U \cos(\theta) \quad &\text{ pour } r=1 \\
+    \partial_r \psi = U \sin(\theta) \quad &\text{ pour } r=1 \\
+    \underset{r \to +\infty}{\lim} \frac{1}{r} \partial_{\theta} \psi = \underset{r \to +\infty}{\lim} \partial_r \psi = 0
+\end{cases}$$
+Où nous prenons $v_0 = (U,0,0)$\\
+\\
+Nous pouvons rechercher une solution au problème sous la forme $\psi(r,\theta) = F(r)G(\theta) $\\
+D'après les équations 2 et 3, nous avons :
+$$\begin{cases}
+    \partial_{r} \psi(1,\theta) = F'(1)G(\theta) = U \cos \theta \\
+    \partial_{\theta} \psi(1,\theta) = F(1)G(\theta) = U \sin \theta
+\end{cases}$$
+Puisque $F(1)$ et $F'(1)$ sont des constantes, nous en déduisons que $G$ est proportionnel à $\sin$.
+Nous choisissons alors $G(\theta) = \sin \theta$.\\
+En prenant $\psi(r,\theta) = F(r)\sin \theta$, nous calculons le bilaplacien. Rappelons que le laplacien en coordonnées polaires est donné par :
+$$\Delta \psi(r,\theta) = \partial_{r}^2\psi(r,\theta) + \frac{1}{r}\partial_{r}\psi(r,\theta) + \frac{1}{r^2}\partial_{\theta}^2\psi(r,\theta) = \bigg( \frac{1}{r}F'(r) + F''(r) - \frac{1}{r^2}F(r) \bigg) \sin \theta $$
+Posons $f(r) = \frac{1}{r}F'(r) + F''(r) - \frac{1}{r^2}F(r) $, alors $\Delta \psi(r,\theta) = f(r)\sin \theta$.
+En appliquant le laplacien une nouvelle fois à $f(r)\sin \theta$, nous obtenons :
+$$ \Delta^2 \psi(r,\theta) = \bigg( \frac{1}{r}f'(r) + f''(r) - \frac{1}{r^2}f(r) \bigg) \sin \theta $$
+L'équation biharmonique s'écrit alors :
+$$ \bigg( \frac{1}{r} \frac{d}{dr} + \frac{d^2}{dr^2} - \frac{1}{r^2} \bigg) f(r)\sin \theta = 0 $$
+Ou encore :
+$$ \bigg( \frac{1}{r} \frac{d}{dr} + \frac{d^2}{dr^2} - \frac{1}{r^2} \bigg)^2 F(r) = 0 $$
+$F$ satisfait une EDO d'Euler, dont la solution générale est donnée par \cite{Galdi} :
+$$F(r) = \frac{A}{r} + Br + Cr\ln(r) + Dr^3 $$
+Les conditions aux limites pour $r \to +\infty$ imposent $B = C = D = 0$.
+En utilisant les conditions en $r=1$ nous obtenons :
+$$\begin{cases}
+    F(1)\cos \theta = A \cos \theta = U \cos \theta \\
+    F'(1) \sin \theta = - \frac{A}{1^2} \sin \theta = U \sin \theta
+\end{cases}$$
+C'est à dire $A = U$ et $A = -U$. Cela ne peut se produire que pour $U = 0$, c'est à dire une vitesse d'écoulement nulle et une pression constante.
+Ainsi le cylindre $C$ est immobile, ce qui contredit l'expérience considérée initialement, où nous avions considéré $C$ en translation à vitesse $v_0$.
+
+\vspace{1em}
+
+Notons que pour $v_0$ choisi suivant la condition explicitée à la section précédente, il n'y pas de raison particulière pour que le modèle de Stokes ne soit 
+pas applicable. Le modèle, censé être valide dans ces conditions précises, fournit des informations contradictoires. Cette situation paradoxale n'est pas la limite
+du modèle mais plutôt le résultat de l'apparition d'une singularité mathématique liée à la solution fondamentale de l'équation de Stokes en dimension 2. Ce modèle, bien que valide 
+dans l'approximation des écoulement laminaires ne permet pas de décrire fidèlement des écoulements dans $\R^3$ invariants suivant une direction à partir d'une réduction telle quelle dans $\R^2$, bien que physiquement 
+nous pouvons nous attendre à ce qu'un modèle 2D puisse décrire une situation 3D invariante suivant une direction.
+
+\subsection{Laplace}
+
+Nous pouvons montrer un résultat similaire pour l'équation de Laplace posée sur un domaine extérieur. Grâce aux similitudes avec l'équation de Stokes, au long de cette étude nous pourrons ainsi nous appuyer sur cette formulation de paradoxe pour étudier d'abord le cas de l'équation de Laplace, plus simple, et ensuite utiliser ces raisonnements pour le problème de Stokes.
+Ainsi, nous allons montrer que l'équation de Laplace posée dans un domaine extérieur, avec conditions non nulles au bord et condition asymptotique nulle, n'admet pas de solution. Le problème devient mal posé dès lors que nous nous intéressons à un domaine non borné, étant donné la nature de la solution fondamentale en dimension 2.
+Nous formulons le problème de Laplace dans un domaine extérieur $\Omega$ que nous prendrons comme le complémentaire du disque unité fermé $\overline{\mathscr{D}} = \{ x \in \R^2 \ | \ |x| \leq 1 \} $. Nous avons $\Omega = \R^2 \backslash \mathscr{D}$. Nous imposons des conditions de Dirichlet non nulles sur $\partial \mathscr{D}$.
+
+$$\begin{cases}
+    - \Delta u = 0, \quad &\text{ dans } \Omega \\
+    u(x) = 1 &\text{ en } |x| = 1
+\end{cases}$$
+Par la symétrie du problème, nous décidons de rechercher une solution radiale, de la forme $u(x) = \psi \big(|x|\big) =  \psi(r)$.\\
+Rappelons que le laplacien d'une fonction radiale en 2D s'écrit (voir chapitre suivant) :
+$$\Delta u = \frac{1}{r} \frac{d}{dr}\bigg( r \frac{d}{dr}\psi \bigg) $$
+Ainsi, $\psi$ vérifie l'équation suivante :
+$$ \frac{1}{r} \frac{d}{dr}\bigg( r \frac{d}{dr}\psi \bigg) = 0 $$
+Ce qui donne l'expression suivante :
+$$ \psi(r) = C_0 \ln r + C_1 $$
+Nous pouvons maintenant fixer les constantes $C_0$ et $C_1$ en fonction des conditions aux limites du problème.
+Pour la condition $u(x) = 1$ en $|x| = 1$, nous reformulons cela en en $\psi(1) = 1$. Ce qui fournit $C_1 = 1$.
+Suivant la condition asymptotique sur $u$, nous remarquons que le problème n'admet pas de solution.
+En effet, en souhaitant par exemple imposer $u \xrightarrow[|x| \to +\infty]{} 0$, nous devons nécessairement choisir $C_0 = C_1 = 0$, mais ce choix ne respecte pas la condition au bord de $\mathscr{D}$, donc 
+avec ces conditions aux limites le problème n'admet pas de solution.
+
+En réalité, la simple condition $u$ bornée impose $C_0 = 0$, donc $u$ devrait être constante égale à 1.
+Ce paradoxe peut se formuler de la façon suivante : il n'existe pas de solution borné non triviale au problème de Laplace posé sur un domaine extérieur. Ou alors : le problème de Laplace en domaine extérieur avec conditions de Dirichlet et asymptotiquement nulle n'admet pas de solution.

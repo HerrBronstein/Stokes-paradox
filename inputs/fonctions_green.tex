@@ -1,0 +1,503 @@
+\chapter{Fonctions de Green}
+
+En analyse des équations aux dérivées partielles, il est rare d'obtenir une expression explicite de la solution d'une EDP et parfois même de prouver l'existence de cette dernière (et l'unicité dans certains cas).
+A partir d'une EDP accompagnée de suffisamment de conditions (conditions aux limites pour un domaine borné, asymptotique pour un domaine non borné et condition initiale pour une EDP d'évolution), que nous appelerons problème de Cauchy, il peut être particulièrement compliqué d'extraire des informations sur les potentielles solutions. Il n'existe pas de 
+technique de résolution générale permettant dans chaque cas de résoudre le problème de Cauchy, mais même de tirer de quelconque information. Les problèmes doivent être étudiés de façon "personnalisée", en utilisant des outils et des théories adaptées à la nature de l'équation et de ses conditions.
+Au fil du travail de recherche et d'étude des équations aux dérivées partielles, étalé sur plusieurs siècles, une classification primaire s'est imposée, classant les EDP en 3 principales catégories : Elliptiques, Paraboliques, Hyperboliques. Bien que cette classication ne soit pas exhaustive et n'offre pas la possibilité d'entrer plus en détail dans les propriétés de certaines EDP (et des fois laissant des ambiguïtés quant à la façon de classer),
+nous pouvons regrouper les outils et techniques de d'études pour une famille entière de problèmes. Ceci a permi de donner naissance au développement des théories associées à chaque grande famille d'EDP, parfois radicalement différentes.\\
+Dans ce rapport, nous allons exclusivement travailler sur l'équation de Laplace, Poisson et Stokes. Ces 3 équations ont le point commun d'appartenir à la même catégorie, les équations elliptiques, de plus linéaires.\\
+Dans ce cadre d'étude, nous disposons d'un certain nombre d'outils afin extraire les informations nécessaires à l'étude du paradoxe de Stokes. L'un de ces outils, très important pour les EDP linéaire, est le concept de fonction de Green (ou solution fondamentale, ou encore solution élémentaire). La fonction de Green peut être vue comme la "réponse" d'un
+opérateur différentiel à une impulsion en l'origine, la distribution de Dirac. Cette fonction est ensuite utilisée comme brique élémentaire (ou fondamentale, d'où le nom) pour la construction d'autres solutions au problème posée cette fois ci avec un second membre.
+De façon mathématique, nous définissons la solution élémentaire de la façon suivante :
+\begin{definitionbox}
+\begin{definition}
+    Soit $d \in \N^*$ et un opérateur différentiel de la forme $\displaystyle \mathfrak{D} = \sum_{|\alpha| \leq n} a_{\alpha} \partial^{\alpha} $ 
+    
+    Alors une fonction de Green est une distribution $G \in \mathcal{D}'(\R^d)$ vérifiant :
+    $$ \mathfrak{D}G = \delta_0 $$
+\end{definition}
+\end{definitionbox}
+L'obtention d'une fonction de Green associée à une EDP constitue une première étape importante dans l'étude de cette dernière, d'autant que pour les EDP linéaire, nous disposons du théorème de Malgrange-Ehrenpreis garantissant l'existence d'une fonction de Green à tout opérateur différentiel linéaire à coefficients constants :
+\begin{theorembox}
+\begin{theorem} 
+    \textbf{Malgrange-Ehrenpreis}
+
+    Un opérateur différentiel linéaire à coefficients constants non nuls admet une fonction de Green.
+    
+\end{theorem}
+\end{theorembox}
+Ce théorème nous garanti donc que pour l'étude des problèmes que nous considérons, linéaires à coefficients constants, nous aurons systématiquement à disposition une fonction de Green pour appuyer notre raisonnement.
+Comme évoqué dans le paragraphe introductif, nous allons pouvoir reconstruire des solutions aux problèmes non homogènes à partir d'une fonction de Green. Pour cela nous procédons de la façon suivante :
+\begin{theorembox}
+\begin{theorem}
+    Soit $G \in \mathcal{D}'(\R^d)$ une fonction de Green d'un opérateur différentiel $\mathfrak{D}$. 
+    
+    \vspace{1em}
+
+    Considérons l'équation avec second membre $\mathfrak{D}u = f$, pour $f$ une distribution à support compact ou alors, de façon plus générale, si $G$ et $f$ sont à support convolutif, alors $G \star f $ est une solution.
+
+\end{theorem}
+\end{theorembox} 
+\begin{proof}
+    Pour un second membre $f$ choisi comme précisé dans l'énoncé, la convolution de distributions $G \star f$ est bien définie et par dérivation de convolution :
+    \begin{align*}
+        \mathfrak{D}\Big( G \star f \Big) &= \mathfrak{D} G \star f = \delta_0 \star f = f
+    \end{align*}
+    En nous rappelant que dans ce cas, $\delta_0$ est l'élément neutre pour le produit de convolution.
+\end{proof}
+\begin{remarkbox}
+    \begin{remark}
+        En théorie du potentiel \footnote{Branche des mathématiques s'intéressant aux propriétés du laplacien et des fonctions harmoniques, en partie issue de la formulation mathématique des théories de la gravitation et de l'éléctrostatique.}, une démonstration classique consiste à montrer que pour $f$ höldérienne, nous avons $G \star f \in C^2(\R^d)$ et $\Delta (G \star f) = \Delta G \star f = f $.
+    \end{remark}
+\end{remarkbox}
+Dans le cadre de l'équation de Poisson et Stokes, la fonction de Green ne sera pas qu'une distribution, il s'agîra également d'une fonction et donc nous pouvons poser $u$ solution de l'équation sous la forme :
+$$ u(x) = \int_{\R^d} G(x-y)f(y) \ dy $$
+De cette façon, en superposant les translations de $G$ pondérées par les valeurs de $f$, nous pouvons construire une solution au problème. Ceci constitue un outil puissant à l'étude des EDP linéaires, qui nous sera très utile dans 
+le développement du paradoxe de Stokes. \\
+Remarquons néanmoins que cette solution n'est valable que pour un problème posé sur le domaine $\R^d$ entier. Pour étudier le problème sur un domaine possédant au moins une frontière, nous devons introduire une nouvelle 
+formulation, dite formule de représentation, prenant en compte les conditions aux limites.\\
+Dans ce chapitre nous allons nous intéresser au calcul d'une fonction de Green pour l'équation de Laplace (et ainsi pour l'équation de Poisson) et pour l'équation de Stokes.
+
+
+
+
+\section{Solution fondamentale du laplacien}
+
+Nous allons nous servir des références \cite{Golse} et \cite{Evans} afin de déterminer une solution fondamentale pour l'équation de Laplace (et également discuter des choix que nous ferons pour calculer cette dernière).\\
+Soit $d \in \N^*$.
+L'équation de Laplace s'écrit, pour $u \in \mathcal{D}'(\R^d)$ :
+$$- \Delta u = 0$$
+La fonction de Green du laplacien est une distribution $G \in \mathcal{D}'(\R^d)$ qui vérifie :
+$$- \Delta G = \delta_0$$
+La solution $E$ d'une telle équation dépend de la dimension de l'espace dans lequel nous nous plaçons. Nous pouvons distinguer 3 cas d'études possibles : $d = 1$, $d= 2$ et $d \geq 3$.
+Dans le cadre de l'étude du paradoxe de Stokes, nous allons nous intéresser en particulier aux cas $d = 2$ et $d \geq 3$ (et plus particulièrement
+le cas $d =3$).\\
+Il est important de remarquer ici que nous ne parlons pas de "la" fonction de Green mais "d'une" fonction de Green de l'équation de Laplace. En effet, pour une EDP linéaire à coefficients constants nous 
+avons un résultat d'existence mais pas d'unicité. Nous pouvons mettre en exergue cette non unicité en posant $G^{(2)} = G + A $, pour $A$ une fonction affine. 
+Alors $\Delta G^{(2)} = \Delta G + \Delta A = \Delta G = \delta_0$. Il est ainsi de possible de construire une infinité de fonctions de Green à partir de translations par un réel ou d'ajout d'une fonction harmonique.
+\begin{theorembox}
+    \begin{theorem}
+        Une fonction de Green de l'équation de Laplace est donnée par :
+        $$ G(x) = 
+        \begin{cases}
+            -\frac{1}{2}|x| \quad &\text{si } d = 1 \\
+            -\frac{1}{2\pi} \ln|x| \quad &\text{si } d = 2 \\
+            \frac{1}{(d-2) | \s^{d-1} | |x|^{d-2}} &\text{si } d \geq 3
+        \end{cases} $$
+    \end{theorem}
+\end{theorembox}
+Les calculs de ce chapitre mèneront donc à l'expression d'une fonction de Green construite à partir de choix arbitraires. Dans la suite, lorsque nous parlerons de "la" fonction de Green, cela désignera la fonction de Green que nous avons choisi de chercher en faisant nos hypothèses. Nous allons notamment chercher une expression sous la forme d'une fonction radiale, au vu de la symétrie du problème de Stokes sous-jacent que nous souhaitons étudier.
+Nous pouvons motiver la recherche d'une fonction radiale par ces quelques résultats :\\ 
+D'une part, remarquons que $\delta_0$ est invariante par isométrie linéaire de même que le laplacien, d'après \cite{Golse} :
+\begin{lemmabox}
+    \begin{lemma}
+        $\delta_0$ est invariante par isométrie linéaire
+    \end{lemma}
+\end{lemmabox}
+\begin{lemmabox}
+    \begin{lemma}
+        Soit $f \in C^{\infty}(\R^d)$ et $A$ une matrice orthogonale, alors $\Delta (f\circ A) = \Delta f \circ A$.
+    \end{lemma}
+\end{lemmabox}
+\begin{proof}
+    Soit $x \in \R^d$,
+    \begin{align*}
+        \partial_{x_i}\big(f \circ A(x)\big) &= A_{\cdot i} \cdot \nabla f(Ax) \\
+        &= \big( A^{\top} \nabla f (Ax) \big)_i 
+    \end{align*}
+    \begin{align*}
+        \partial_{x_i}^2 \big( f \circ A(x) \big) &= \sum_{j = 1}^{d} A_{ji} \partial_{x_k}(\partial_{x_j}f(Ax)) \\
+        &= \sum_{j,k = 1}^{d} A_{ji}A_{ki} \partial_{x_j x_k}^2 f(A x)
+    \end{align*}
+    \begin{align*}
+        \Delta (f \circ A(x)) &= \sum_{i,j,k = 1}^d A_{ji}A_{ki} \partial_{x_j x_k}^2 f(A x) \\
+        &= \sum_{i,j,k = 1}^d A_{ji}A_{ik}^{\top} \partial_{x_j x_k}^2 f(Ax) \\
+        &= \sum_{j,k = 1}^d (A A^{\top})_{jk} \partial_{x_j x_k}^2 f(Ax) = \sum_{j,k = 1}^d \delta_{jk} \partial_{x_j x_k}^2 f(Ax) = \Delta f \circ A(x)
+    \end{align*}    
+\end{proof}
+
+Alors le laplacien est invariant par isométrie linéaire au même titre que la distribution de Dirac.
+Nous pouvons alors chercher une solution élémentaire radiale (invariante suivant les isométries linéaires). \\
+Dans ce cas pour $G$ une solution élémentaire du laplacien radiale, nous avons :
+$$-\Delta G_{|\R^d \backslash \{0\} } = 0$$
+En effet, pour $\varphi \in \mathcal{D}(\R^d\backslash \{0\})$ :
+\begin{align*}
+    \big< -\Delta G_{\R^d \backslash \{0\}} , \varphi \big>_{\mathcal{D}'(\R^d \backslash \{0\}),\mathcal{D}(\R^d \backslash \{0\})} &= \big< -\Delta G, \tilde{\varphi} \big>_{\mathcal{D}'(\R^d),\mathcal{D}(\R^d)} \\
+    &=  \tilde{\varphi}(0) = 0
+\end{align*}
+Avec $\tilde{\varphi}$ prolongement de $\varphi$ par 0 à $\R^d$. \\
+Maintenant que nous nous plaçons dans le cadre des fonctions radiales, rappelons la forme du laplcien d'une fonction radiale :
+\begin{lemmabox}
+    \begin{lemma}\textbf{Laplacien d'une fonction radiale}\\
+        Si $f \in C^2(\R_+^*)$ alors :
+        $$ \Delta f(|x|) = f''(|x|) + \frac{d-1}{|x|}f'(|x|), \quad x \in \R^d \backslash \{0\} $$
+    \end{lemma}
+\end{lemmabox}
+\begin{proof}
+
+    % Soit $\varphi \in \mathcal{D}(\R_+^*)$, et $I = ]R_1,R_2[$ tel que $\text{supp} \ \varphi \subset ]R_1,R_2[ $
+
+    % \begin{align*}
+    %     \big<\Delta f,  \varphi\big> &= - \int_{\R^d} \nabla f(|x|) \cdot \nabla \varphi(|x|) \ dx \\
+    %     &= - \int_{R_1}^{R_2} \int_{\mathbb{S}^{d-1}} f'(r) \cdot \varphi'(r) r^{d-1} \ d\sigma dr \\
+    %     &= - \big|\s^{d-1}\big| \int_{R_1}^{R_2} f'(r) \varphi'(r) r^{d-1} \ dr \\
+    %     &= \big|\s^{d-1}\big| \int_{R_1}^{R_2} \varphi(r) \Big(r^{d-1}f'(r)\Big)' r^{d-1} r^{1-d} \ dr \\
+    %     &= \int_{\R^d} \varphi(|x|) \frac{1}{r^{d-1}} \Big(f'(r)r^{d-1}\Big)' |_{|x| = r} dx
+    % \end{align*}
+
+    % Et ainsi au sens des distributions, en posant $r = |x|$ nous avons : 
+    % $$\Delta (f(r)) = \frac{1}{r^{d-1}}\Big( f'(r)r^{d-1} \Big)' $$
+
+    Soit $f \in C^2(\R_+^*)$, $x \in \R^d$,\\
+    $$\partial_{x_i} f(|x|) = f'(|x|)\partial_{x_i}|x| = f'(|x|)\frac{x_i}{|x|}$$
+    \begin{align*}
+        \partial_{x_i}^2 f(|x|) &= f''(|x|) \partial_{x_i}|x|^2 + f'(|x|) \partial_{x_i}\bigg(\frac{x_i}{|x|}\bigg)  \\
+        &= f''(|x|)\frac{x_i^2}{|x|^2} + f'(|x|)\bigg( \frac{1}{|x|} - \frac{x_i^2}{|x|^3} \bigg) \\
+    \end{align*}
+    $$\Rightarrow \Delta f(|x|) = f''(|x|)\frac{|x|^2}{|x|^2} + f'(|x|) \frac{d-1}{|x|} = f''(|x|) + f'(|x|)\frac{d-1}{|x|} $$
+
+\end{proof}
+\begin{remarkbox}
+    \begin{remark}
+        Le calcul précédent réalisé sous des hypothèses de régularité $C^2$ peut s'étendre à $\mathcal{D}'(\R_+^*)$ \cite{Golse}.\\
+        De plus, en posant $r := |x|$, nous remarquons que : 
+        $$ f''(r) + \frac{d-1}{r}f'(r) = \frac{1}{r^{d-1}}\frac{d}{dr}\bigg(r^{d-1} \frac{d}{dr} f(r) \bigg) $$
+    \end{remark}
+\end{remarkbox}
+\begin{proof} Par calcul direct : 
+    \begin{align*}
+        \frac{1}{r^{d-1}}\frac{d}{dr}\bigg(r^{d-1} \frac{d}{dr} f(r) \bigg) &= \frac{1}{r^{d-1}} \bigg( (d-1)r^{d-2} f'(r) + r^{d-1}f''(r) \bigg) \\
+        &= \frac{d-1}{r}f'(r) + f''(r)
+    \end{align*}
+\end{proof}
+Avec tous ces résultats, en choisissant une fonction de Green radiale, $G$ vérifie :
+$$ \frac{1}{r^{d-1}} \frac{d}{dr}\Big(r^{d-1} \frac{d}{dr} G\Big) = 0 $$
+Ou encore :
+$$ r^{d-1} \frac{d}{dr} G  = \text{const.} $$
+Nous en déduisons alors les formes suivantes pour la fonction de Green suivant la dimension d'espace.\\
+\\
+Pour $d = 1$ : 
+$$ G = C_0r + C_1 = C_0|x| + C_1 $$
+Pour $d = 2$ :
+$$ G = C_0\ln(r) + C_1 = C_0 \ln(|x|) + C_1 \quad x \in \R^d \backslash \{0\} $$
+Puis dans le cas $d \geq 3$ :
+$$ G = \frac{C_0}{r^{d-2}} + C_1 = \frac{C_0}{|x|^{d-2}} + C_1 \quad x \in \R^d \backslash \{0\} $$
+Où $C_0$ et $C_1$ sont deux constantes réelles. \\
+Dans la suite, nous allons chercher comment chosir ces constantes.\\
+Pour cela, posons $F$ telle que :
+\begin{enumerate}
+    \item $F(x) = |x| \quad $ si $d=1$ \\
+    \item $F(x) = \ln|x| \quad$ si $d=2$ \\
+    \item $F(x) = \frac{1}{|x|^{d-2}} \quad $ si $d \geq 3$
+\end{enumerate}
+Nous allons dans un premier temps montrer que $F \in L^1_{loc}(\R^d)$ pour chaque cas, puis calculer 
+$\Delta F$.\\
+\\
+\textbf{Pour $d = 1$ :}\\
+Soit $K \subset \R$ un compact. On pose $K = [a,b]$.
+Puisque $F \in C^0(\R)$, alors $F \in L^1_{loc}(\R)$,
+$$\int_{K} |x| \ dx \leq  \big| K \big| \underset{a \leq x \leq b}{\max}|x| = (b-a) \max\big(|a|,|b|\big) $$
+\begin{align*}
+    \big< F'',\varphi \big> = \big< F,\varphi'' \big> &= \int_{-\infty}^{+\infty} |x|\varphi''(x) \ dx \\
+    &= \int_{0}^{+\infty} x\varphi''(x) \ dx - \int_{-\infty}^0 x\varphi''(x) \ dx \\
+    &= \int_{-\infty}^{0} \varphi'(x) \ dx - \int_{0}^{+\infty} \varphi'(x) \ dx + \Big[ x\varphi'(x) \Big]_{0}^{+\infty} - \Big[ x\varphi'(x) \Big]_{-\infty}^{0} \\
+    &= \int_{-\infty}^{0} \varphi'(x) \ dx - \int_{0}^{+\infty} \varphi'(x) \ dx \\
+    &= \varphi(0) + \varphi(0) = 2\big< \delta_0, \varphi \big>
+\end{align*}
+Dans $\mathcal{D}'(\R)$ nous avons :
+$$ F''(x) = 2\delta_0 $$
+Et ainsi :
+$$ \frac{1}{2}F''(x) = \delta_0 $$\\
+\\
+\textbf{Pour $d = 2$ :}\\
+Ici, puisque $F$ est continue en dehors de 0, nous allons montrer que $F$ est intégrable au voisinage de 0.
+\begin{align*}
+    \int_{B(0,1)} \big| \ln |x| \big| \ dx &= \int_{0}^{2\pi} \int_0^1 | \ln r | r \ dr d\theta \\
+    &= 2\pi \int_0^1 |\ln r|r \ dr < \infty
+\end{align*}
+\begin{align*}
+    \int_{\R^2} \Delta F(x) \varphi(x) \ dx = \int_{\R^2} \ln|x| \Delta \varphi(x) \ dx = \underset{\epsilon \to 0}{\lim} \int_{|x|>\epsilon} \ln |x| \Delta \varphi(x) \ dx 
+\end{align*}
+Nous allons appliquer la formule de Green 2 fois :
+\begin{align*}
+    \int_{|x| > \epsilon} F(x) \Delta \varphi(x) \ dx &= - \int_{|x|>\epsilon} \nabla F(x) \cdot \nabla \varphi(x) \ dx + \int_{|x| =\epsilon} F(x) \frac{\partial}{\partial n}\varphi(x) \ d\sigma \\
+    &= \int_{|x|>\epsilon} \Delta F(x) \varphi(x) \ dx + \int_{|x| =\epsilon} F(x) \frac{\partial}{\partial n}\varphi(x) \ d\sigma - \int_{|x| =\epsilon}  \frac{\partial}{\partial n}F(x) \varphi(x) \ d\sigma
+\end{align*}
+Par un calcul précédent, nous avons montré que $\Delta \ln |x| = 0 $ pour $x \in \R^2 \backslash \{ 0 \}$
+Donc :
+$$ \int_{|x| > \epsilon} F(x) \Delta \varphi(x) \ dx = \int_{|x| =\epsilon} F(x) \frac{\partial}{\partial n}\varphi(x) \ d\sigma - \int_{|x| =\epsilon}  \frac{\partial}{\partial n}F(x) \varphi(x) \ d\sigma $$
+La normale sortante à $\partial B(0,\epsilon)$ est donnée par $ \displaystyle n(x) = -\frac{x}{|x|} = - \frac{x}{\epsilon}$
+\begin{align*}
+    \bigg| \int_{|x|=\epsilon} F(x) \frac{\partial}{\partial n}\varphi(x) \ d\sigma \bigg| &= \frac{1}{\epsilon} \bigg| - \int_{|x|=\epsilon} F(x) \nabla \varphi(x) \cdot x \ d\sigma \bigg| \\
+    &\leq \frac{1}{\epsilon} \int_{|x|=\epsilon} |F(x) | | \nabla \varphi \cdot x | \ d\sigma \\
+    &\leq \frac{1}{\epsilon} \int_{|x|=\epsilon} |F(x)| \| \nabla \varphi(x) \|_{l^2} |x| \ d\sigma \\
+    &= \int_{|x|=\epsilon} |F(x)| \|\nabla \varphi(x) \|_{l^2} \ d\sigma \\
+    &\leq \ln \epsilon \| \nabla \varphi \|_{L^{\infty}} \int_{|x|=\epsilon} d\sigma = 2 \pi \epsilon \ln \epsilon \| \nabla \varphi \|_{L^{\infty}} \xrightarrow[\epsilon \to 0]{} 0
+\end{align*}
+Nous pouvons réecrire $F(x) = \ln|x| = \frac{1}{2} \ln|x|^2$. 
+Ainsi nous avons $\forall j \in \{ 1, \dots, d \}$, $\partial_{x_j}F(x) = \frac{1}{2} \frac{2x_j}{|x|^2} = \frac{x_j}{|x|^2} $\\
+Alors $\nabla F(x) \cdot n(x) = - \frac{x}{|x|^2} \cdot \frac{x}{|x|} = - \frac{1}{|x|} $
+\begin{align*}
+    \int_{|x| =\epsilon}  \frac{\partial}{\partial n}F(x) \varphi(x) \ d\sigma &=  \int_{|x|=\epsilon} \nabla F(x) \cdot n(x) \varphi(x) \ d\sigma \\
+    &= - \frac{1}{\epsilon} \int_{|x|=\epsilon} (\varphi(x) - \varphi(0) + \varphi(0)) \ d\sigma \\
+    &= - \frac{1}{\epsilon} \int_{|x|=\epsilon} \varphi(x) - \varphi(0) \ d\sigma - \frac{1}{\epsilon} \int_{|x|=\epsilon} \varphi(0) \ d\sigma \\
+    &= -2\pi \big< \delta_0,\varphi \big> + \mathcal{O}(\epsilon) \xrightarrow[\epsilon \to 0]{} -2\pi \big< \delta_0,\varphi \big> 
+\end{align*}
+Et au final nous obtenons :
+$$\int_{\R^2} \Delta F(x) \varphi(x) \ dx = 2\pi\big< \delta_0,\varphi \big> $$
+Donc :
+$$\Delta F = 2\pi \delta_0 \quad \text{dans } \mathcal{D}'(\R^2)$$
+\\
+\textbf{Pour $d \geq 3$ :}\\
+Comme pour le cas $d = 2$, nous montrons que $F$ est intégrable au voisinage de 0 : 
+\begin{align*}
+    \int_{B(0,1)} \frac{1}{|x|^{d-2}} \ dx &= \int_{\s^{d-1}} \int_0^1 \frac{1}{r^{d-2}} r^{d - 1} \ dr d\theta \\
+    &= |\s^{d-1}| \int_0^1 r dr d\theta = \frac{1}{2} |\s^{d-1}|
+\end{align*}
+Pour le calcul de $\Delta F$, nous procédons de la même manière que dans le cas $d = 2$ :
+\begin{align*}
+    \big< \Delta F, \varphi \big> = \big< F,\Delta \varphi \big> &= \int_{\R^3} F(x) \Delta \varphi(x) \ dx \\
+    &= \underset{\epsilon \to 0}{\lim} \int_{|x|>\epsilon} \frac{1}{|x|^{d-2}} \Delta \varphi(x) \ dx
+\end{align*}
+\begin{align*}
+    \int_{|x|>\epsilon} F(x) \Delta \varphi(x) \ dx &= - \int_{|x|>\epsilon} \nabla F(x) \cdot \nabla \varphi(x) \ dx + \int_{|x|>\epsilon} F(x)\frac{\partial}{\partial n}\varphi(x) \ d\sigma \\
+    &= \int_{|\epsilon|>\epsilon} \Delta F(x) \varphi(x) \ dx - \int_{|x|=\epsilon} \frac{\partial}{\partial n}F(x) \varphi(x) \ d\sigma + \int_{|x|=\epsilon} F(x) \frac{\partial}{\partial n}\varphi(x) \ d\sigma
+\end{align*}
+Nous avons vérifié précédement que $F \in L^1_{loc}(\R^d)$ et que $\Delta F = 0$ pour $x \in \R^d\backslash \{0\}$, alors :
+$$\int_{|x|>\epsilon} F(x) \Delta \varphi(x) \ dx = - \int_{|x|=\epsilon} \frac{\partial}{\partial n}F(x) \varphi(x) \ d\sigma + \int_{|x|=\epsilon} F(x) \frac{\partial}{\partial n}\varphi(x) \ d\sigma $$
+\\
+Traitons les termes successifs de l'expression :
+\begin{align*}
+    \bigg|\int_{|x|=\epsilon} F(x) \frac{\partial}{\partial n}\varphi(x) \ d\sigma \bigg| &\leq \int_{|x|=\epsilon} \frac{1}{|x|^{d-2}} \Big|\nabla \varphi(x) \cdot \frac{x}{|x|} \Big| \ d\sigma \\
+    &\leq \frac{1}{\epsilon} \int_{|x|=\epsilon} \frac{1}{\epsilon^{d-2}} \|\nabla \varphi\|_{L^{\infty}} \epsilon \ d\sigma \\
+    &= \frac{1}{\epsilon^{d-2}}\|\nabla \varphi\|_{L^{\infty}} \epsilon^{d-1} |\s^{d-1}| = \epsilon \| \nabla \varphi \|_{L^{\infty}} |\s^{d-1}| \xrightarrow[\epsilon \to 0]{} 0
+\end{align*}
+Nous avons :
+$$F(x) = \frac{1}{|x|^{d-2}} = |x|^{-(d-2)} = \big(|x|^2\big)^{-(\frac{d}{2} - 1)} \text{ et } \nabla F(x) = -\big(\frac{d}{2}-1\big)2x\big(|x|^2\big)^{-\frac{d}{2}} = -(d - 2) \frac{x}{|x|^d}$$
+Alors la dérivée normale $\partial_n F(x)$ s'écrit : 
+$$\nabla F(x) \cdot n(x) = (d - 2) \frac{x}{|x|^d} \cdot \frac{x}{|x|} = (d-2) \frac{1}{|x|^{d-1}} $$
+\begin{align*}
+    \int_{|x|=\epsilon} \frac{\partial}{\partial n}F(x) \varphi(x) \ d\sigma &= \int_{|x|=\epsilon} (d-2)\frac{1}{\epsilon^{d-1}}\varphi(x) \ d\sigma \\
+    &= \int_{|x|=\epsilon} (d-2)\frac{1}{\epsilon^{d-1}} \Big( \varphi(x) - \varphi(0) + \varphi(0) \Big) \ d\sigma \\
+    &= \frac{1}{\epsilon^{d-1}} (d-2) \int_{|x|=\epsilon} \varphi(x) - \varphi(0) \ d\sigma + \frac{1}{\epsilon^{d-1}} (d-2) \int_{|x|=\epsilon} \varphi(0) \ d\sigma \\
+    &= \mathcal{O}(\epsilon) + (d-2)\big|\s^{d-1}\big| \big< \delta_0, \varphi \big> \xrightarrow[\epsilon \to 0]{} (d-2)\big|\s^{d-1}\big|\big< \delta_0, \varphi \big>
+\end{align*}
+Et finalement nous obtenons :
+$$\int_{\R^3} \Delta F(x) \varphi(x) \ dx = -(d-2)\big| \s^{d-1} \big| \big< \delta_0,\varphi \big> $$
+C'est à dire :
+$$\Delta F = -(d-2) \big| \s^{d-1} \big| \delta_0 \quad \text{ dans } \mathcal{D}'(\R^d) $$
+\\
+\\
+Maintenant que nous avons explicité $\Delta F$ pour chaque cas, nous pouvons en déduire la forme que
+la fonction de Green du laplacien que nous avions annoncé au début du chapitre : 
+$$ G(x) = 
+\begin{cases}
+    -\frac{1}{2}|x| \quad &\text{si } d = 1 \\
+    -\frac{1}{2\pi} \ln|x| \quad &\text{si } d = 2 \\
+    \frac{1}{(d-2) | \s^{d-1} | |x|^{d-2}} &\text{si } d \geq 3
+\end{cases} $$
+Et en particulier, dans les cas $d = 2$ et $d = 3$ : 
+$$  G(x) = 
+\begin{cases}
+    -\frac{1}{2\pi} \ln|x| \quad &\text{si } d = 2 \\
+    \frac{1}{4 \pi |x|} &\text{si } d = 3
+\end{cases} $$
+Et nous retrouvons bien pour chaque cas, conformément aux premiers calculs de cette section :
+$$\Delta G(x) = \delta_0 $$
+
+\vspace{1em}
+
+\section{Equation de Stokes}
+
+
+Nous allons nous intéresser au calcul de la fonction de Green de l'équation de Stokes (également appelée \textit{stokeslet} dans la littérature), posée sur l'espace entier $\R^d$ ($d=2$ ou $d=3$) :
+$$\begin{cases}
+    \nabla p - \mu \Delta u = F \quad &\text{ dans } \R^d \\
+    \nabla \cdot u = 0 &\text{ dans } \R^d \\
+    \underset{|x| \to +\infty}{\lim} u(x) = 0 \\
+    \underset{|x| \to +\infty}{\lim} p(x) = 0
+\end{cases}$$
+La première équation est issue de l'équation bilan de la quantité de mouvement, la deuxième équation est la contrainte d'incompressibilité et les autres équations sont des conditions aux limites (la première sur la frontière du domaine $\Omega$ avec son complémentaire et la deuxième à l'infini).
+Ici $\mu$ est la viscosité dynamique, $u : \R^d \to \R^d $ est la vitesse de l'écoulement et $p : \R^d \to \R$ est la pression. $F$ est le terme source associé aux forces extérieures s'exerçant sur le domaine.\\
+Supposons que le terme de forçage s'exprime de la façon suivante : $F := f_0 \delta (x-x_0)$, c'est à dire comme un point de force s'exerçant en un point $x_0$.
+\begin{theorembox}
+    \begin{theorem} \textbf{Fonctions de Green de l'équation de Stokes :}\\
+        Des fonctions de Green pour l'équation de Stokes sont données par : 
+        \begin{align*}
+            \mathcal{P}(x) = - \nabla G(x) &= 
+            \begin{cases}
+                 \frac{x}{2\pi |x|^2} \quad &\text{ si } d = 2 \\
+                 -\frac{x}{4\pi |x|^3} &\text{ si } d = 3
+            \end{cases} \\
+            \mathscr{S}(x) &= 
+            \begin{cases}
+                 \frac{1}{4\pi\mu}\Big( - \mathbb{I}\ln |x| + \frac{x \otimes x}{|x|^2} \Big) \quad &\text{ si } d = 2 \\
+                 \frac{1}{8\pi\mu}\Big( \frac{\mathbb{I}}{|x|} + \frac{x \otimes x}{|x|^3} \Big) &\text{ si } d = 3
+            \end{cases}
+        \end{align*}
+    Et pour un terme source $F$ continûment distribué dans $\R^d$, nous avons les formules de représentation suivantes :
+    \begin{align*}
+        p(x) = \int_{\R^d} -\nabla G(x - y) \cdot F(y) \ dy \\
+        u(x) = \int_{\R^d} \mathscr{S}(x-y) \cdot F(y) \ dy
+    \end{align*}
+    \end{theorem}
+\end{theorembox}
+
+
+\subsection{Champ de pression}
+
+Nous allons utiliser la condition d'incompressibilité, $\nabla \cdot u = 0$ pour faire disparaître le terme de la vitesse et ainsi isoler la pressions $p$.
+Prenons la première équation et calculons sa divergence :
+\begin{align*}
+    \nabla \cdot \Big(-\mu \Delta u + \nabla p \Big) &= \nabla \cdot F \\
+    \Leftrightarrow -\mu \nabla \cdot \Delta u + \nabla \cdot \nabla p &= \nabla \cdot \big(f_0 \delta(x - x_0) \big) \\
+    \Leftrightarrow -\mu \Delta (\nabla \cdot u) + \Delta p &= \nabla \cdot f_0 \delta(x-x_0) + f_0 \cdot \nabla \delta(x-x_0) \\
+    \Leftrightarrow \Delta p = f_0 \cdot \nabla \delta(x-x_0)
+\end{align*}
+Notons $G$ la fonction de Green de l'équation de Laplace. Nous avons $-\Delta G = \delta(x-x_0)$
+La pression vérifie donc :
+\begin{align*}
+    \Delta p = f_0 \cdot \nabla \delta (x-x_0) &= f_0 \cdot \nabla (- \Delta G) \\
+    &= -f_0 \cdot \Delta (\nabla G) \\
+    &= -\Delta (f_0 \cdot \nabla G)
+\end{align*}
+Une idée possible pour la pression serait d'égaliser les termes dans les laplaciens de l'égalité rédigée au dessus. Il s'agît d'un choix 
+purement arbitraire, nous pourrions faire ce choix à fonction affine près par exemple. Par soucis de simplification des expressions,
+nous allons directement prendre les expressions dans les opérateurs $\Delta$.
+En faisant ce choix, nous nous retrouvons avec :
+$$ p(x) = -f_0 \cdot \nabla G(\hat{x}) $$
+Nous notons pour la suite $r := |\hat{x}| = |x - x_0|$.\\
+Dans la suite, nous utiliserons l'expression suivante :
+$$ \nabla p = -f_0 \cdot \nabla \nabla G $$
+
+
+
+\subsection{Tenseurs d'Oseen pour le champ des vitesses}
+
+En injectant l'expression obtenue pour la pression dans l'équation de Stokes, nous obtenons :
+\begin{align*}
+    \nabla p - \mu \Delta u &= f_0 \delta(x-x_0) \\
+    \Leftrightarrow - \nabla \bigg(f_0 \cdot \nabla G \bigg) - \mu \Delta u &= -f_0 \Delta G \\
+    \Leftrightarrow - f_0 \cdot \nabla \nabla G - \mu \Delta u &= - f_0 \Delta G \\
+    \Leftrightarrow \mu \Delta u &= - f_0 \cdot \big( \nabla \nabla - \mathbb{I} \Delta \big) G
+\end{align*}
+Nous exprimons ensuite la vitesse $u$ à l'aide d'une fonction scalaire $H$ de sorte que \cite{Pozrikidis} :
+$$u = \frac{1}{\mu} f_0 \cdot \big( \nabla \nabla - \mathbb{I}\Delta \big)H $$
+Nous pouvons injecter cette expression dans l'équation vérifiée par $\Delta u$, sans prendre en compte $f_0$, et trouver :
+\begin{align*}
+    \big( \nabla \nabla - \mathbb{I}\Delta \big)\Delta H &= - \big( \nabla \nabla - \mathbb{I} \Delta \big) G \\
+    \Leftrightarrow \big( \nabla \nabla - \mathbb{I}\Delta \big) \bigg( \Delta H + G \bigg) &= 0
+\end{align*}
+De cette façon, nous pouvons remarquer que toute solution de l'équation de Poisson $ - \Delta H = G $ est solution de l'équation précédemment explicitée. \\
+Et ainsi en appliquant l'opérateur $\Delta$ à l'équation de Poisson, nous trouvons :
+$$ \Delta \Delta H = \delta(x-x_0) $$
+De cette façon nous remarquons que $H$ est fonction de Green de l'équation biharmonique $\Delta \Delta v = 0$.\\
+\\
+Nous pouvons maintenant faire la distinction entre $d=2$ et $d=3$. \\
+\\
+\textbf{Pour $d = 2$} :\\
+Nous cherchons une solution $H$ au problème $-\Delta H = G$. Nous allons pouvoir nous aider du calcul de la fonction de Green du laplacien, précédemment détaillé.\\
+Pour $d=2$ nous avons $G(x) = -\frac{1}{2\pi} \ln |x|$.\\
+La fonction de Green du laplacien est radiale, nous allons donc chercher $H$ également radiale. Posons $H(x) = h(|x|) = h(r)$.
+Si $H$ est solution du problème de Poisson, alors nous avons :
+$$ \frac{1}{r}\frac{d}{dr}\bigg( r \frac{d}{dr}h(r) \bigg) = - G(r) = \frac{1}{2\pi} \ln(r) $$
+C'est à dire :
+\begin{align*}
+    \frac{d}{dr} \bigg(r \frac{d}{dr}h(r) \bigg) &= \frac{1}{2\pi}r\ln(r) \\
+    \Rightarrow \frac{d}{dr} h(r) &= \frac{1}{2\pi} \bigg( \frac{r}{2} \ln (r) - \frac{r}{4} \bigg) + \frac{C_1}{r} \\
+    \Rightarrow h(r) &= \frac{1}{4\pi}\bigg( \frac{r^2}{2} \ln (r) - \frac{r^2}{2} \bigg) + C_1 \ln(r) + C_2 = \frac{1}{8\pi}\bigg( r^2 \ln (r) - r^2 \bigg) + C_1 \ln(r) + C_2
+\end{align*}
+Nous pouvons choisir les constantes de façon à ce que $C_1 = C_2 = 0$. Et ainsi nous exprimons $H$ de la façon suivante :
+$$H(x) = h(r) = \frac{1}{8\pi} r^2\Big( \ln(r) - 1 \Big) $$
+Nous calculons $\big(\nabla \nabla - \mathbb{I}\Delta\big)\big(r^2\ln(r) - r^2\big)$ :\\
+Posons $g(x) = |x|^2(\ln|x| - 1)$
+\begin{align*}
+    &\partial_{x_i} g(x) = 2 r \partial_{x_i}r \big(\ln(r) - 1\big) + r^2 \frac{\partial_{x_i}r}{r} = 2r\frac{x_i}{r} \big(\ln(r) - 1\big) + r^2\frac{x_i}{r^2} = 2 x_i \big( \ln(r) - 1 \big) + x_i = x_i \big( 2\ln (r) - 1 \big) \\
+    &\partial_{x_j x_i}^2 g(x) =  \delta_{ij}\big(2 \ln(r) - 1 \big) + 2 x_i \frac{\partial_{x_j} r}{r} = \delta_{ij} \big( 2\ln(r) - 1 \big) + 2\frac{x_i x_j}{r^2}
+\end{align*}
+Où $\delta_{ij}$ est le symbole de Kronecker.
+En sommant sur toutes les composantes, nous obtenons l'expression du laplacien de $g$ :
+\begin{align*}
+    \Delta g(x) = d \big(2 \ln(r) - 1 \big) +  2 \frac{r^2}{r^2} &= 2 \big(2 \ln(r) - 1 \big) + 2 \\
+    &=  4 \ln(r)
+\end{align*}
+Puis en assemblant la matrice des termes croisés $\partial_{x_i x_j}$ nous obtenons :
+\begin{align*}
+    \nabla \nabla g(x) = \mathbb{I}\big( 2\ln(r) - 1 \big) + 2\frac{x \otimes x}{r^2}
+\end{align*}
+Ce qui nous permet d'écrire finalement :
+\begin{align*}
+    \big( \nabla \nabla - \mathbb{I}\Delta \big)g(x) &= \mathbb{I}\big( 2 \ln(r) - 1 \big) + 2\frac{x \otimes x}{r^2} - 4 \ln(r) \mathbb{I} \\
+    &= 2 \frac{x \otimes x}{r^2} - \big(2 \ln(r) + 1 \big)\mathbb{I}
+\end{align*}
+Maintenant nous pouvons définir : 
+$$\mathscr{S}(x) = \frac{1}{8\pi \mu} \bigg( 2 \frac{x \otimes x}{r^2} - \big( 2\ln(r) + 1 \big)\mathbb{I} \bigg) $$
+La vitesse et la pression s'écrivent alors :
+$$\begin{cases}
+    u(x) &= \mathscr{S}(\hat{x})f_0 \\
+    p(x) &= \displaystyle \frac{1}{2\pi} f_0 \cdot \nabla \Big( \ln |\hat{x}| \Big) = \frac{1}{2\pi r^2} f_0 \cdot \hat{x}
+\end{cases}$$
+Notons que $\mathscr{S}$ se réecrit sous la forme 
+$$\mathscr{S}(x) = \frac{1}{4\pi \mu} \bigg( - \ln(r)\mathbb{I} + \frac{x \otimes x}{r^2} \bigg) + \frac{1}{8\pi \mu} \mathbb{I}$$
+Autrement dit, $\mathscr{S}$ se décompose comme un terme dépendant de $x$ et une constante. Cette constante est en réalité un degré de liberté dans le choix de $\mathscr{S}$ puisque
+nous pouvons vérifier que ce dernier vérifie toujours l'équation de Stokes en omettant le terme constant.
+Dans la littérature, il est d'usage de définir le tenseur $\mathscr{S}$ de la façon suivante, plus compacte :
+$$\mathscr{S}(x) = \frac{1}{4\pi \mu} \bigg( - \ln(r)\mathbb{I} + \frac{x \otimes x}{r^2} \bigg) $$
+Dans la suite ce sera cette forme que nous utiliserons dans les calculs.\\
+\\
+\textbf{Pour $d = 3$} :\\
+Nous avons $G(x) = \frac{1}{4\pi r}$.
+$$ -\frac{1}{r^2}\frac{d}{dr}\bigg( r^2 \frac{d}{dr}h(r) \bigg) = \frac{1}{4\pi r} $$
+C'est à dire :
+\begin{align*}
+    \frac{d}{dr} \bigg(r^2 \frac{d}{dr}h(r) \bigg) &= -\frac{r}{4\pi} \\
+    \Rightarrow \frac{d}{dr} h(r) &= -\frac{1}{8\pi} + C_1 \\
+    \Rightarrow h(r) &= -\frac{r}{8\pi} + C_1 r + C_2
+\end{align*}
+Nous pouvons choisir les constantes de façon à ce que $C_1 = C_2 = 0$.
+Ainsi :
+$$H(x) = h(r) = - \frac{r}{8\pi}$$
+En substituant directement l'expression de $H$ dans l'expression de $u$ :
+$$u = - \frac{1}{8\pi \mu} f_0 \cdot (\nabla \nabla - \mathbb{I} \Delta ) r $$
+Calculons $\big( \nabla \nabla - \mathbb{I}\Delta \big) r $ : 
+\begin{align*}
+    &\partial_{x_i} r = \partial_{x_i} |x - x_0| = \frac{2(x_i-x_0)}{2|x - x_0|} = \frac{x_i}{r} \\
+    &\partial_{x_j x_i}^2 r = \frac{\delta_{ij} r - x_i \frac{(x_j - x_0)}{r}}{r^2} = \frac{\delta_{ij}}{r} - \frac{(x_i - x_0)(x_j - x_0)}{r^3}
+\end{align*}
+Et ainsi $\displaystyle \big(\nabla \nabla r\big)_{ij} = \frac{\delta_{ij}}{r} - \frac{\hat{x}_i \hat{x}_j }{r^3} $
+\begin{align*}
+    &\partial_{x_i}^2 r = \frac{1}{r} - \frac{(x_i - x_0)^2}{r^3} = \frac{1}{r} - \frac{\hat{x}_i^2}{r^3} \\
+    \Rightarrow &\Delta r = \frac{d}{r} - \frac{r^2}{r^3} = \frac{2}{r} 
+\end{align*}
+Nous obtenons  $\displaystyle \big(\mathbb{I}\Delta r\big)_{ij} = 2 \frac{\delta_{ij}}{r} $.
+Et finalement :
+$$ \Big( \big(\nabla \nabla - \mathbb{I}\Delta\big)r \Big)_{ij} = - \frac{\delta_{ij}}{r} - \frac{\hat{x}_i\hat{x}_j}{r^3} $$
+Nous définissons ainsi $\displaystyle \mathscr{S}_{ij}(\hat{x}) = \frac{1}{8\pi \mu}\bigg(\frac{\delta_{ij}}{r} + \frac{\hat{x}_i\hat{x}_j}{r^3} \bigg) $\\
+\\
+En utilisant la convention de sommation d'Einstein, nous écrivons finalement $u$ sous la forme :
+$$u_i(x) = \mathscr{S}_{ij}(\hat{x}) f_{0_{j}}$$
+Soit :
+$$u(x) = \mathscr{S}(\hat{x})f_0 $$
+Où $\mathscr{S}$ est parfois appelé le tenseur d'Oseen et en dimension 3 s'écrit sous la forme :
+$$\mathscr{S}(\hat{x}) = \frac{1}{8\pi \mu} \bigg( \frac{\mathbb{I}}{r} + \frac{\hat{x} \otimes \hat{x}}{r^3} \bigg) $$\\
+\\
+En dimension $3$ la fonction de Green de l'équation de Stokes est donnée par :
+$$\begin{cases}
+    u(x) = \mathscr{S}(\hat{x})f_0 \\
+    \displaystyle p(x) = \frac{1}{4\pi r^3} f_0 \cdot \hat{x}
+\end{cases}$$\\
+\\
+Suivant la dimension d'espace, le tenseur d'Oseen est donné par :
+$$\mathscr{S}(x) = \begin{cases}
+    \displaystyle \frac{1}{4\pi\mu}\Big( - \mathbb{I}\ln r + \frac{x \otimes x}{r^2} \Big) + \frac{1}{8\pi\mu}\mathbb{I} \quad &\text{ si } d = 2 \\
+    \displaystyle \frac{1}{8\pi\mu}\Big( \frac{\mathbb{I}}{r} + \frac{x \otimes x}{r^3} \Big) &\text{ si } d = 3
+\end{cases}$$
+\\
+Maintenant que nous avons explicité les solutions fondamentales de l'équation de Stokes en dimension 2 et 3, nous pouvons générer des solutions sur l'espace entier $\R^d$ à partir de termes de forçages quelconques :\\
+En considérant un second terme $F$ continûment distribué dans l'espace, nous pouvons retrouver l'expression de la vitesse $u$ et de la pression $p$ associées à l'équation de Stokes non homogène.
+En effet, il nous suffit de prendre la convolution de la fonction de Green avec le terme source pour chaque composante :
+$$u_i(x) = \int_{\R^d} \mathscr{S}_{ij}(x - y) F_j(y) \ dy $$
+Puis nous avons :
+$$u(x) = \int_{\R^d} \mathscr{S}(x - y) \cdot F(y) \ dy $$
+De la même façon avec la pression, 
+$$ p(x) = \int_{\R^d} - \nabla G(x - y) \cdot F(y) \ dy $$

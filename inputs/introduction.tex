@@ -1,0 +1,26 @@
+\chapter*{Introduction}
+
+En hydrodynamique, plusieurs modèles sont particulièrement utilisés dans le cadre de la modélisation d'écoulements, en ingéniérie comme en recherche plus théorique. Parmis ces modèles, citons probablement les deux plus utilisés et connus, le modèle de Navier-Stokes et Stokes.
+Le premier est directement issu de l'équation bilan de la quantité de mouvement en mécanique des milieux continus, accompagné de conditions aux limites et condition initiale et offre une description à la fois théorique et pratique très fidèle. Ce modèle est néanmoins au coeur 
+de l'un des problèmes mathématiques ouvert les plus importants de notre époque, à savoir, démontrer l'existence de solutions dans le cas général. Les équations de Navier-Stokes sont particulièrement compliquées à étudier en raison des différents 
+termes compléxifiant son expression et sa classification. Cette équation comporte à la fois des termes d'ordre 2, des termes non linéaires et des coefficients non nécessairement constants. Déduire des informations sur l'écouelement d'un fluide à l'aide de ce modèle se révèle être, en réalité,
+particulièrement compliqué de par notre manque d'outils efficaces dans le cadre général du problème. Très peu de situations permettent en effet d'utiliser ce modèle efficacement, citons par exemple les écoulements de Couette et Poiseuille qui sont posés dans un cadre très particulier et ne permettant pas la généralisation
+des outils d'étude au cas général. Une manière de surmonter cette difficulté peut se faire via l'approximation de ces équations dans des régimes particuliers. L'un des paramètres fondamentaux pour décrire un écoulement de façon
+concise est le nombre de Reynolds, qui est un rapport entre la viscosité du fluide et sa vitesse caractéristique d'écoulement. Ce nombre permet de classer les éccoulements suivant la turbulence de ces derniers. En particulier, dans le cas d'un faible nombre de Reynold $(Re \ll 1)$ un modèle largement utilisé en ingéniérie peut être 
+dérivé des équations de Navier-Stokes : le modèle de Stokes, valable pour les écoulements dits de Stokes (pour lesquels les effets d'inertie du fluide sont négligeables face aux termes associés à la viscosité). Ce modèle se base sur la négligeabilité des termes associés au caractère "turbulent" de l'écoulement et s'avère particulièrement efficace dans la description des écoulement visqueux contre des paroies.
+Néanmoins, ce modèle bien qu'efficace peut conduire à des incohérences, comme nous pourrons le détailler dans les chapitres dédiés à ce sujet, de par sa nature d'approximation des équation de Navier-Stokes.
+Bien que les conditions de validité du modèle puissent être satisfaites par l'écoulement, nous pouvons observer la formation de paradoxes à la fois physiques et mathématiques. Nous nous intéresserons ici au paradoxe mathématique, connu sous le sobre nom de paradoxe de Stokes et ennoncé pour la première fois en 1851 par Stokes lui-même.
+
+Nous étudions la formulation mathématique du paradoxe de Stokes ainsi que son apparition dans la dérivation de modèles bidimensionnels à partir de modèles tridimensionnels.
+Le paradoxe de Stokes stipule qu'il n'existe pas d'écoulement de Stokes non trivial autour d'un cylindre infini, ou de façon équivalente, il n'existe pas d'écoulement de Stokes planaire non trivial autour d'un disque.
+En réalité ce paradoxe résulte d'une "incompatibilité" entre la description 2D et 3D du modèle, bien que toutes les conditions de validité du modèle soient réunies.
+Nous allons étudier cette incompatibilité à l'aide d'un outil essentiel en analyse des EDP linéaires : les fonctions de Green. A partir des fonctions de Green nous allons pouvoir étudier le comportement des solutions 
+des équations de Stokes et Laplace et en déduire certaines propriétés utiles concernant l'apparition de ce paradoxe. Nous allons nous demander de façon précise comment ce paradoxe apparaît, alors qu'il serait plutôt naturel de considérer
+qu'un modèle 3D invariant suivant une direction peut être décrit par une réduction 2D de ce dernier. Notre travail s'articulera entre les équations de Laplace, Poisson et Stokes, au vu de leur similitudes. Nous verrons que les propriétés
+de l'équation de Laplace (concernant le comportement asymptotique notamment) sont héritées par l'équation de Stokes et que les solutions de ces dernières ont des comportements radicalement différents entre la 2D et la 3D.\\
+Enfin, en connaissant plus précisément les conditions d'apparition du paradoxe, nous étudierons la possibilité de décrire le modèle d'une façon différente, de sorte à s'affranchir de ce paradoxe.
+En particulier, au long de ce rapport nous chercherons à établir un lien entre le problème posé sur un domaine extérieur et le problème posé sur l'espace entier mais en y imposant
+un terme de source jouant le rôle de "répulsif", constituant une force suffisante pour éloigner le fluide d'une région de l'espace afin d'approcher le problème posé en domaine extérieur.
+En établissant ce lien, et les conditions de validité de cette vision, nous chercherons une définition alternative du problème de Stokes en domaine extérieur et nous proposerons une dérivation alternative 
+de modèle bidimensionnel pour l'équation de Stokes, ne faisant pas appraître un tel paradoxe.
+

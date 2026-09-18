@@ -1,0 +1,406 @@
+\chapter{Comportement asymptotique}
+
+Dans ce chapitre, nous allons nous intéresser au développement asymptotique des équations de Poisson et Stokes. Nous souhaitons d'une part comparer les développements suivant la dimension, et mettre en avant l'aspect mal posé de ces deux problèmes en dimension 2. D'une autre part
+nous souhaitons expliciter des similitudes entre la formulation du paradoxe de Stokes, sur un domaine extérieur, et le problème de Stokes sur l'espace entier. Pour cela, nous allons choisir un second membre $f$ à support compact, tel que $\text{supp}(f) \subset \mathscr{B}^d$ et étudier la façon 
+dont les solutions se développent en l'infini. En particulier, nous étudierons le développement asymptotique des solutions fondamentales de Poisson et Stokes, et ainsi nous en déduirons un comportement problématique ou non.
+
+\section{Equation de Poisson}
+
+
+Intéressons dans un premier temps à l'équation de Poisson avec une condition de décroissance à l'infini. Nous considérons le problème posé sur le domaine entier $\R^d$ avec un second membre $f$ à support compact tel que $\text{supp}(f) \subset \mathscr{B}^d$.
+\begin{align}
+    \begin{cases}
+    -\Delta u = f \quad &\text{ dans } \R^d \\  \label{poisson_volumique}
+    u(\mathbf{x}) \xrightarrow[]{} 0 &\text{ lorsque } |\mathbf{x}| \to +\infty
+\end{cases}
+\end{align}
+Nous allons démontrer le résultat suivant sur le comportement asymptotique des solutions $u$ de l'équation de Poisson volumique :
+\begin{propositionbox}
+    \begin{proposition}\textbf{Paradoxe asymptotique : Poisson}\\
+        \\
+        En dimension 2, si $\displaystyle \int_{\R^2} f \ dx  \neq 0$, alors le problème \ref{poisson_volumique} est mal posé.
+    \end{proposition}
+\end{propositionbox}
+\begin{proof}
+Nous utilisons la formule de représentation pour le problème volumique par convolution avec la fonction de Green sur l'espace entier :
+$$ u(\mathbf{x}) = \int_{\R^d} G(\mathbf{x  -  y})f(\mathbf{y}) \ d\mathbf{y} $$
+Rappelons les fonctions de Green pour l'équation de Laplace :
+$$G(\mathbf{x}) = \begin{cases}
+    -\frac{1}{2\pi}\ln |\mathbf{x}| \quad &\text{ si } d = 2 \\
+    \frac{1}{4\pi |\mathbf{x}|} &\text{ si } d = 3
+\end{cases}$$
+Pour traiter le comportement asymptotique de $u$, nous allons linéariser $G$ autour de $\mathbf{x}$ lorsque $|\mathbf{x}| \to +\infty$. Pour cela, remarquons que puisque $f$ est à support compact, l'intégration se fait toujours sur le même domaine. Ainsi lorsque $|\mathbf{x}| \to +\infty$, nous avons $|\mathbf{y}| \ll |\mathbf{x}|$. 
+Nous allons pouvoir faire des développements de Taylor de la fonction de Green pour $\mathbf{x}$ suffisament grand.
+Nous allons faire la distinction entre les cas $d = 2$ et $d=3$ :\\
+\\
+\\
+\textbf{Pour $d= 2$} :\\
+\\
+Etant donné que :
+\begin{align*}
+    G(\mathbf{x - y}) = -\frac{1}{2\pi} \ln\big(|\mathbf{x - y}|\big) = -\frac{1}{4\pi}\ln\big( |\mathbf{x - y}|^2 \big)
+\end{align*}
+Nous allons développer autour de $\mathbf{x}$ :
+\begin{align*}
+    \ln\big( |\mathbf{x - y}|^2 \big) = \ln\Big( |\mathbf{x}|^2 - 2\mathbf{x} \cdot \mathbf{y} + |\mathbf{y}|^2 \Big) &= \ln\bigg( |\mathbf{x}|^2 \Big( 1 + \frac{|\mathbf{y}|^2}{|\mathbf{x}|^2} - 2 \frac{\mathbf{x} \cdot \mathbf{y}}{|\mathbf{x}|^2} \Big) \bigg) \\
+    &= \ln |\mathbf{x}|^2 + \ln \bigg( 1 + \frac{|\mathbf{y}|^2}{|\mathbf{x}|^2} - 2 \frac{\mathbf{x} \cdot \mathbf{y}}{|\mathbf{x}|^2} \bigg)
+\end{align*}
+Puis en développant le second terme :
+\begin{align*}
+    \ln \bigg( 1 + \frac{|\mathbf{y}|^2}{|\mathbf{x}|^2} - 2 \frac{\mathbf{x} \cdot \mathbf{y}}{|\mathbf{x}|^2} \bigg) = \frac{|\mathbf{y}|^2}{|\mathbf{x}|^2} - 2 \frac{\mathbf{x} \cdot \mathbf{y}}{|\mathbf{x}|^2} + \mathcal{O}\big(|\mathbf{x}|^{-3}\big) = \mathcal{O}\big( |\mathbf{x}|^{-1} \big)
+\end{align*}
+Maintenant, en utilisant ce développement dans la formule de représentation de $u$ :
+\begin{align*}
+    u(\mathbf{x}) = \int_{\R^2} G(\mathbf{x - y}) f(\mathbf{y}) \ d\mathbf{y} &= -\frac{1}{2\pi} \int_{\R^2} f(\mathbf{y})\Big( \ln|\mathbf{x}| + \mathcal{O}\big( |\mathbf{x}|^{-1} \big) \Big) \ dy \\
+    &= -\frac{1}{2\pi}\ln|\mathbf{x}|\int_{\R^2} f(\mathbf{y}) \ d\mathbf{y} + \mathcal{O}(|\mathbf{x}|^{-1})
+\end{align*}
+Nous remarquons alors que $u$ s'écrit comme un logarithme coefficienté par la moyenne du terme source et un terme qui tend vers 0. Nous voyons l'apparition "d'un paradoxe de Stokes", pour $u$ solution du problème volumique avec condition de décroissance asymptotique, $u$ ne peut pas satisfaire sa condition aux limites si le terme source n'est pas à moyenne nulle.
+Il y apparition d'un paradoxe en 2D si $f$ n'est pas à moyenne nulle, en prenant $u$ satisfaisant le problème 2D, $u$ explose en l'infini bien que le problème impose un comportement décroissant à l'infini.\\
+\\
+Pour compléter cette étude, nous allons montrer qu'en dimension 3, le problème de Poisson posé sur l'espace entier n'admet pas ce type de paradoxe.\\
+\\
+\textbf{Pour $d=3$}\\
+\\
+Par la même démarche,, nous montrons que le problème posé sur $\R^3$ ne développe pas de paradoxe par rapport à ses condition aux limites.
+Nous verrons que cela est directement dû à la forme de la fonction de Green 3D, elle même asymptotiquement décroissante, contrairement au cas 2D où la fonction de Green explosait en l'infini.
+$$G(\mathbf{x - y}) = \frac{1}{4\pi|\mathbf{x - y}|}$$
+Nous allons développer le terme $|\mathbf{x -y}|$ :
+\begin{align*}
+    \frac{1}{|\mathbf{x - y}|} = \frac{1}{\sqrt{|\mathbf{x}|^2 + |\mathbf{y}|^2 - 2 \mathbf{x} \cdot \mathbf{y}}} &= \frac{1}{|\mathbf{x}|} \frac{1}{\sqrt{1 + \frac{|\mathbf{y}|^2}{|\mathbf{x}|^2} - 2 \frac{\mathbf{x} \cdot \mathbf{y}}{|\mathbf{x}|^2}}} \\
+    &= \frac{1}{|\mathbf{x}|} \bigg( 1 - \frac{1}{2}\Big( \frac{|\mathbf{y}|^2}{|\mathbf{x}|^2} - 2 \frac{\mathbf{x} \cdot \mathbf{y}}{|\mathbf{x}|^2} \Big) + \mathcal{O}\big( |\mathbf{x}|^{-2} \big) \bigg) \\
+    &= \frac{1}{|\mathbf{x}|} + \mathcal{O}\big(|\mathbf{x}|^{-2}\big)
+\end{align*}
+Et ainsi la solution fondamentale se développe de la façon suivante lorsque $|\mathbf{x}| \to +\infty$ :
+$$G(\mathbf{x - y}) = \frac{1}{4\pi|\mathbf{x}|} + \mathcal{O}\big( |\mathbf{x}|^{-2} \big) $$
+$u$ peut se développer sous la forme :
+$$u(\mathbf{x}) = \int_{\R^3} \frac{1}{4\pi|\mathbf{x}|}f(\mathbf{y}) \ d\mathbf{y} + \mathcal{O}\big( |\mathbf{x}|^{-2} \big) = \frac{1}{4\pi |\mathbf{x}|}\int_{\R^3} f(\mathbf{y}) \ d\mathbf{y} + \mathcal{O}\big( |\mathbf{x}|^{-2} \big) $$
+Finalement le développement de $u$ donne de façon explicite son comportement lorsque $|\mathbf{x}| \to +\infty$.
+\end{proof}
+Nous remarquons une différence notable dans les comportements asymptotiques du problème de Poisson en dimension 2 et dimension 3. D'une part nous remarquons qu'en l'absence de conditions spécifiques sur $f$, notamment $f$ à moyenne nulle,
+en dimension 2 les solutions du problème de Poisson explosent asymptotiquement, là où les solutions en dimension 3 sont asymptotiquement nulles.
+Contrairement au cas de la dimension 2, en dimension 3 nous n'observons pas la formation d'un paradoxe sur les conditions aux limites. En dimension 3 il n'est pas nécessaire d'imposer des conditions particulières sur le terme source pour que les solutions restent cohérentes aux conditions aux limites fixées.
+En dimension 2, si nous souhaitons éviter ce type de paradoxe, il faut imposer que le terme source soit à moyenne nulle, autrement les solutions du problème ne respectent pas les conditions aux limites, et donc de façon contradictoire, ne sont plus solution du problème. 
+
+
+\section{Equation de Stokes}
+
+Nous nous intéressons maintenant au développement asymptotique des solutions de des équations de Stokes. 
+Nous allons d'abord considérer le problème posé sur l'espace entier, afin de suivre la même démarche qu'avec l'équation de Poisson. Nous allons démontrer un résultat analogue à celui développé pour le problème de Poisson.\\
+Dans un second temps nous allons faire un développement asymptotique des solutions du problème posé en domaine extérieur. Cela nous permettra d'écrire une formulation alternative du paradoxe de Stokes, rendant compte d'un comportement asymptotique pathologique.
+
+
+\subsection{Problème posé dans $\R^d$}
+
+Considérons le problème de Stokes volumique :
+\begin{align}
+    \begin{cases}
+            -\Delta u + \nabla p = f, \quad &\text{ dans } \R^d \\ \label{stokes_volumique}
+            \nabla \cdot u = 0 \\
+            u(x),p(x) \longrightarrow 0, &\text{ lorsque } |x| \to +\infty
+        \end{cases}
+\end{align}
+Avec $f$ à support compact. Nous allons montrer le résultat suivant :
+\begin{propositionbox}
+    \begin{proposition}\textbf{Paradoxe asymptotique : Stokes}\\
+        \\
+        En dimension 2, si $\displaystyle \int_{\R^2} f_i \ dx \neq 0, \ i \in \{1,2\}$, alors le problème de Stokes est mal posé.
+    \end{proposition}
+\end{propositionbox}
+\begin{proof}
+Pour l'équation de Stokes, rappelons l'expression du tenseur d'Oseen, fonction de Green du champ des vitesses :
+$$ \mathscr{S}(x) = \begin{cases}
+    \displaystyle  \frac{1}{4\pi } \Big(- \mathbb{I}\ln |x| + \frac{x\otimes x}{|x|^2}\Big) \quad &\text{ si } d = 2 \\
+    \displaystyle  \frac{1}{8\pi } \Big(\frac{\mathbb{I}}{|x|} + \frac{x\otimes x}{|x|^3} \Big) &\text{ si } d=3
+\end{cases}$$
+Nous allons nous intéresser uniquement au comportement asymptotique d'un champ de vitesse $u$ solution du problème de Stokes, cela suffira à conclure ce que nous souhaitons.
+Soit $u$ solution du problème de Stokes volumique, nous disposons de la formule de représentation suivante sur l'espace entier :
+$$ u_j(x) = \int_{\R^d} \mathscr{S}_{ij}(x-y)f_i(y) \ dy $$
+Comme pour l'équation de Poisson, nous allons développer $\mathscr{S}_{ij}$ autour de $x$.\\
+\\
+\\
+\textbf{Pour $d=2$} :\\
+$$\mathscr{S}_{ij}(x-y) = \frac{1}{4\pi} \Big( - \ln |x-y| \delta_{ij} + \frac{(x_i - y_i)(x_j - y_j)}{|x-y|^2} \Big) $$
+Le terme logarithme se développe, comme vu précédemment, de la façon suivante :
+$$\ln |x-y| = \ln|x| + \mathcal{O}\big( |x|^{-1} \big) $$
+La deuxième partie de la fonction de Green se développe de cette façon :
+\begin{align*}
+    \frac{(x_i - y_i)(x_j - y_j)}{|x-y|^2} &= (x_i - y_i)(x_j - y_j) \frac{1}{|x|^2}\frac{1}{1 + \frac{|y|^2}{|x|^2} - 2\frac{x \cdot y}{|x|^2} } \\
+    &= \Big( x_i x_j + \mathcal{O}(|x|) \Big) \frac{1}{|x|^2} \Big( 1 - \frac{|y|^2}{|x|^2} + 2 \frac{x \cdot y}{|x|^2} + \mathcal{O}\big(|x|^{-2} \big) \Big) \\
+    &=  \Big( x_i x_j + \mathcal{O}(|x|) \Big)\Big( \frac{1}{|x|^2} + \mathcal{O}\big(|x|^{-3}\big) \Big) \\
+    &= \frac{x_i x_j}{|x|^2} +  \mathcal{O}\big( |x|^{-1} \big)
+\end{align*}
+Et finalement :
+$$ \mathscr{S}_{ij}(x-y) = \frac{1}{4\pi}\bigg(-\delta_{ij}\ln|x| + \frac{x_i x_j}{|x|^2}\bigg) + \mathcal{O}\big(|x|^{-1}\big) = \mathscr{S}_{ij}(x) + \mathcal{O}\big(|x|^{-1}\big) $$
+Ce qui donne l'expression asymptotique suivante pour $u_j$ :
+$$u_j(x) = \int_{\R^2} \mathscr{S}_{ij}(x-y) f_j(y) \ dy = \mathscr{S}_{ij}(x)\int_{\R^2} f_j(y) \ dy + \mathcal{O}\big(|x|^{-1}\big) $$
+En dimension 2, le tenseur d'Oseen n'étant pas borné et explosant même lorsque $|x| \longrightarrow + \infty$,
+nous remarquons que sans supposer quoi que ce soit sur $f$, $u_j$ diverge lorsque $|x| \longrightarrow + \infty$.
+Le comportement asymptotique de la solution correspond au problème si et seulement si la moyenne du terme source $f$ est nulle. Autrement, comme pour le problème de Poisson, la solution explose en l'infini bien que le problème impose une décroissance asymptotique.\\
+\\
+\\
+\textbf{Pour $d=3$} : \\
+\\
+En dimension 3 la fonction de Green est donnée par :
+$$\mathscr{S}_{ij}(x-y) = \frac{1}{8\pi } \bigg(\frac{\delta_{ij}}{|x-y|} + \frac{(x_i - y_i)(x_j - y_j)}{|x-y|^3} \bigg) $$
+Nous rappelons que le premier terme de la fonction de Green se développe de la façon suivante :
+$$ \frac{1}{|x-y|} = \frac{1}{|x|} + \mathcal{O}\big( |x|^{-2} \big) $$
+Puis le second terme :
+\begin{align*}
+    \frac{1}{|x-y|^3} = \frac{1}{\Big( |x|^2 + |y|^2 -2 x \cdot y \Big)^{\frac{3}{2}}} &= \frac{1}{|x|^3} \frac{1}{\Big( 1 + \frac{|y|^2}{|x|^2} - 2 \frac{x \cdot y}{|x|^2} \Big)^\frac{3}{2}} \\
+    &= \frac{1}{|x|^3} \bigg( 1 - \frac{3}{2}\Big( \frac{|y|^2}{|x|^2} - 2 \frac{x \cdot y}{|x|^2} \Big) + \mathcal{O}\big( |x|^{-3} \big) \bigg) \\
+    &= \frac{1}{|x|^3} + \mathcal{O}\big( |x|^{-4} \big)
+\end{align*}
+Ce qui fourni l'approximation asymptotique suivante : 
+$$ \mathscr{S}_{ij}(x-y) = \frac{1}{8\pi} \bigg(\frac{\delta_{ij}}{|x|} + \frac{x_i x_j}{|x|^3} + \mathcal{O}\big(|x|^{-2}\big) \bigg) = \frac{1}{8\pi |x|} + \mathcal{O}(|x|^{-1}) $$
+Une fois injecté dans la convolution avec le second membre $f$, nous obtenons l'estimation asymptotique suivante pour les solutions en dimension 3 du problème de Stokes :
+$$ u_j(x) = \int_{\R^3} \mathscr{S}_{ij}(x-y) f_j(y) \ dy = \frac{1}{8\pi |x|} \int_{\R^3} f_j(y) \ dy + \mathcal{O}(|x|^{-1}) $$
+En dimension 3, les solutions de l'équation de Stokes sur l'espace entier sont asymptotiquement nulles, ce qui correspond aux conditions que nous souhaitons imposer asymptotiquement dans la formulation du paradoxe de Stokes.
+\end{proof}
+Par cette étude asymptotique, nous pouvons voir l'apparition "d'un paradoxe de Stokes" sur le problème volumique (pas seulement sur le problème posé en domaine extérieur). Cela peut nous amener à penser que le paradoxe de Stokes formulé pour le cylindre infini apparaît pour des raisons
+plus profondes que la géométrie du problème. Nous venons de voir par cette étude asymptotique que la fonction de Green joue un rôle important dans le comportement asymptotique et l'apparition d'une contradiction pour les solutions du problème de Stokes. Dans la suite, nous chercherons à approximer 
+les problèmes en domaine extérieur par des problèmes volumiques, en considérant notamment des termes sources jouant un rôle répulsif à la place du cylindre infini. Nous verrons à cette occasion que les solutions du problème 2D ne pourront alors être obtenue à partir des solutions 3D qu'à partir du moment où le paradoxe
+de Stokes volumique n'a pas lieu, et donc lorsque la moyenne du terme source est nulle. 
+
+
+\subsection{Formules de représentation pour Stokes}
+
+Afin d'appuyer le propos concernant l'écriture du paradoxe de Stokes, nous pouvons dériver des formules de représentation, permettant de construire des résultats asymptotiques en domaine extérieur.
+Dans le premier chapitre, nous nous sommes intéressés à la formulation mathématique du paradoxe de Stokes. Nous avons notamment posé le contexte du problème en domaine extérieur. D'après ce que nous avons vu, le paradoxe semble apparaître lors du choix des constantes multiplicatives en utilisant les conditions au bord du cylindre. Nous allons maintenant nous pencher sur le comportement asymptotique des solutions du problème de Stokes dans le contexte du paradoxe.
+Nous allons en particulier mettre en lumière les mêmes contradictions pour le problème de Stokes 2D, à savoir qu'il n'est pas possible d'imposer la décroissance asymptotique sans conditions particulières. Nous allons voir dans ce chapitre l'apparition d'un comportement asymptotique pathologique et quelles conditions imposer pour éviter cela.\\
+Considérons un domaine extérieur $\Omega \subset \R^3$, nous allons d'abord considérer un domaine extérieur $\Omega$ quelconque et nous prendrons ensuite en particulier $\Omega = \R^3 \backslash \mathscr{C}$ le domaine privé du cylindre infini $\mathscr{C}$.  \\
+Considérons le problème de Stokes suivant :
+$$\begin{cases}
+    \Delta u - \nabla p = f \quad &\text{ dans } \Omega \\
+    \nabla \cdot u = 0 &\text{ dans } \Omega \\
+    u(\mathbf{x}) = u^* &\text{ sur } \partial \Omega \\
+    u(\mathbf{x}) \longrightarrow 0 &\text{ lorsque } \mathbf{|x|} \to +\infty
+\end{cases}$$
+\\
+Pour étudier le comportement asymptotique des solutions de l'équations de Stokes, nous allons commencer par établir une formule de représentation pour la vitesse. 
+Puisque nous sommes sur un domaine non borné, nous allons nous ramener dans un premier temps à un domaine borné en tronquant les solutions fondamentales sur un domaine de largeur $R$.
+Rappelons nous que les fonctions de Green de l'équation de Stokes peuvent s'écrire sous la forme :
+$$\mathscr{S}_{ij}(x-y) = \Big(\delta_{ij}\Delta - \partial_{x_i x_j} \Big)\phi(|x-y|) $$
+$$ q_j(x-y) = - \partial_{x_j}\Delta \phi(|x-y|) $$
+Où $\phi$ est une fonction biharmonique, telle que nous l'avons explicité dans le chapitre dédié au calcul de la fonction de Green de l'équation de Stokes.\\
+Définissons la fonction de troncature suivante :
+$$ \psi (t) = \begin{cases}
+    1 \quad &\text{ si } |t| \leq \frac{1}{2}\\
+    0 &\text{ si } |t| \geq 1
+\end{cases} $$
+Nous pouvons maintenant définir la fonction suivante, qui nous servira pour tronquer la solution fondamentale à un intervalle à l'aide d'un paramètre $R$. Pour un certain $R > 0$, nous posons :
+$$\psi_R (x - y) = \psi\bigg(\frac{x - y}{R}\bigg) = \begin{cases}
+    1 \quad &\text{ si } |x-y| \leq \frac{R}{2} \\
+    0 &\text{ si } |x-y| \geq R
+\end{cases} $$
+Nous allons remplacer la fonction biharmonique $\phi$ par $\psi_R \psi$ de sorte à tronquer les fonctions de Green à un intervalle borné. Ces nouvelles fonctions sont appelées solutions fondamentales tronquées de Stokes-Fujita.
+Ces dernières sont ainsi définies par :
+\begin{align*}
+    & \mathscr{S}_{ij}^R = \Big(\delta_{ij}\Delta - \partial_{x_i x_j} \Big)\psi_R\phi \\
+    & q_j^R = - \partial_{x_j}\Delta(\psi_R\phi)
+\end{align*}
+Pour $|x-y| \leq \frac{R}{2}$ nous retrouvons :
+$$ \mathscr{S}_{ij}^R(x-y) = \mathscr{S}_{ij}(x-y), \quad q_j^R(x-y) = q_j(x-y) $$
+Et pour $|x-y|>R$ :
+$$ \mathscr{S}_{ij}^R(x-y) = q_j^R(x-y) = 0 $$
+Remarquons que nous avons la relation suivante pour $x \neq y$ :
+\begin{align*}
+    &\Delta \mathscr{S}_{ij}^R(x-y) - \partial_{x_i}q_j^R(x-y) = H_{ij}^R(x-y) \\
+\end{align*}
+Où $H_{ij}^R(x-y) = \begin{cases}
+    0 \quad &\text{ si } x = y \\
+    \delta_{ij}\Delta^2(\psi_R\phi)(x-y) &\text{ si } x \neq y
+\end{cases} $\\
+En effet, cela découle directement de la définition de $\mathscr{S}^R$ et $q^R$, pour $x \neq y$ nous avons : 
+\begin{align*}
+    \Delta \mathscr{S}_{ij}^R(x-y) - \partial_{x_i}q_j^R(x-y) &= \big( \delta_{ij}\Delta - \partial_{x_i x_j} \big)\Delta(\psi_R \phi) + \partial_{x_i x_j} \Delta(\psi_R \phi) \\
+    &= \delta_{ij}\Delta^2(\psi_R \phi)(x-y)
+\end{align*}
+\\
+Maintenant que nous avons établi cette relation, nous allons mettre en place la formule de représentation. De façon classique, pour déterminer une formule de représentation sur un domaine borné et régulier $\Omega$, nous appliquons la deuxième identité de Green. Ici nous allons utiliser une forme légèrement différente,
+à partir du tenseur des contraintes.\\
+Rappelons que le tenseur des contraintes pour un fluide newtonien incompressible est donné par :
+$$T_{ij}(v,p) = -\delta_{ij}p + 2D_{ij}(v) $$
+Où $D(v) = \frac{1}{2}\big( \nabla v + \nabla v ^{\top} \big) $ est le tenseur de vitesse des déformations. \\
+Nous écrivons l'équation bilan de conservation de la quantité de mouvement de la façon suivante :
+$$\nabla \cdot T(v,p) = -\nabla p + \Delta v  $$
+Considérons $(u,\pi)$ et $(v,p)$ deux couples champ de vecteurs régulier à divergence nulle / champ scalaire régulier.
+Par la formule de Green, nous intégrons par partie $\nabla \cdot T$ contre $u$ puis $v$ :
+\begin{align*}
+    &\int_{\Omega} \nabla \cdot T(v,p) \cdot u = - \int_{\Omega} T(v,p) : \nabla u + \int_{\partial \Omega} u \cdot T(v,p) \cdot n \\
+    &\int_{\Omega} \nabla \cdot T(u,\pi) \cdot v = - \int_{\Omega} T(u,\pi) : \nabla v + \int_{\partial \Omega} v \cdot T(u,\pi) \cdot n
+\end{align*}
+Remarquons la propriété suivante dûe à la symmétrie du tenseur des contraintes :
+
+\begin{propositionbox}
+    \begin{proposition}
+        Pour $u$ et $v$ deux champs de vecteurs réguliers à divergence nulle et $p$ et $\pi$ deux champs scalaires réguliers, alors :
+        $$ \int_{\Omega} T(u,p) : \nabla v = \int_{\Omega} T(v,\pi) : \nabla u $$
+    \end{proposition}
+\end{propositionbox}
+\begin{proof}
+    Nous allons utiliser les propriétés de symmétrie de $T$ et le fait que $u$ et $v$ sont à divergence nulle. Rappelons que nous utilisons la convention de sommation d'Einstein.
+    \begin{align*}
+        \int_{\Omega} T(v,p) : \nabla u = \int_{\Omega} T_{ij}(v,p)\nabla u_{ij} &= \int_{\Omega} -\delta_{ij}p\partial_{x_j}u_i + (\partial_{x_j}v_i + \partial_{x_i}v_j)\partial_{x_j}u_i \\
+        &= \int_{\Omega} - p \nabla \cdot u + \partial_{x_j}v_i \partial_{x_j} u_i + \partial_{x_i}v_j \partial_{x_j}u_i \\
+        &= \int_{\Omega} (\nabla u + \nabla u^{\top} ) : \nabla v \\
+        &=  \int_{\Omega} -\pi \mathbb{I} : \nabla v + 2 D(u) : \nabla v \\
+        &= \int_{\Omega} T(u,\pi) : \nabla v
+    \end{align*}
+\end{proof}
+En prenant la différence des deux intégrations par parties et en utilisant la propriété que nous venons de montrer, nous obtenons l'identité de Green suivante :
+\begin{align*}
+    \int_{\Omega}  \nabla \cdot T(v,p) \cdot u - \nabla \cdot T(u,\pi) \cdot v = \int_{\partial \Omega} \Big( u \cdot T(v,p) - v\cdot T(u,\pi) \Big) \cdot n
+\end{align*}
+Cette identité constitue le point de départ de la formule de représentation. Il s'agît maintenant de choisir astucieusement les couples $(v,p)$ et $(u,\pi)$ pour isoler le champ de vitesse $v$. Généralement, nous choisissons $(u,\pi)$ comme étant fonction de Green de l'équation, 
+de cette façon nous pouvons faire apparaître $\delta_0$ et remplacer une contribution par une simple évaluation en un point. Dans le cas que nous considérons, étant donné la relation entre les solutions fondamentales tronquées de Stokes-Fujita, nous allons obtenir $H^R_{ij}$.\\
+Nous allons ainsi prendre :
+\begin{align*}
+    & u(y) = u_j(y) = \mathscr{S}_{\cdot j}^R(x-y) \\
+    & \pi(y) = \pi_j(y) = q_j^R(x-y)
+\end{align*}
+Avec $u_j$ la $j$-ième colonne de $\mathscr{S}^R$.\\
+\\
+Nous avons choisi $u$ et $\pi$ de sorte que : 
+$$\nabla \cdot T(u,\pi) = \Delta \mathscr{S}_{ij}^R(x-y) - \partial_{x_i} q_j^R(x-y) = H^R_{ij}(x-y)$$ 
+Etant donné que la fonction de Green $(\mathscr{S}^R,q^R)$ admet une singularité en $x=y$, nous allons considérer $\Omega$ moins un voisinage de $x$. \\
+Supposons que $(v,p)$ satisfasse l'équation $f = \Delta v - \nabla p $ et considérons $\Omega_{\epsilon} = \Omega \backslash B(x,\epsilon)$ :
+\begin{align*}
+    \int_{\Omega_{\epsilon}} f(y)\cdot u_j(x - y) - v_i(y) H_{ij}^R(x-y) \ dy = \int_{\partial \Omega}& \Big( u_j(x-y) \cdot T(v,p)(y) - v(y)\cdot T(u_j,\pi)(x-y) \Big)\cdot n \ d\sigma(y) \\
+    &+ \int_{\partial B(x,\epsilon)} \Big( u_j(x-y) \cdot T(v,p)(y) - v(y)\cdot T(u_j,\pi)(x-y) \Big)\cdot n \ d\sigma(y)
+\end{align*}
+D'après Galdi \cite{Galdi}, nous avons d'une part :
+\begin{align}
+    &\int_{\Omega_{\epsilon}} f(y) \cdot u_j(x-y) \ dy \xrightarrow[\epsilon \to 0]{} \int_{\Omega} f(y) \cdot u_j(x-y) \ dy \label{int_volume_1} \\ 
+    &\int_{\Omega_{\epsilon}} v_i(y) H_{ij}^R(x-y) \ dy \xrightarrow[\epsilon \to 0]{} \int_{\Omega} v_i(y)H_{ij}^R(x-y) \ dy \label{int_volume_2}\\ 
+    &\int_{\partial B(x,\epsilon)} u_j(x-y) \cdot T(v,p)(y) \cdot n \ d\sigma(y) \xrightarrow[\epsilon \to 0]{} 0 \label{int_frontiere}
+\end{align}
+Et d'une autre part :
+$$\int_{\partial B(x,\epsilon)} v(y) \cdot T(u_j,\pi)(x-y) \cdot n \ d\sigma(y) \xrightarrow[\epsilon \to 0]{} - v_j(x) $$
+En rassemblant tous les termes et en prenant la limite nous nous retrouvons avec :
+\begin{align*}
+    v_j(x) &= \int_{\Omega} f(y)\cdot u_j(x-y) - v_i(y)H_{ij}^R(x-y) \ dy - \int_{\partial \Omega} \Big( u_j(x-y) \cdot T(v,p)(y) - v(y)\cdot T(u_j,\pi)(x-y) \Big)\cdot n \ d\sigma(y) \\
+    &= \int_{\Omega}  f_i(y)\mathscr{S}_{ij}^R(x-y) \ dy - \int_{\Omega} v_i(y)H_{ij}^R(x-y)\ dy \\
+    & \quad -\int_{\partial \Omega} \Big( \mathscr{S}_{ij}^R(x-y) T_{ik}(v,p)(y) - v_{j}(y)T_{ik}(u_j,\pi)(x-y) \Big)\cdot n_k \ d\sigma(y)
+\end{align*}
+Cette relation constitue une formule de représentation de $v_j$, $j \in \{ 0, \cdots, d \}$ tenant compte d'un potentiel volumique (celui calculé pour le domaine entier par convolution) et d'un terme de bord agissant comme une "rectification" des contributions au bord du domaine prenant en compte les conditions aux limites imposées dans le problème.\\
+Nous pouvons généraliser cette formule pour un multi-indice $\alpha \in \N^d$, nous obtenons :
+\begin{align*}
+    \partial^{\alpha}v_j(x) = \int_{\Omega}& \mathscr{S}_{ij}^R(x-y)\partial^{\alpha}f_i(y) \ dy - \int_{\Omega} H_{ij}^R(x-y)\partial^{\alpha}v_i(y) \ dy\\
+    & - \int_{\partial \Omega} \Big( \mathscr{S}_{ij}^R(x-y)T_{ik}(\partial^{\alpha}v,\partial^{\alpha}p)(y) - \partial^{\alpha}v_i(y) T_{ik}(u_j,q_j^R)(x-y) \Big)\cdot n_k \ d\sigma(y) \label{representation_v}
+\end{align*}
+Nous ne détaillons pas la démarche pour la pression, puisqu'ici nous nous intéressons au comportement asymptotique de la vitesse, mais toutefois la formule pour la pression est présentée dans \cite{Galdi}.
+
+
+\subsection{Résultat asymptotique en domaine extérieur}
+
+Maintenant que nous avons développé une formule de représentation pour le champ de vitesse, nous allons introduire un résultat sur le comportement asymptotique de $v$.
+\begin{theorembox}
+\begin{theorem} \textbf{Comportement asymptotique en domaine extérieur :}\\
+    Soit $\Omega \subset \R^d$ un domaine extérieur à frontière $C^2$ et soit $v \in W^{2,q}_{loc}(\overline{\Omega})$, $q \in ]1,+\infty[$, satisfaisant la formulation variationnelle associée à l'équation de Stokes et à divergence nulle au sens des distributions, avec $f\in L^q(\Omega)$ à support compact.\\
+    \\
+    Si l'une des propriétés est vérifiée lorsque $|x| \longrightarrow +\infty$ :
+    \begin{enumerate}
+        \item $|v(x)| = o(|x|)$
+        \item $\displaystyle \int_{|x| \leq r} \frac{|v(x)|^t}{\big(1 + |x|\big)^{n+t}} \ dx = o(\ln r) $, pour $t \in ]1,+\infty[$
+    \end{enumerate}
+    
+    \vspace{1em}
+
+    Alors il existe un vecteur $v_{\infty}$ tel que pour presque tout $x \in \Omega$,
+    \begin{equation}
+        \begin{split}
+            v_j(x) &= v_{\infty j} + \int_{\Omega} \mathscr{S}_{ij}(x-y)f_i(y) \ dy - \int_{\partial \Omega} \Big( \mathscr{S}_{ij}(x-y) T_{ik}(v,p)(y) - v_i(y)T_{ik}(u_j,q_j)(x-y) \Big) n_k(y) \ d\sigma(y) \label{asymptotique_vitesse} \\
+            &:= v_{\infty j} + v_j^{(1)}(x)
+        \end{split}
+    \end{equation}
+
+     De plus, lorsque $|x| \longrightarrow +\infty$, $v^{(1)}$ est infiniment dérivable et nous avons les représentation asymptotiques suivante :
+    \begin{align}
+        v_j^{(1)}(x) &= \mathcal{T}_i\mathscr{S}_{ij}(x) + \sigma_j(x) \label{estimation1}
+    \end{align}
+    Où $ \displaystyle \mathcal{T}_i = - \int_{\partial \Omega} T_{ik}(v,p)n_k \ d\sigma + \int_{\Omega} f_i \ dy $ \ et \ $\partial^{\alpha}\sigma(x) = \mathcal{O}\Big(|x|^{1-d-|\alpha|}\Big) $.
+
+\end{theorem}
+\end{theorembox}
+Si nous nous intéressons uniquement au comportement asymptotique d'une solution forte $v$ du problème de Stokes, alors les hypothèses du théorème sont automatiquement vérifiées puisque toute solution forte est une solution à divergence nulle de la formulation variationnelle.
+Les conditions d'application du théorème montrent en réalité qu'il n'est pas forcément nécessaire de parler de solution forte pour utiliser ces caractérisations asymptotiques. Dans Galdi \cite{Galdi}, l'un des résultats montre que cette formule de représentation peut être satisfaite par une solution de la formulation variationnelle qui serait dans $W^{2,q}$ sur un domaine $C^2$. 
+Toutefois, au même titre que pour le problème volumique, nous ne nous intéressons pas à des solutions faibles du problème de Stokes pour étudier le comportement asymptotique, nous regardons le comportement asymptotique de solutions classiques.
+\begin{proof}
+    Nous commençons la démonstration en montrant que si $v_j$ vérifie la représentation (\ref{asymptotique_vitesse}) alors l'estimation asymptotique (\ref{estimation1}) a bien lieu. Commençons par écrire $v^{(1)}_j$ :
+    $$ v^{(1)}_j(x) = \int_{\Omega} \mathscr{S}_{ij}(x-y)f_i(y) \ dy - \int_{\partial \Omega} \Big( \mathscr{S}_{ij}(x-y) T_{ik}(v,p)(y) - v_i(y)T_{ik}(u_j,q_j)(x-y) \Big) n_k(y) \ d\sigma(y) $$
+    Nous faisons apparaître le terme $\mathcal{T}_i \mathscr{S}_{ij}$ :
+    \begin{align*}
+        v_j^{(1)}(x) = \int_{\Omega} \mathscr{S}_{ij}(x)f_i(y) \ dy - &\int_{\partial \Omega} \mathscr{S}_{ij}(x)T_{ik}(v,p)(y)n_k(y) \ d\sigma(y) + \int_{\Omega} \Big( \mathscr{S}_{ij}(x-y) - \mathscr{S}_{ij}(x) \Big)f_i(y) \ dy  \\
+        + &\int_{\partial \Omega} v_i(y)T_{ik}(u_j,q_j)(x-y)n_k \ d\sigma(y) + \int_{\partial \Omega} \Big( \mathscr{S}_{ij}(x-y) - \mathscr{S}_{ij}(x) \Big)T_{ik}(v,p)(y)n_k \ d\sigma(y)
+    \end{align*}
+    Nous avons alors :
+    \begin{align*}
+        v_j^{(1)}(x) = \mathcal{T}_i\mathscr{S}_{ij}(x) + \int_{\Omega} \Big( \mathscr{S}_{ij}(x-y) - \mathscr{S}_{ij}(x) \Big)f_i(y) \ dy &+  \int_{\partial \Omega} \Big( \mathscr{S}_{ij}(x-y) - \mathscr{S}_{ij}(x) \Big)T_{ik}(v,p)(y)n_k \ d\sigma(y) \\
+        &+ \int_{\partial \Omega} v_i(y)T_{ik}(u_j,q_j)(x-y)n_k \ d\sigma(y)
+    \end{align*}
+    A partir de cette écriture, il nous suffit de montrer que chaque terme après $\mathcal{T}_i\mathscr{S}_{ij}$ vérifie l'estimation asymptotique.\\
+    Premièrement, nous rappelons que $T_{ik}(u_j,q_j)$ peut s'écrire sous la forme :
+    $$ T_{ik}(u_j,q_j) = \frac{1}{\big| \mathbb{S}^{d-1} \big|} \frac{(x_i - y_i)(x_k - y_k)(x_j - y_j)}{|x-y|^{d+2}} $$
+    Ce qui nous permet d'en déduire l'estimation suivante :
+    $$ |\partial^{\alpha}T_{ik}(u_j,q_j)(x-y)| = \mathcal{O}\big(|x|^{1-d-|\alpha|}\big) $$
+    Nous allons nous intéresser au terme $\mathscr{S}_{ij}(x-y) - \mathscr{S}_{ij}(x)$. Par le théorème des accroissements finis appliqué à $\partial^{\alpha} \mathscr{S}_{ij}$, il existe $\beta \in [0,1]$ tel que :
+    $$ \partial^{\alpha} (\mathscr{S}_{ij}(x-y) - \mathscr{S}_{ij}(x)) = -\nabla \partial^{\alpha} \mathscr{S}_{ij}(x - \beta y) \cdot y = -y_r \partial_{x_r} \partial^{\alpha}\mathscr{S}_{ij}(x-\beta y) $$
+    Soit :
+    $$\big|\partial^{\alpha}(\mathscr{S}_{ij}(x-y) - \mathscr{S}_{ij}(x))\big| = \big|y_r \partial_{x_r} \partial^{\alpha}\mathscr{S}_{ij}(x-\beta y)\big|$$
+    Et finalement, (d'après une estimation de $\mathscr{S}_{ij}$ dans \cite{Galdi}) :
+    $$\big|\partial^{\alpha}\big(\mathscr{S}_{ij}(x-y) - \mathscr{S}_{ij}(x)\big)\big| = \mathcal{O}\big(|x|^{1-d-|\alpha|}\big) $$
+    \\
+    Puisque $f$ est à support compact, dans $\Omega \backslash \text{supp}(f)$ $v$ est dérivable une infinité de fois, et ainsi $v^{(1)}$ l'est aussi sur $\Omega \backslash \text{supp}(f)$. \\
+    Et ainsi nous nous retrouvons avec l'estimation annoncée, 
+    $$ v^{(1)}_j(x) = \mathcal{T}_i\mathscr{S}_{ij}(x) + \mathcal{O}(|x|^{1 - d}) $$
+    \\
+    Maintenant, nous allons montrer la formule de représentation asymptotique (\ref{asymptotique_vitesse}). Nous choisissons $R>0$ de sorte que $\text{supp}(f) \subset B(x,R)$. \\
+    Ainsi, nous nous retrouvons avec l'égalité suivante, par la construction de $\mathscr{S}^R_{ij}$ :
+    $$ \int_{\Omega} \mathscr{S}^R_{ij}(x-y)f_i(y) \ dy = \int_{\Omega} \mathscr{S}_{ij}(x-y)f_i(y) \ dy $$
+    Pour $v$ choisi sous les conditions du théorème, $v$ satisfait la formule de représentation que nous avons établi sous des conditions de régularité plus fortes. Puisque $v$ satisfait la formule de représentation pour presque tout $x \in \Omega$, nous pouvons regrouper l'expression de $v^{(1)}$ déjà présente :
+    \begin{align*}
+        v_j(x) &= \int_{\Omega} \mathscr{S}_{ij}(x-y)f_i(y) \ dy - \int_{\Omega}H_{ij}^R(x-y)v_i(y) \ dy - \int_{\partial \Omega} \Big( \mathscr{S}_{ij}(x-y) T_{ik}(v,p)(y) - v_i(y)T_{ik}(u_j,q_j)(x-y)\Big)n_k \ dy \\
+        &= v^{(1)}_j(x) - \int_{\Omega} H_{ij}^R(x-y)v_i(y) \ dy := v^{(1)}_j(x) + v^{(2)}_j(x)
+    \end{align*}
+    Mais par le choix de $R$ que nous avons fait, $v - v^{(1)}$ est indépendant de $R$, et ainsi $v^{(2)}$ l'est également.\\
+    Nous allons montrer que : 
+    $$D^2 v^{(2)}(x) = -\int_{\Omega} D^2H^R(x-y)\cdot v(y) \ dx = 0, \quad \forall x \in \Omega$$
+    Pour cela, remarquons que $H_{ij}^R$ vérifie l'estimation suivante :
+    $$ \big|\partial^{\alpha} H_{ij}^R(x-y)\big| = \begin{cases}
+        \mathcal{O}\Big( \frac{\ln R}{R^{2 + |\alpha|}} \Big) \quad &\text{ si } d = 2 \\
+        \mathcal{O}\Big( R^{-d - |\alpha|} \Big) &\text{ si } d \geq 3
+    \end{cases} $$
+    Ainsi, pour une certaine constante $C > 0$, $D^2H_{ij}^R$ vérifie :
+    $$ \big|D^2 H_{ij}^R(x-y)\big| \leq C \begin{cases}
+        \frac{\ln R}{R^4} \quad &\text{ si } d = 2 \\
+        \frac{1}{R^{d + 2}} &\text{ si } d \geq 3
+    \end{cases} \quad := \eta_d(R) $$
+    De plus, nous avons $\text{supp}H_{ij}^R(x-y) = \Big\{ x \in \R^3 \ | \ \frac{R}{2} \leq |x - y| \leq R \Big\} := \Omega_R(x) $. Ces éléments nous permettent d'écrire :
+    $$ |D^2 v^{(2)}(x)| \leq \eta_d(R) \int_{\Omega_R(x)} |v(y)| \ dy $$
+    Sous les conditions du théorème, (1) ou (2), nous avons $\displaystyle \int_{\Omega_R(x)} |v(y)| \ dy \xrightarrow[R \to +\infty]{} 0$, et donc finalement :
+    $$ D^2v^{(2)} = 0 $$
+    Il existe alors une matrice $A$ à trace nulle et un vecteur $v_{\infty} \in \R^d$ tels que :
+    $$ v^{(2)}(x) = A \cdot x + x_{\infty} $$
+    Mais par l'une des conditions (1) ou (2) et en remarquant que $v^{(1)} = o\big(|x|\big)$ lorsque $|x| \to +\infty$, nous avons nécessairement $A = 0$. Ainsi $v^{(2)} = v_{\infty}$ et nous avons :
+    $$ v(x) = v_{\infty} + v^{(1)}(x) $$
+\end{proof}
+Ainsi, d'après le théorème, si $v$ est solution forte du problème de Stokes, alors $v$ satisfait la relation suivante, pour $|x| \longrightarrow + \infty$ dans $\R^d$ :
+$$ v_j(x) = v_{\infty}j + \mathcal{T}_i \mathscr{S}_{ij}(x) + \mathcal{O}\big(|x|^{1 - d}\big) $$
+En particulier, en dimension 2, sous ces hypothèses $v$ vérifie asymptotiquement :
+\begin{align*}
+    &v_j(x) = v_{\infty j} + \mathcal{T}_i \mathscr{S}_{ij}(x) + \mathcal{O}\big(|x|^{-1}\big) \\
+\end{align*}
+De façon similaire à l'équation de Poisson, le champ de vitesse du problème de Stokes est décrit asymptotiquement par le comportement du tenseur d'Oseen, pondéré par deux termes : la moyenne du terme source $f$ sur $\Omega$ et le flux du tenseur des contraintes $T$ à travers la surface $\partial \Omega$. Pour le paradoxe de Stokes tel que nous l'avons formulé, il n'y a pas de terme source, donc $f = 0$.
+Le seul coefficient devant tenseur d'Oseen est alors le flux du tenseur des contraintes à travers la surface $\partial \Omega$ :
+$$\mathcal{T}_i = - \int_{\partial \Omega} T(v,p)\cdot n \ d\sigma$$
+Remarquons qu'en dimension 3 le tenseur d'Oseen se comporte asymptotiquement en $\mathcal{O}\big(|x|^{-1}\big)$ :
+$$ \mathscr{S}_{ij}(x) = \frac{1}{8\pi}\bigg( \frac{\delta_{ij}}{|x|} + \frac{x_i x_j}{|x|^3} \bigg) = \frac{1}{8\pi} \bigg( \frac{\delta_{ij}|x|^3 + |x|x_i x_j}{|x|^4} \bigg) = \mathcal{O}\big( |x|^{-1} \big) $$
+Ainsi, asymptotiquement, $v_j$ se comporte comme dans le problème de Stokes, c'est à dire $v_j$ est asymptotiquement décroissante. Il resterait cependant intéressant d'étudier $v_{\infty}$, étant donné que ce dernier ne peut pas être choisi à priori.\\
+En dimension 2, le tenseur d'Oseen diverge : 
+$$\mathscr{S}_{ij}(x) = \frac{1}{4\pi}\bigg(-\delta_{ij}\ln |x| + \frac{x_i x_j}{|x|^2}\bigg) \xrightarrow[|x| \to +\infty]{} \infty$$
+La représentation asymptotique de la solution en dimension 2 donne alors un comportement asymptotique divergent :
+$$ v_j(x) = v_{\infty j} + \mathcal{T}_i \mathscr{S}_{ij}(x) + \mathcal{O}\big(|x|^{-1}\big) \xrightarrow[|x| \to +\infty]{} \infty $$
+Cela n'est évidemment pas conforme à la condition imposée à $v_j$ dans le problème de Stokes extérieur. Nous mettons alors en lumière cette contradiction : pour une solution du problème de Stokes à priori asymptotiquement nulle, l'étude du comportement asymptotique révèle qu'en l'absence d'hypothèses supplémentaires en dimension 2, la solution diverge.
+Nous pouvons interpréter cela comme une caractérisation asymptotique du paradoxe de Stokes mais, qui, contrairement à la formulation initiale du paradoxe peut être contournée en imposant $\mathcal{T}_i = 0$, c'est à dire que le flux du tenseur des contraintes doit être nul à travers la surface $\partial \Omega$ :
+$$ \int_{\partial \Omega} T(v,p)\cdot n \ d\sigma = 0 $$
+C'est à dire que la résultante des forces s'exerçant sur la paroi du cylindre devrait être nulle.

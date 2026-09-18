@@ -1,0 +1,136 @@
+% --------------------------------------------------
+% PACKAGES
+% --------------------------------------------------
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{microtype}  
+\usepackage[most]{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[backend=bibtex, style=numeric, sorting=none]{biblatex}
+\usepackage{mathrsfs}
+\usepackage{stmaryrd}
+
+\addbibresource{bibliographie.bib}
+
+\hypersetup{hidelinks}
+
+\geometry{margin=2cm}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\nouppercase{\leftmark}}
+\fancyhead[R]{\thepage}
+
+% --------------------------------------------------
+% NIVEAUX DE GRIS (du plus foncé au plus clair)
+% --------------------------------------------------
+\definecolor{theoremgray}{gray}{0.25}
+\definecolor{propositiongray}{gray}{0.40}
+\definecolor{lemmagray}{gray}{0.50}
+\definecolor{definitiongray}{gray}{0.60}
+\definecolor{examplegray}{gray}{0.75}
+\definecolor{remarkgray}{gray}{0.85}
+
+% --------------------------------------------------
+% TITRES
+% --------------------------------------------------
+\titleformat{\section}
+  {\bfseries\large}
+  {\thesection}
+  {1em}
+  {}
+
+\titleformat{\subsection}
+  {\bfseries}
+  {\thesubsection}
+  {1em}
+  {}
+
+% --------------------------------------------------
+% NUMEROTATION
+% --------------------------------------------------
+\newtheoremstyle{coursstyle}
+  {6pt}   % espace au-dessus
+  {6pt}   % espace en-dessous
+  {\normalfont} % corps NON italique
+  {}      % indent
+  {\sffamily\bfseries} % titre en sans serif gras
+  {.}     % ponctuation
+  {0.5em} % espace après titre
+  {}
+
+\theoremstyle{coursstyle}
+
+\numberwithin{equation}{section}
+
+\newtheorem{theorem}{Théorème}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemme}
+\newtheorem{corollary}[theorem]{Corollaire}
+\newtheorem{definition}[theorem]{Définition}
+\newtheorem{example}[theorem]{Exemple}
+\newtheorem*{remark}{Remarque}
+
+% --------------------------------------------------
+% STYLE BOITE GENERIQUE
+% --------------------------------------------------
+\tcbset{
+  enhanced,
+  breakable,
+  colback=white,
+  frame hidden,
+  boxrule=0pt,
+  left=6pt,
+  right=6pt,
+  top=4pt,
+  bottom=4pt
+}
+
+% --------------------------------------------------
+% ENVIRONNEMENTS AVEC GRIS DIFFERENTS
+% --------------------------------------------------
+
+\newenvironment{theorembox}
+  {\begin{tcolorbox}[borderline west={4pt}{0pt}{theoremgray}]}
+  {\end{tcolorbox}}
+
+\newenvironment{propositionbox}
+  {\begin{tcolorbox}[borderline west={4pt}{0pt}{propositiongray}]}
+  {\end{tcolorbox}}
+
+\newenvironment{lemmabox}
+  {\begin{tcolorbox}[borderline west={4pt}{0pt}{lemmagray}]}
+  {\end{tcolorbox}}
+
+\newenvironment{definitionbox}
+  {\begin{tcolorbox}[borderline west={4pt}{0pt}{definitiongray}]}
+  {\end{tcolorbox}}
+
+\newenvironment{examplebox}
+  {\begin{tcolorbox}[borderline west={4pt}{0pt}{examplegray}]}
+  {\end{tcolorbox}}
+
+\newenvironment{remarkbox}
+  {\begin{tcolorbox}[borderline west={4pt}{0pt}{remarkgray}]}
+  {\end{tcolorbox}}
+
+% --------------------------------------------------
+% PREUVE
+% --------------------------------------------------
+\renewcommand{\qedsymbol}{$\square$}
+
+% --------------------------------------------------
+% COMMANDES UTILES
+% --------------------------------------------------
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\PP}{\mathbb{P}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\1}{\mathbf{1}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\s}{\mathbb{S}}

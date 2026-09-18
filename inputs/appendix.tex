@@ -1,0 +1,249 @@
+\appendix{}
+\chapter{Appendice}
+
+% \begin{propositionbox}
+% \begin{proposition}
+%     Une fonction harmonique asymptotiquement nulle dans $\R^3$ est identiquement nulle dans $\R^3$
+% \end{proposition}
+% \end{propositionbox}
+
+% \begin{proof}
+%     Nous reformulons cet énoncé sous la forme :
+%     $$\begin{cases}
+%         \Delta u = 0 \quad \text{ dans } \R^3 \\
+%         u \xrightarrow[|x| \to +\infty]{} 0
+%     \end{cases} \quad \Rightarrow \quad u = 0 $$
+
+%     Pour deux fonctions test $\phi, \ \psi$ et un volume contrôle $V \subset \R^3$ nous utilisons la formule de Green sous la forme suivante :
+%     $$ \int_V \Delta \phi \psi - \phi \Delta \psi \ dx = \int_{\partial V} \partial_n \phi \psi - \phi \partial_n \psi \ d\sigma $$
+
+%     Choisissons $ \displaystyle \phi = \frac{1}{|x - x'|}$ et $\psi = u$.
+
+%     Nous remarquons que $\Delta \phi = -4\pi \delta(x - x') $ en utilisant l'expression de la fonction de Green dans $\R^3$. Puisque $u$ est harmonique, $\Delta \psi = \Delta u = 0$
+
+%     Nous nous retrouvons avec :
+%     $$ \int_{V} - 4 \pi u(x) \delta(x - x') \ dx = \int_{\partial V} u \frac{x - x'}{|x - x'|^2}\cdot n - \nabla u \cdot n \frac{1}{|x - x'|} \ d\sigma $$
+
+%     Mais les termes de bord tendent vers 0 lorsque $|x| \longrightarrow +\infty$.
+%     Donc :
+%     $$ -4\pi u(x') = 0, \quad \forall x' \in \R^3 $$
+%     Et finalement, $u = 0$
+
+% \end{proof}
+
+\section{Equations de Navier-Stokes et adimensionnement}
+
+Dans le cadre de ce sujet, nous avons été amenés à évoquer les équations de Navier-Stokes ainsi que la façon dont à partir de celles-ci nous retrouvons l'équation de Stokes. Nous allons justifier, par des outils de mécanique des fluides la dérivation 
+des équations de Navier-Stokes puis nous parlerons d'adimensionnement afin d'introduire les équations de Stokes. Cela nous permettra de voir la différence de nature profonde entre ces deux modèles, l'un étant issu d'une dérivation rigoureuse des équations du mouvement 
+par les outils de mécanique des milieux continus, l'autre étant issu d'un régime d'approximation permettant d'éliminer les termes non-linéaires liés à la turbulence et aux effets d'inertie. Nous allons proposer une dérivation formelle en introduisant quelques briques élémentaires de mécanique des milieux continus, sans forcément parler de régularité sur les applications considérées. \\
+Le résultat fondamental sur lequel repose la dérivation des équations de la mécanique des milieux continus est le théorème de transport de Reynolds, qui permet d'exprimer la dérivée matérielle d'une intégrale dont le domaine varie au cours du temps. Nous pouvons interpréter ce théorème comme une généralisation 
+sur des domaines de $\R^3$ du théorème de dérivation de Leibniz (donnant une expression pour la dérivée d'une intégrale dont l'intégrande et les bornes dépendant d'un paramètre, en dimension 1).
+L'application de ce théorème à un bilan de forces ou d'énergie fournit immédiatement la forme des équations de base de la mécanique des fluides (conservation de la masse, du mouvement et de l'énergie).
+Commençons par rappeler la définition de dérivée matérielle :
+\begin{definitionbox}
+    \begin{definition}
+        \textbf{Dérivée matérielle :} \\
+        Nous appelons dérivée matérielle ou particulaire d'une fonction $k : \Omega \times \R_+ \longrightarrow \R^d$ attachée à une particule de fluide la quantité :
+        $$ \frac{D}{Dt}k = \partial_t k + \big(u \cdot \nabla\big)k = \partial_t k + \nabla k \cdot u$$
+    \end{definition}
+\end{definitionbox}
+Une justification de cette définition provient du fait qu'avec description eulérienne du fluide, la variable d'espace $x$ dépend du temps et de sa coordonnée initiale $X$ (coordonnée lagrangienne, ne définissant une particule qu'à partir de son instant initial).
+Ainsi par application directe de la règle de la chaîne, la dérivée totale en temps d'une quantité $k$ s'écrit comme deux contributions, obtenue par dérivation d'une composée. Cela explique donc l'apparition de la vitesse $u$ liée à une particule. \\
+Considérons un domaine borné $\Omega$ dépendant du temps, nous allons maintenant introduire le théorème de transport de Reynolds qui nous servira de socle pour la suite :
+\begin{theorembox}
+    \begin{theorem}
+        \textbf{Transport de Reynolds :}
+        \begin{align*}
+            \frac{d}{dt} \int_{\Omega(t)} k(x,t) \ dx &= \int_{\Omega(t)} \frac{D}{Dt}k(x,t) + k(x,t)\text{div}(u)(x,t) \ dx \\
+            &= \int_{\Omega(t)} \partial_t k(x,t) + \text{div}(ku)(x,t) \ dx
+        \end{align*}
+    \end{theorem}
+\end{theorembox}
+A partir de ce théorème nous allons directement pouvoir établir la forme de l'équation de conservation de la masse. Ce principe s'énonce : la masse d'un système que l'on suit au cours du temps reste constante. 
+Soit $\omega(t) \subset \Omega(t)$ sous-domaine, cela se traduit en termes mathématiques par :
+\begin{align*}
+    \frac{d}{dt} \int_{\omega(t)} \rho(x,t) \ dx &= \int_{\omega(t)} \frac{D}{Dt}\rho(x,t) + \rho(x,t)\text{div}(u)(x,t) \ dx \\
+    &= \int_{\omega(t)} \partial_t \rho(x,t) + \text{div}(\rho u)(x,t) \ dx = 0
+\end{align*}
+Cela est vrai pour tout $\omega(t) \subset \Omega(t)$, nous en déduisons que l'équation suivante est vérifiée :
+$$ \partial_t \rho(x,t) + \text{div}(\rho u)(x,t) = 0 $$
+Nous obtenons alors l'équation de conservation de la masse.
+Appliquons le même raisonnement au principe fondamental de la dynamique qui s'énonce : la dérivée de la quantité de mouvement est égale à la résultante des forces volumiques et surfaciques s'exerçant sur le système.
+\begin{align*}
+    \frac{d}{dt} \int_{\omega(t)} \rho u \ dx &= \int_{\omega(t)} \rho f \ dx + \int_{\partial \omega(t)} F(n) \ ds
+\end{align*}
+Nous allons directement appliquer le théorème de transport au premier terme puis utiliser le théorème de Cauchy pour exprimer les forces surfaciques $F(n)$ sous forme du tenseur des contraintes appliqué en la normale : $F(n) = \sigma \cdot n$. Le théorème de transport et la conservation de la masse donnent :
+$$ \frac{d}{dt} \int_{\omega(t)} \rho u \ dx = \int_{\omega(t)} \rho \frac{D}{Dt}u \ dx $$
+Le principe fondamental de la dynamique se réecrit donc :
+$$ \int_{\omega(t)} \rho \Big( \frac{D}{Dt}u - f \Big) \ dx = \int_{\partial \omega(t)} F(n) \ ds $$
+Nous pouvons alors rappeler le théorème de Cauchy :
+\begin{theorembox}
+    \begin{theorem}
+        \textbf{Cauchy :}\\
+        Soit $b$ un champ de vecteurs borné défini dans $\Omega$ et $\alpha(M,n)$ une application dépendant du point courant $M$ et d'un vecteur unitaire $n$ telle que pour $n$ fixé $M \mapsto \alpha(M,n)$ est continue.
+        Si la loi de conservation suivante a lieu :
+        $$ \int_{\omega} b \ dx = \int_{\partial \omega} \alpha(n) \ ds $$
+        Alors pour tout $M \in \Omega$ il existe une matrice $\sigma(M)$ telle que :
+        $$ \alpha(M,n) = \sigma(M)\cdot n $$
+    \end{theorem}
+\end{theorembox}
+Par application directe du théorème de Cauchy, $F(n) = \sigma \cdot n $.
+Cela nous permet d'obtenir une expression de la forme :
+$$ \int_{\omega(t)} \rho \Big( \frac{D}{Dt}u - f \Big) \ dx = \int_{\partial \omega(t)} \sigma \cdot n \ ds = \int_{\omega(t)} \text{div}(\sigma) \ dx $$
+Cela est vérifié pour tout sous-domaine $\omega(t) \subset \Omega(t)$, alors :
+$$ \rho \frac{D}{Dt} u = \rho\big( \partial_t u + (u \cdot \nabla)u \big)  = \rho f + \text{div}(\sigma) $$
+Nous allons désormais donner une caractérisation de la matrice $\sigma$ par le théorème de Rivlin-Eriksen. Notons $\mathbb{\varepsilon}(u) = \frac{1}{2}(\nabla u + \nabla u^{\top}) $ le tenseur de vitesse des déformations.
+\begin{theorembox}
+    \begin{theorem}
+        \textbf{Rivlin-Ericksen :} \\
+        Le tenseur $\sigma$ est donné par le polynôme suivant :
+        $$ \sigma = f_0 \mathbb{I} + f_1 \mathbb{\varepsilon} + f_2\mathbb{\varepsilon}^2 $$
+        Où $f_0, \ f_1$ et $f_2$ sont des fonctions scalaires ne dépendants que des invariants principaux de $\mathbb{\varepsilon}$, correspondants aux coefficients du polynôme caractéristique de $\mathbb{\varepsilon}$ :
+        $$ \chi^3 - \text{Tr}(\varepsilon)\chi^2 + \text{Tr}(Cof \varepsilon)\chi - \text{det}\varepsilon = 0 $$
+        Avec $Cof \varepsilon$ matrice des cofacteurs de $\varepsilon$.
+    \end{theorem}
+\end{theorembox}
+Ainsi, dans le cas particulier des fluides newtoniens ($\sigma$ est affine en fonction de $\varepsilon$), le tenseur des contraintes s'écrit :
+$$\sigma = \big(- p + \lambda \text{Tr}\varepsilon\big)\mathbb{I} + 2\mu \varepsilon = \big(- p + \lambda \text{div}(u) \big)\mathbb{I} + 2\mu \varepsilon  $$
+Avec $p$ la pression, $\lambda$ la seconde viscosité et $\mu$ le coefficient de viscosité dynamique.
+En calculant la divergence de $\sigma$ nous obtenons :
+$$ \text{div}(\sigma) = \mu \Delta u - \nabla p + (\lambda + \mu)\nabla \text{div}(u) $$
+Ce qui, une fois injecté dans l'expression de l'équation de conservation du mouvement, donne les équations de Navier-Stokes pour un fluide newtonien :
+$$\begin{cases}
+    &\rho \big(\partial_t u + (u \cdot \nabla) u \big) = \rho f - \nabla p + \mu \Delta u + (\lambda + \mu)\nabla \text{div}(u) \\
+    &\partial_t \rho + \text{div}(\rho u) = 0
+\end{cases}$$
+Si nous imposons la condition d'incompressibilité $\text{div}(u) = 0$, alors les équations de Navier-Stokes incompressibles s'écrivent :
+$$ \begin{cases}
+    &\rho \big(\partial_t u + (u \cdot \nabla) u \big) = \rho f - \nabla p + \mu \Delta u \\
+    &\partial_t \rho + \text{div}(\rho u) = 0 \\
+    &\text{div}(u) = 0
+\end{cases} $$
+Remarquons que si le fluide est homogène ($\rho = C^{te}$), alors l'équation de conservation de la masse devient redondante et peut être simplement remplacée par la condition d'incompressibilité.
+Ce sont ces équations qui constituent la description de base de la mécanique des fluides, ces équations gouvernent le mouvement d'un fluide sans hypothèse particulière. Cette description est générale et offre 
+la possibilité de décrire le comportement du fluide peu importe le régime d'écoulement. Comme évoqué en introduction, ces équations présentent une non-linéarité qui les rendent en pratique complexes à manipuler et étudier. \\
+Avant de parler des équations de Stokes, nous allons adimensionner le système de Navier-Stokes et ensuite discuter d'un régime permettant d'éliminer ces termes non-linéaires. \\
+Pour adimensionner le système, nous allons choisir trois grandeurs de références : longueur, temps et vitesse. De cette façon, en considérant le ratio entre grandeur et grandeur de référence, nous pourrons retrouver un système d'équations sans unités et dépendant de variables sans dimensions.
+Choisissons $L$ une longueur et $U$ une vitesse. Nous définissons les quantités sans dimension :
+\begin{align*}
+    &\hat{x}_i = \frac{x_i}{L} \\
+    &\hat{u}_i = \frac{u_i}{U}
+\end{align*}
+A partir de ces deux quantités, nous pouvons définir un temps de référence, $T = \frac{L}{U}$. Nous posons alors $\hat{t} = \frac{t}{T} $.
+Nous pouvons exprimer les différentes dérivées en fonction de ces grandeurs de références et des dérivées suivant les nouvelles variables adimensionnées :
+\begin{align*}
+    &\partial_t = \frac{1}{T} \partial_{\hat{t}} = \frac{U}{L}\partial_{\hat{t}} \\
+    &\partial_{x_i}^k = \frac{1}{L^k}\partial_{\hat{x}_i}^k
+\end{align*}
+Et ainsi les dérivées appliquées à la vitesse adimensionnée :
+\begin{align*}
+    &\partial_t u = \frac{U^2}{L}\partial_{\hat{t}}\hat{u} \\
+    &\Delta u = \frac{U}{L^2} \hat{\Delta} \hat{u} \\
+    &(u \cdot \nabla )u = \frac{U^2}{L}(\hat{u}\cdot \hat{\nabla})\hat{u}
+\end{align*}
+Plaçons nous dans le cas d'un fluide homogène incompressible, alors en posant $\nu := \frac{\mu}{\rho}$, nous écrivons les équations de Navier-Stokes sous la forme :
+$$\begin{cases}
+    \displaystyle \frac{U^2}{L}\big( \partial_{\hat{t}}\hat{u} + (\hat{u}\cdot \hat{\nabla})\hat{u} \big) = \nu \frac{U}{L^2}\hat{\Delta}\hat{u} -\frac{U^2}{L} \hat{\nabla} \hat{p} \\
+    \widehat{\text{div}}(\hat{u}) = 0
+\end{cases}$$
+Nous définissons ainsi le nombre de Reynolds $Re := \frac{UL}{\nu}$, sans dimension. Et ainsi nous pouvons réecrire le système sous la forme adimensionnée en faisant intervenir le nombre de Reynolds :
+$$\begin{cases}
+    &\displaystyle \partial_t u + (u\cdot \nabla)u = \frac{1}{Re}\Delta u - \nabla p \\
+    &\text{div}(u) = 0
+\end{cases}$$
+Avec cette forme (équivalente aux équations précédentes) nous pouvons discuter de l'influence du nombre de Reynolds sur la nature de l'écoulement. En fonction du nombre de Reynolds, les termes d'inertie peuvent devenir prépondérant comme négligeables.
+En particulier, pour un petit nombre de Reynolds, les effets diffusifs (viscosité) associés au laplacien vont dominer les effets d'inertie associés au terme non-linéaire.
+Plus précisément, nous pouvons donner une interprétation plus intuitive du nombre de Reynolds. Regardons le comportement de chaque terme suivant les grandeurs de référence :
+\begin{align*}
+    &(u \cdot \nabla )u \sim \frac{U^2}{L} \\
+    &\nu \Delta u \sim \nu \frac{U}{L^2}
+\end{align*}
+Ainsi, nous pouvons voir le rapport $Re = \frac{UL}{\nu}$ comme étant le rapport des grandeurs entre terme non-linéaire et terme diffusif. De façon informelle, voyons ce nombre comme :
+$$ Re \sim \frac{\text{non-linéaire}}{\text{viscosité}} $$
+Et donc lorsque les effets de viscosité sont prépondérant, le nombre de Reynolds est petit, et inversement $\frac{1}{Re}$ devient grand. Ce qui peut nous mener à négliger les effets non-linéaires des équations de Navier-Stokes, pour en arriver aux équations de Stokes (homogènes incompressibles), vues comme linéarisation de Navier-Stokes :
+$$\begin{cases}
+    &\nu \Delta u - \nabla p = f \\
+    &\text{div}(u) = 0
+\end{cases}$$
+Ces équations correspondent alors à une description approchée d'écoulements où les effets de viscosité dominent. Contrairement au système de Navier-Stokes, ces équations n'offrent pas une description permanent du fluide. Le modèle de Stokes nécessite des conditions sur l'écoulement (intuitivement : faible vitesse et forte viscosité) pour donner une description valide du comportement de ce dernier.
+Nous avons pu, en particulier dans le chapitre dédié à la dérivation du paradoxe de Stokes, présenter les conditions de validité du modèle, sous forme d'une inégalité avec d'un côté entre vitesse d'interface $v_0$ et vorticité $\omega$ et de l'autre côté un rapport entre la viscosité cinématique $\nu$ et le diamètre de l'objet considéré :
+$$ \max\Big(|v_0|,|\omega|\delta(\mathscr{B})\Big) \ll \frac{\nu}{\delta(\mathscr{B})} $$
+
+
+
+
+
+\section{Fonction de Courant}
+
+Nous allons justifier ici l'utilisation d'une fonction de courant $\psi$ telle que $u = \nabla^{\perp}\psi$ lorsque nous considérons des écoulements planaires.
+
+\begin{lemmabox}
+\begin{lemma}
+    Soit $\omega \subset \R^2$ un ouvert convexe, alors :
+    $$ u\in C^1(\omega,\R^2), \ \partial_{x_1}u_1 + \partial_{x_2}u_2 = 0 \ \Leftrightarrow \exists \psi \in C^2(\omega,\R), \ u_1 = \partial_{x_2}f, \ u_2 = -\partial_{x_1}f $$
+\end{lemma}
+\end{lemmabox}
+
+\begin{proof}
+
+    \vspace{1em}
+
+    Nous allons utiliser le lemme de Poincaré en dimension 3, qui stipule qu'une fonction à rotationnel nul dérive d'un potentiel.
+    
+    \vspace{1em}
+    
+    Dans un premier temps, nous allons définir une fonction à l'aide de la propriété vérifiée par $u$ de sorte que son rotationnel soit nul.
+
+    Nous définissons $a$ de sorte que :
+    $$ a = \begin{pmatrix}
+        -u_2 \\
+        u_1 \\
+        0
+    \end{pmatrix} $$
+
+    En 2D pour le calcul du rotationnel nous procédons de cette façon :
+    $$\text{Curl}(a) = \begin{pmatrix}
+        \partial_{x_1} \\
+        \partial_{x_2} \\
+        \partial_{x_3}
+    \end{pmatrix} \times 
+    \begin{pmatrix}
+        a_1 \\
+        a_2 \\
+        0
+    \end{pmatrix} = \begin{pmatrix}
+        -\partial_{x_3}a_2 \\
+        \partial_{x_3}a_1 \\
+        \partial_{x_1} a_2 - \partial_{x_2} a_1
+    \end{pmatrix} = 
+    \begin{pmatrix}
+        0 \\
+        0 \\
+        \partial_{x_1} u_1 + \partial_{x_2} u_2
+    \end{pmatrix} = 0_{\R^3} $$
+
+    Par le lemme de Poincaré, il existe une fonction $\psi \in C^2(\omega,\R)$ telle que :
+    $$ a = \nabla \psi = \begin{pmatrix}
+        - u_2 \\
+        u_1 \\
+        0
+    \end{pmatrix} $$   
+    Autrement dit, 
+    $$ \begin{pmatrix}
+        \partial_{x_1} \psi \\
+        \partial_{x_2} \psi 
+    \end{pmatrix} =
+    \begin{pmatrix}
+        -u_2 \\
+        u_1
+    \end{pmatrix} \Leftrightarrow 
+    u = \nabla^{\perp} \psi  $$
+
+    \vspace{1em}
+
+    Réciproquement, soit $\psi \in C^2(\omega,\R)$ et posons $u = \nabla^{\perp} \psi$.
+
+    Alors :
+    $$ \partial_{x_1} u_1 + \partial_{x_2} u_2 = \partial_{x_1 x_2} \psi - \partial_{x_2 x_1} \psi = 0 $$
+
+\end{proof}

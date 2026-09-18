@@ -1,0 +1,598 @@
+\chapter{Espaces fonctionnnels et propriétés}
+
+Dans le chapitre suivant sur le comportement asymptotique, nous allons être amenés à utiliser certains espaces fonctionnels particuliers, adaptés à l'étude de l'hydrodynamique et plus largement aux équations aux dérivées partielles elliptiques.
+Les outils de base adaptés à l'étude des équations aux dérivées partielles sont les espaces de Sobolev $W^{n,p}$, nous allons faire quelques rappels concernant ces derniers et introduire un nouveau type, les espaces de Sobolev homogènes $D^{n,p}$, particulièrements utiles pour
+des EDP elliptiques.
+Nous parlerons également des espaces de Hölder, utilisés dans la théorie liée aux solutions fondamentales, et plus particulièrement en théorie des potentiels, et dont les définitions nous seront utiles pour justifier la régularité sur les convolutions.
+
+
+\section{Espaces de Sobolev homogènes}
+
+Soit $\Omega \subset \R^d$. Rappelons la définition classique des espaces de Sobolev :
+$$ W^{n,p}(\Omega) = \big\{ u \in L^1_{loc}(\Omega) \ \big| \ \partial^{\alpha}u \in L^p(\Omega), |\alpha| \leq n \big\} $$
+Où $\alpha \in \N^d$, $|\alpha| = \alpha_1 + \cdots + \alpha_d $ et $\displaystyle \partial^{\alpha} = \frac{\partial^{|\alpha|}}{\partial^{\alpha_1}\cdots \partial^{\alpha_d}}$.\\
+Nous munissons $W^{n,p}(\Omega)$ de la norme suivante :
+$$ \| u \|_{W^{n,p}(\Omega)} = \Bigg( \sum_{|\alpha| \leq n} \int_{\Omega} \big|\partial^{\alpha} u \big|^p \Bigg)^{\frac{1}{p}} = \Bigg( \sum_{|\alpha| \leq n} \| \partial^{\alpha}u \|_{L^p(\Omega)}^p \Bigg)^{\frac{1}{p}}  $$
+De cette manière, $W^{n,p}(\Omega)$ muni de cette norme est un espace de Banach. En particulier, dans le cas $p = 2$, $L^2(\Omega)$ est un espace de Hilbert et ainsi $W^{n,2}(\Omega)$ en est également un.\\
+\\
+Nous allons maintenant introduire une variante de l'espace de Sobolev classique, dont la définition moins rigide permet de mieux s'adapter à certains problèmes d'hydrodynamique.
+De la même façon que $L^1_{loc}$, nous définissons $W^{n,p}_{loc}$ : 
+$$ W_{loc}^{n,p}(\Omega) = \big\{ u \in L^1_{loc}(\Omega) \ \big| \ \forall \Omega' \subset \Omega \text{ borné tel que } \overline{\Omega'} \subset \Omega, \ \partial^{\alpha}u \in L^p(\Omega'),\ |\alpha| \leq n \big\} $$
+$$ W_{loc}^{n,p}(\overline{\Omega}) = \big\{ u \in L^1_{loc}(\Omega) \ \big| \ \forall \Omega' \subset \Omega \text{ borné tel que } \Omega' \subset \Omega, \ \partial^{\alpha}u \in L^p(\Omega'),\ |\alpha| \leq n \big\} $$
+Avant d'introduire, l'espace homogène $D^{n,p}$, nous allons faire une brève remarque afin de motiver l'utilisation de ce dernier.\\
+Lorsque nous travaillons sur des problèmes de Cauchy posés sur des domaines non bornés, il peut arriver que la solution $u$ du problème n'appartienne à aucun des espaces $W^{n,p}$. En effet, les propriétés
+à l'infini diffèrent suivant l'ordre de dérivation et ainsi les propriétés d'intégrabilité. Voyons cela en pratique à travers l'exemple suivant \cite{Galdi} :\\
+Considérons le problème de Laplace posé sur un domaine extérieur de $\R^3$ avec condition asymptotique nulle.
+$$\begin{cases}
+    \Delta u = 0 \quad &\text{dans } \Omega = \R^3 \backslash B(0,1) \\
+    u(x) = 1 &\text{si } |x| = 1 \\
+    \underset{|x| \to +\infty}{\lim} u(x) = 0
+\end{cases}$$
+Une solution à ce problème est donné par $\displaystyle u(x) = \frac{1}{|x|} $.
+Remarquons que $u \in L^{r}(\Omega)$ pour $ 3 < r < +\infty$.
+\begin{align*}
+    \partial_{x_i}u(x) = -\frac{\partial_{x_i} |x|}{|x|^2} = -\frac{x_i}{|x|^3} \quad &\Rightarrow \quad \nabla u(x) = - \frac{x}{|x|^3} \\
+    \partial_{x_i x_j}^2u(x) = -\frac{\delta_{ij}}{|x|^3} + 3\frac{x_i x_j}{|x|^5} &\Rightarrow \quad D^2u(x) = 3 \frac{x \otimes x}{|x|^5} - \frac{\mathbb{I}}{|x|^3}
+\end{align*}
+Ainsi, $\nabla u \in L^p(\Omega)$ pour $ \frac{3}{2}< p < +\infty$ et $D^2u \in L^q(\Omega)$ pour $1 < q < +\infty$.\\
+Les dérivées successives n'appartiennent pas aux mêmes espaces, nous ne pouvons pas prendre $u$ dans l'un des espaces de Sobolev classiques.
+Un espace naturel à considérer serait alors l'espace homogène qui ne prend en compte que les dérivées d'ordre supérieur.\\
+Ainsi, nous définissons :
+$$ D^{n,p}(\Omega) = \big\{ u \in L_{loc}^1(\Omega) \ \big| \ \partial^{\alpha}u \in L^p(\Omega),\ |\alpha| = n \big\} $$
+En ce qui concerne la topologie de cet espace, nous allons procéder d'une façon originale. D'une part, nous pouvons accompagner la définition de l'espace de Sobolev homogène de la définition
+d'une semi-norme :
+$$ |u|_{n,p} = \Bigg( \sum_{|\alpha| = n} \int_{\Omega} |\partial^{\alpha} u|^p \Bigg)^\frac{1}{p} $$
+Cet objet n'est pas une norme puisque l'axiome de séparation n'est pas vérifié. En effet, dire que les dérivées d'ordre supérieur sont identiquement nulles
+n'implique pas nécessairement que $u$ soit identiquement nulle. \\
+A partir de la topologie fournie par la semi-norme $|\cdot|_{n,p}$, nous pouvons définir l'espace $D^{n,p}_0(\Omega)$ comme la fermeture de $C^{\infty}_c(\Omega)$ pour $|\cdot|_{n,p}$. Nous écrivons cela de la façon suivante :
+$$ D_0^{n,p}(\Omega) = \overline{C^{\infty}_c(\Omega)}^{|\cdot|_{n,p}} = \overline{\mathcal{D}(\Omega)}^{|\cdot|_{n,p}} $$
+Afin de construire un espace de Banach à partir de l'espace homogène que nous avons introduit, nous allons passer au quotient sur un espace de polynômes. \\
+Posons $\mathscr{P}_n$ l'ensemble des polynômes de degré au plus $n-1$ sur $\Omega$. Nous contruisons une relation d'équivalence entre les éléments de $D^{n,p}(\Omega)$, que nous notons $\mathcal{R}$.\\
+Nous dirons que $u \mathcal{R} v$ pour $u,v \in D^{n,p}(\Omega)$ lorsque $u = v + q$, pour un certain polynôme $q \in \mathscr{P}_n$.
+\begin{lemmabox}
+\begin{lemma}
+    $\mathcal{R}$ est une relation d'équivalence sur $D^{n,p}(\Omega)$.
+\end{lemma}
+\end{lemmabox}
+\begin{proof}
+    De manière classique, nous montrons que $\mathcal{R}$ est réflexive, symétrique et transitive.
+
+    \begin{enumerate}
+        \item Réflexivité :
+        
+        Puisque $u = u + 0_{\mathscr{P}_n}$, alors $u \mathcal{R} u$.
+
+        \item Symétrie :
+        
+        Si $u \mathcal{R} v$, alors il existe $q \in \mathscr{P}_n$ tel que $u = v + q$, donc $v = u - q$ et $-q \in \mathscr{P}_n$. Ainsi $v \mathcal{R} u$.
+
+        \item Transitivité :
+        
+        Si $u \mathcal{R} v$ et $v \mathcal{R} w$, alors $u = v + q_1$ et $v = w + q_2$, pour $q_1,q_2 \in \mathscr{P}_n$. Nous avons $v = u - q_1 = w + q_2$, donc $u = w + q_2 - q_1$ et $q_2 - q_1 \in \mathscr{P}_n$. Ainsi $u \mathcal{R}w$.
+    \end{enumerate}
+\end{proof}
+A l'aide de cette relation d'équivalence, nous allons passer au quotient et montrer que $D^{n,p}/\mathscr{P}_n$ muni de la semi-norme précédente $|\cdot|_{n,p}$ est un espace de Banach.
+Pour $u \in D^{n,p}(\Omega)$, nous posons la classe d'équivalence des éléments de $D^{n,p}(\Omega)$ égaux à un polynôme de $\mathscr{P}_n$ près :
+$$ [u]_n = \big\{ w \in D^{n,p}(\Omega) \ \big| \ w = u + q, \ q \in \mathscr{P}_n \big\} $$
+Remarquons que nous avons $\big|[u]_n\big|_{n,p} = |u|_{n,p}$, pour $u$ un représentant de la classe $[u]_n$ :\\
+Soit $u \in [u]_n$, $q \in \mathscr{P}_n$,
+$$ \big| [u]_n \big|_{n,p} = \Bigg( \sum_{|\alpha|=n} \int_{\Omega} |\partial^{\alpha}(u + q) |^p \Bigg)^\frac{1}{p} = \Bigg( \sum_{|\alpha|=n} \int_{\Omega} |\partial^{\alpha}u + \partial^{\alpha}q |^p \Bigg)^\frac{1}{p} = \Bigg( \sum_{|\alpha|=n} \int_{\Omega} |\partial^{\alpha}u |^p \Bigg)^\frac{1}{p} = |u|_{n,p} $$\\
+Le théorème suivant résume tout l'intérêt de la construction que nous venons de faire. Nous allons voir que le quotient $D^{n,p}(\Omega)/\mathscr{P}_n$ est un espace de Banach pour la semi-norme.
+\begin{theorembox}
+\begin{theorem}
+    Soit $\Omega$ un domaine arbitraire de $\R^d$,  $d \geq 2$.  \\
+    Alors $D^{n,p}(\Omega)/\mathscr{P}_n$ est un espace de Banach.
+
+    \vspace{1em}
+
+    En particulier, pour $p = 2$, $D^{n,2}(\Omega)/\mathscr{P}_n$ est un espace de Hilbert, muni du produit scalaire suivant :
+    $$ \big< [u]_n, [v]_n \big>_n = \sum_{|\alpha| = n} \int_{\Omega} \partial^{\alpha}u \partial^{\alpha}v, \quad (u,v) \in [u]_n \times [v]_n $$
+
+\end{theorem}
+\end{theorembox}
+Lorsque nous utilisons ces espaces pour l'étude d'EDPs nous ne feront pas la distinction entre $D^{n,p}$ et $D^{n,p}/\mathscr{P}_n$, nous prendrons directement la définition par le quotient, donnant directement un espace de Banach.
+\begin{remarkbox}
+\begin{remark}
+    Il existe une définition alternative pour les espaces de Sobolev homogènes dans le cas $p = 2$ et sur l'espace entier, utilisant la définition basée sur la transformée de Fourier, usuellement rencontrée en analyse harmonique :
+    $$\dot{H}^s(\R^d) = \Big\{ u \in \mathscr{S}'(\R^d) \ \big| \ |\xi|^s \widehat{u} \in L^2(\R^d) \Big\} $$
+    Où $\mathscr{S}'(\R^d)$ est l'espace des distributions tempérées.
+\end{remark}
+\end{remarkbox}
+Lorsque nous étudirons des problèmes liés à la dynamique des fluides, ici dans le cadre incompressible, nous serons amenés à manipuler d'autres espaces fonctionnels, définis à partir de $\mathcal{D}(\Omega)$ en incorporant la condition d'incompressibilité $\nabla \cdot u = 0$ puis en considérant la fermeture pour la norme $L^2$ du gradient.
+Ces espaces constituent le socle fonctionnel de l'étude des équations de Navier-Stokes, ils permettent de fournir des formulations respectant la nature physique du problème, notamment par la condition d'incompressibilité.
+Commençons par définir l'espace $C^{\infty}_{c,\sigma}(\Omega) = \mathcal{D}_{\sigma}(\Omega)$ comme suit :
+$$ \mathcal{D}_{\sigma}(\Omega) = \Big\{ u \in \mathcal{D}(\Omega)^d \ | \ \text{div}(u) = 0 \text{ dans } \Omega \Big\} $$
+Maintenant, nous allons considérer la fermeture de l'espace $\mathcal{D}_{\sigma}(\Omega)$ pour la norme $|\cdot|_{1,2} = \|\nabla \cdot \|_{L^2} $ de l'espace $D^{1,2}(\Omega)$ :
+$$ \widehat{W}_{0,\sigma}^{1,2}(\Omega) = \overline{\mathcal{D}_{\sigma}(\Omega)}^{\|\nabla \cdot\|_{L^2}} $$
+Notons que $\widehat{W}_{0,\sigma}^{1,2}(\Omega)$ est complet par construction. Muni d'un produit scalaire, nous obtenons un espace de Hilbert :
+\begin{theorembox}
+    \begin{theorem}
+        Soit $\Omega \subset \R^d, \ d \geq 2$. 
+        \\
+        \\
+        $\widehat{W}_{0,\sigma}^{1,2}(\Omega)$ est un espace de Hilbert, muni du produit scalaire :
+        $$[u,v]_{\widehat{W}^{1,2}_{0,\sigma}} = \big<\nabla u, \nabla v\big>_{L^2} = \int_{\Omega} \nabla u : \nabla v \ dx $$
+    \end{theorem}
+\end{theorembox}
+Sans plus d'hypothèses sur $\Omega$, il n'est pas possible de donner de caractérisation de cet espace comme $D^{1,2}$ ou $H^1$. Toutefois, lorsque $\Omega$ est borné, il est possible d'avoir la caractérisation suivante :
+$$\Big\{ u \in D^{1,2}_0(\Omega) \ | \ \text{div}(u) = 0 \text{ dans } \Omega  \Big\} $$
+Mais cette caractérisation n'est pas valable dans le cas général. Nous renvoyons le lecteur vers \cite{Galdi} pour un développement de cette remarque.
+
+
+
+
+\section{Espaces de Hölder}
+
+Nous allons ici introduire une famille d'espaces de fonctions utile en théorie du potentiel : les espaces de Hölder. \\
+Dans ce sujet, nous travaillons sur l'équation de Laplace, Poisson et Stokes ; nous avons pu introduire à la section précédente les espaces fonctionnels adaptés à l'hydrodynamique et aux formulations liées aux équations de Navier-Stokes, 
+nous allons maintenant introduire les espaces intervenant dans la théorie dédiée à l'étude des solutions des équations de Laplace et Poisson. Cette théorie est celle du potentiel, développée au XIX$^e$ siècle autour des fonctions harmoniques et de l'opérateur laplacien. 
+Le terme potentiel date de cette époque, à laquelle il a été réalisé que les deux forces fondamentales jusqu'alors connues, les forces de gravité et éléctrostatique, pouvaient être modélisée à l'aide de fonctions alors baptisées potentiels, satisfaisant l'équation de Poisson ou l'équation de Laplace dans le vide.\\
+Cette théorie est très proche de la théorie étudiant les équations de Poisson et Laplace, il s'agît simplement d'une approche différente se concentrant davantage sur les solutions de ces équations que sur les équations elles-mêmes. Cette théorie peut également apparaître comme une généralisation de résultats d'analyse complexe aux dimensions supérieures ou égales à 3 :
+En remarquant que toute fonction harmonique sur un domaine simplement connexe de $\R^2$ est la partie réelle d'une fonction holomorphe, nous pouvons nous rendre compte que la théorie du potentiel en dimension 2 n'est qu'une reformulation de résultats d'analyse complexe. Ainsi, cette théorie traite en partie de la généralisation en dimension $\geq 3$ de résultats à l'origine développés en analyse complexe, tels que le lemme de Schwarz, les séries de Laurent ou encore la classification des singularités.\\
+Nous ne parlerons que brièvement des quelques notions de bases reliées à cette théorie, comme la définition d'un potentiel et la convolution avec les fonctions de Green. Nous allons en particulier nous pencher sur la façon dont une fonction höldérienne permet d'obtenir une solution régulière à l'équation de Poisson.\\
+\\
+Soit $f$ une fonction définie sur un ensemble borné $\Omega$ et $x_0 \in \Omega$.
+Nous dirons qu'une fonction est $\alpha$-höldérienne (pour $0 < \alpha \leq 1$) en $x_0$ si la quantité 
+$$ [f]_{x_0,\alpha} = \underset{x \in \Omega}{\sup} \frac{|f(x) - f(x_0)|}{|x-x_0|^{\alpha}} $$
+est finie.
+En notant $C := \underset{x \in \Omega}{\sup} \frac{|f(x) - f(x_0)|}{|x-x_0|^{\alpha}}$, nous avons ainsi 
+$$ |f(x) - f(x_0)| \leq C |x - x_0|^{\alpha}$$
+Nous remarquons qu'une fonction höldérienne en un point est continue en ce dernier, et pour $\alpha = 1$, $f$ est lipschitzienne. Nous pouvons voir cette définition comme 
+une généralisation des fonctions lipschitziennes.\\
+Nous pouvons généraliser la définition en chaque point à l'ensemble entier : 
+\begin{definitionbox}
+\begin{definition}
+
+    Nous dirons que $f$, définie sur $\Omega$ est uniformément höldérienne si la quantité :
+    $$ [f]_{\alpha,\Omega} = \underset{x,y \in \Omega}{\sup} \frac{|f(x) - f(y)|}{|x-y|^{\alpha}} $$
+    est finie.
+
+    De même, nous dirons que $f$ est localement höldérienne si pour tout compact $K \subset \Omega$, $f$ est höldérienne sur $K$.
+\end{definition}
+\end{definitionbox}
+Ainsi, nous dirons que $C^{k,\alpha}(\Omega)$ (resp. $C^{k,\alpha}(\overline{\Omega})$) est le sous espace des fonctions $C^k(\Omega)$ (resp. $C^k(\overline{\Omega})$) dont les dérivées d'ordre $k$ sont localement (resp. uniformément) höldériennes.\\
+\\
+Notons $G$ la fonction de Green de l'équation de Laplace. Nous allons définir le potentiel newtonien :
+\begin{definitionbox}
+    \begin{definition}\textbf{Potentiel newtonien :}\\
+        Soit $f$ une fonction intégrable sur $\Omega \subset \R^d$, le potentiel newtonien associé à $f$ est défini par la fonction $w$ donnée par :
+        $$ w(x) = \int_{\Omega} G(x - y)f(y) \ dy $$
+    \end{definition}
+\end{definitionbox}
+\begin{remarkbox}
+    \begin{remark}
+        De façon plus générale, nous pouvons définir le potentiel pour une mesure de Radon à support compact :
+        $$ w(x) = G \star \mu(x) = \int_{\R^d} G(x - y)\ d\mu(y) $$
+        Ce potentiel vérifie l'équation de Poisson $-\Delta w = \mu$ au sens des distributions.\\
+        Lorsque la mesure $\mu$ est supportée sur une surface suffisamment régulière $S$ séparant l'espace en deux régions connexes, alors nous qualifions ce potentiel de distribution de simple couche.
+    \end{remark}
+\end{remarkbox}
+Nous avons vu dans le chapitre dédié aux fonctions de Green que si $f$ est une distribution à support compact (ou si $f$ et $G$ sont à supports convolutifs), alors nous obtenons de façon immédiate une solution de l'équation de Poisson par propriété des convolutions de distributions.\\
+Nous allons introduire un résultat, énonçant que pour des conditions moindres sur $f$, le potentiel newtonien associé est $C^2$ et définit une solution de l'équation de Poisson \cite{Elliptic} :
+\begin{lemmabox}
+    \begin{lemma}
+        Soit $f$ bornée et localement höldérienne (pour $\alpha \leq 1$) dans $\Omega$. Soit $w$ le potentiel newtonien associé à $f$.\\
+        Alors $w \in C^2(\Omega)$ et est une solution forte de l'équation $-\Delta w = f$
+    \end{lemma}
+\end{lemmabox}
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Existence et unicité}
+
+Nous allons détailler dans cette sous-section quelques propriétés concernant les modèles de Laplace et Stokes, que nous réutiliserons plus tard dans l'étude de convergence des solutions 3D vers les solutions 2D. En particulier, nous allons nous pencher sur les résultats d'existence et d'unicité des problèmes de Poisson et Stokes. Pour cela, nous allons 
+utiliser des méthodes ne faisant pas intervenir la géométrie du domaine considéré. En effet, les paradoxes étant formulés sur des domaines extérieurs, et ces derniers compliquant amplement l'étude des solutions, nous allons utiliser des méthodes indépendantes de cette géométrie et démontrer 
+dans le cadre général l'existence et l'unicité des solutions des problèmes de Poisson et Stokes. 
+Nous allons commencer cette étude des propriétés par l'équation de Poisson, puis nous adapterons les outils employés pour démontrer les propriétés de l'équation de Stokes, plus compliquée.
+\\
+\\
+L'étude d'existence et d'unicité des problèmes elliptiques suit généralement le même déroulement : nous multiplions l'équation par une fonction lisse à support compact, puis intégrons pour nous ramener à une forme faible du problème. A partir de cette nouvelle formulation, 
+nous cherchons à montrer les propriétés, puis cherchons sous quelles conditions les propriétés de la formulation faible restent vraies pour la formulation forte. Généralement, les premiers points constituent une application de théorèmes d'analyse fonctionnelle (Riesz, Lax-Milgram ou plus tard Banach-Ne\v{c}as-Babu\v{s}ka pour les formulations dites mixtes pour Stokes) et le dernier point se ramène souvent à une question de régularité, permettant 
+d'inverser l'intégration par parties ou formule de Green suivant le contexte. \\
+
+
+
+\subsection{Poisson}
+
+\begin{theorembox}
+\begin{theorem}
+    Considérons un domaine $\Omega \subset \R^d$ abstrait, $d \geq 3$ et le problème de Poisson avec conditions de Dirichlet non-homogènes :
+    $$ \begin{cases}
+        -\Delta u = f \quad &\text{ dans } \Omega \\\
+        u_{|\partial \Omega} = g &\text{ sur } \partial \Omega \\
+        % u(\mathbf{x}) \longrightarrow 0 &\text{ lorsque } |\mathbf{x}| \to \infty
+    \end{cases} $$
+    Avec $f\in L^q(\Omega)$ et $g \in L^2(\partial \Omega)$, $q = \frac{2d}{d + 2}$.
+    \\
+    \\
+    Alors il existe une unique solution faible associé au problème de Poisson.
+\end{theorem}
+\end{theorembox}
+% Nous rajoutons une condition à l'infini dans le cas où le domaine $\Omega$ n'est pas borné (ce qui est le cas lorsque nous considérons un domaine extérieur). 
+Soit $v \in C_c^{\infty}(\Omega)$ une fonction test. Nous allons multiplier l'équation de Poisson par cette fonction test et intégrer :
+\begin{align*}
+    -\Delta u \ v = f \\
+    \Rightarrow -\int_{\Omega} \Delta u \ v \ dx = \int_{\Omega} fv \ dx
+\end{align*}
+Avec la formule de Green nous écrivons :
+$$ \int_{\Omega} \nabla u \cdot \nabla v \ dx - \int_{\partial \Omega} \partial_{n} u v \ dx = \int_{\Omega} \nabla u \cdot \nabla v \ dx - \int_{\partial \Omega} \partial_{n}g v \ dx = \int_{\Omega} fv \ dx $$
+En définissant les formes bilinéaires et linéaire suivantes :
+$$a(u,v) := \int_{\Omega} \nabla u \cdot \nabla v \ dx, \quad l(v) := \int_{\Omega} fv \ dx +  \int_{\partial \Omega} \partial_n g v \ dx $$
+Nous réecrivons la formulation faible sous forme d'une égalité d'opérateurs pour tout $v \in \mathcal{D}(\Omega) := C_c^{\infty}(\Omega)$ :
+$$\text{Trouver } u \in V \text{ tel que } a(u,v) = l(v), \quad \forall v \in V $$
+Avec $V$ un espace fonctionnel, tel que $\mathcal{D}(\Omega) \subset V$, que nous préciserons plus tard.
+Afin de nous ramener à des conditions de Dirichlet homogènes, nous considérons ce que nous appelons un relèvement, donné par le théorème suivant :
+\begin{theorembox}
+\begin{theorem}
+    \textbf{Trace \cite{Strongly} :}\\
+    Si $\Omega$ est un domaine lipschtzien, alors l'opérateur de trace $\gamma_0 : H^1(\Omega) \to L^2(\partial \Omega) $ est continu surjectif. \\
+    \\
+    Autrement dit :\\
+    Soit $g \in L^2(\partial \Omega)$, alors il existe une fonction, appelée relèvement, $h \in H^1(\Omega)$ de sorte que $g = h$ p.p. sur $\partial \Omega$.\\
+    De plus, il existe une constante $M > 0$ telle que :
+    $$ \|h\|_{H^1(\Omega)} \leq M\|g\|_{L^2(\partial \Omega)}$$
+\end{theorem}
+\end{theorembox}
+Considérons alors $h \in H^1(\Omega) \subset D^{1,2}(\Omega)$ un relèvement. Nous posons $u = w + h$ et nous obtenons un élément $w$ qui s'annule sur $\partial \Omega$ :
+$$ w_{|\partial \Omega} = u_{|\partial \Omega} - h_{|\partial \Omega} = g - g = 0 $$
+% En posant $w := u - g$ nous avons une fonction satisfaisant le problème de Poisson avec conditions de Dirichlet homogènes :
+% $$\begin{cases}
+%     - \Delta w = \tilde{f} \quad &\text{ dans } \Omega \\
+%     w_{|\partial \Omega} = 0 &\text{ sur } \partial \Omega \\
+%     % w(\mathbf{x}) \longrightarrow 0 &\text{ lorsque } |\mathbf{x}| \to \infty
+% \end{cases}$$
+% Avec $\tilde{f} := f + \Delta h \in L^2(\Omega)$. 
+% D'après l'une des conséquences du théorème de plongement de Sobolev, pour $h \in W^{n,p}(\R^d)$, si $np > d$ alors $h$ est continue (et même höldérienne). Ici pour $h \in H^2(\Omega)$, puisque nous nous intéressons aux cas $d = 2,3$ nous avons systématiquement $np = 4 > 3$, et donc 
+% $h$ est continue. Dans ce cas, puisque $h \in H^2(\Omega)\cap C^0(\Omega)$, alors $h(\mathbf{x}) \xrightarrow[|\mathbf{x}|\to\infty]{}0$.
+% Donc $w(\mathbf{x}) = (u + h)(\mathbf{x}) \xrightarrow[|\mathbf{x}|\to \infty]{} 0$.
+En reprenant la formulation faible du problème précédent et en l'adaptant avec $u = w + h$, nous trouvons la formulation suivante :
+$$ \int_{\Omega} \nabla w \cdot \nabla v \ dx = \int_{\Omega} fv \ dx - \int_{\Omega} \nabla h \cdot \nabla v \ dx  $$
+Dans la suite nous notons $a$ et $l$ les formes bilinéaires et linéaires associées à la formulation ci-dessus :
+$$ a : \begin{cases}
+    D_0^{1,2}(\Omega) \times D_0^{1,2}(\Omega) \longrightarrow \R \\
+    \displaystyle (u,v) \quad \longmapsto \quad \int_{\Omega} \nabla u \cdot \nabla v \ dx
+\end{cases}, \quad
+l : \begin{cases}
+    D^{1,2}_0(\Omega) \longrightarrow \R \\
+    \displaystyle v \quad \longmapsto \quad \int_{\Omega} fv - \nabla h \cdot \nabla v \ dx
+\end{cases}
+$$
+Nous allons pouvoir traiter cette formulation à l'aide du théorème de Lax-Milgram, que nous rappelons ici :
+\begin{theorembox}
+\begin{theorem}
+    \textbf{Lax - Milgram :} \\
+    Soit $\mathcal{H}$ un espace de Hilbert, $a : \mathcal{H}\times \mathcal{H} \longrightarrow \R$ une forme bilinéaire et $l : \mathcal{H} \longrightarrow \R$ une forme linéaire. \\
+    Si les conditions suivantes sont vérifiées :
+    \begin{enumerate}
+        \item $l$ est continue
+        \item $a$ est continue et coercive (i.e. $\exists \alpha > 0, \ \forall v \in \mathcal{H}, \ a(v,v) \geq \alpha \|v\|_{\mathcal{H}}^2$)
+    \end{enumerate}
+    Alors il existe un unique $u \in \mathcal{H}$ tel que pour tout $v \in \mathcal{H}$ :
+    $$ a(u,v) = l(v) $$
+\end{theorem}
+\end{theorembox}
+Il nous suffit de vérifier les hypothèses du théorème de Lax-Milgram pour montrer existence et unicité des solutions de la formulation faible. Nous cherchons une solution $w$ appartenant à l'espace $D^{1,2}_0(\Omega) = \overline{\mathcal{D}(\Omega)}^{\|\nabla \cdot\|_{L^2}}$, qui est un espace de Hilbert.
+Montrons la continuité de $l$. Nous allons faire face à un premier obstacle dû au choix de l'espace $D_0^{1,2}$ et plus précisément de sa topologie.
+En effet, dans un domaine non-nécessairement borné, il n'y a pas d'inégalité de Poincaré nous permettant de majorer $\|\cdot\|_{L^p}$ par $\|\nabla \cdot\|_{L^p}$. Nous allons devoir utiliser une inégalité plus générale, l'inégalité
+de Sobolev, issue des théorèmes de plongement de Sobolev et valable sur l'espace entier. Cela nous mène à un choix un peu plus restreint pour l'espace du terme source. Rappelons l'énoncé général : 
+\begin{theorembox}
+\begin{theorem}
+    \textbf{Plongement de Sobolev :}\\
+    Si $k > l$, $p < d$, et $1 \leq p < q < +\infty$ sont des nombres réels vérifiant :
+    $$ \frac{1}{p} - \frac{k}{d} = \frac{1}{q} - \frac{l}{d} $$
+    Alors le plongement $W^{k,p}(\R^d) \hookrightarrow W^{l,q}(\R^d)$ est continu.
+\end{theorem}
+\end{theorembox}
+En particulier, dans le cas $p = 2$, $k = 1$ et $l = 0$ nous avons l'injection continue $W^{1,2}(\R^d) \hookrightarrow L^{p^*}(\R^d)$ où l'exposant de Sobolev est donné par $p^* = \frac{2d}{d - 2}$. 
+Cela n'est valable seulement si $d \geq 3$. Dans le contexte de cette étude des paradoxes de Stokes et Laplace, nous allons nous pencher sur le cas $d = 3$ étant donné que le cas $d = 2$ est associé au paradoxe. \\
+Le résultat que nous venons d'énoncer est général et ne porte que sur les espaces $W^{n,p}$. Dans le cadre de cette démonstration d'existence et unicité, nous considérons l'espace $D^{1,2}_0$ muni de la norme $\|\nabla \cdot \|_{L^2}$. Nous allons alors introduire l'inégalité de Gagliardo-Nirenberg-Sobolev qui nous sera utile pour ce contexte.
+\begin{theorembox}
+\begin{theorem}
+    \textbf{Inégalité de Gagliardo-Nirenberg-Sobolev :}\\
+    Soit $1 \leq p < d$. Alors il existe une constante $C$ ne dépendant que de $p$ et $d$ telle que pour tout $u \in C^1_c(\Omega)$ :
+    $$ \| u \|_{L^{p^*}} \leq C \| \nabla u \|_{L^p} $$
+\end{theorem}
+\end{theorembox} 
+Nous pouvons étendre ce résultat à $D_0^{1,2}(\Omega)$ par densité de $\mathcal{D}(\Omega)$ : \\
+\\
+Pour une suite $(u_n)_n \subset \mathcal{D}(\Omega)$ approchant $u \in D^{1,2}_0(\Omega)$, l'inégalité est vérifiée pour tout $n \in \N$ et en particulier nous obtenons que $(u_n)_n$ est de Cauchy dans $L^{p^*}(\Omega)$. Par complétude de ce dernier, il existe une limite $w \in L^{p^*}(\Omega)$ associée de façon unique à $u \in D^{1,2}_0(\Omega)$. Par passage à la limite de chaque côté de l'inégalité nous obtenons :
+$$ \|u\|_{L^{p^*}} \leq C \| \nabla u \|_{L^2} $$
+Où $\|u\|_{L^{p^*}}$ désigne en réalité la norme dans $L^{p^*}(\Omega)$ du représentant $w \in L^{p^*}(\Omega)$ de $u \in D_0^{1,2}(\Omega)$. \\
+\\
+Maintenant que nous avons introduit cet énoncé, nous allons pouvoir choisir $f$ de sorte à ce que $\|v\|_{L^{p^*}}$ puisse apparaître. Ainsi, par le théorème de plongement nous pourrons en déduire qu'il existe une constante $C > 0$ telle que :
+$$ \|v\|_{L^{p^*}} \leq C \|\nabla v\|_{L^2} = C |v|_{1,2} $$
+Cela nous mène à considérer $f$ dans l'espace dual de $L^{p^*}(\Omega)$. Nous posons $q$ l'exposant conjugué de $p^*$, $\frac{1}{p^*} + \frac{1}{q} = 1$. En appliquant l'inégalité de Hölder pour $p^*$ et $q$, nous pourrons ainsi retrouver la norme de $D_0^{1,2}(\Omega)$.\\
+Soit $v \in D^{1,2}_0(\Omega)$ : \\
+\begin{align*}
+    |l(v)| \leq \int_{\Omega} |fv| \ dx + \int_{\Omega} |\nabla w \cdot \nabla v| \ dx &\leq \|f\|_{L^q(\Omega)} \|v\|_{L^{p^*}(\Omega)} + \|\nabla v\|_{L^2(\Omega)} \|\nabla h\|_{L^2(\Omega)}  \\
+    &\leq \|f\|_{L^q(\Omega)}|v|_{1,2} + \|\nabla h\|_{L^2(\Omega)}|v|_{1,2} = \Big(\|f\|_{L^q(\Omega)} + \|\nabla h\|_{L^2(\Omega)}\Big)|v|_{1,2}
+\end{align*}
+Maintenant nous montrons la continuité de l'application bilinéaire $a$, soit $u,v \in D^{1,2}_0(\Omega)$ :
+\begin{align*}
+    |a(u,v)| \leq \int_{\Omega} |\nabla u \cdot \nabla v| \ dx \leq \|\nabla u\|_{L^2(\Omega)}\|\nabla v\|_{L^2(\Omega)} = |u|_{1,2}|v|_{1,2}
+\end{align*}
+Puis la coercivité de $a$ :
+\begin{align*}
+    a(u,u) = \int_{\Omega} |\nabla u|^2 \ dx = \|\nabla u\|^2_{L^2(\Omega)} = |u|_{1,2}^2
+\end{align*}
+Les hypothèses du théorème de Lax-Milgram sont vérifiées, il existe alors un unique $w \in D_0^{1,2}(\Omega)$ tel que pour tout $v \in D_0^{1,2}(\Omega)$ on ait :
+$$ a(w,v) = l(v) $$
+Maintenant nous pouvons poser $u = h + w$ pour obtenir une solution de la formulation faible.
+Pour démontrer l'unicité, prenons $u_1,u_2 \in h + D_0^{1,2}(\Omega)$ solutions du problème faible. Nous avons :
+% $$ -\Delta(u_1 - u_2) = 0 $$
+% En multipliant par $v \in \mathcal{D}(\Omega)$ puis en intégrant nous nous retrouvons avec l'expression :
+$$\int_{\Omega} \nabla (u_1 - u_2) \cdot \nabla v \ dx = 0, \quad \forall v \in \mathcal{D}(\Omega)$$
+En particulier pour $v = u_1 - u_2 \in D_0^{1,2}(\Omega)$ :
+$$ \|\nabla (u_1 - u_2)\|_{L^2} = |u_1 - u_2|_{1,2} = 0 $$
+Nous pouvons en déduire que $u_1 - u_2 = C \in \R$. Il ne reste plus qu'à montrer que $C = 0$ p.p. Nous allons montrer que puisque $C \in D_0^{1,2}(\Omega)$, alors nécessairement $C = 0$.
+Par définition, il existe une suite $(v_n)_n \subset \mathcal{D}(\Omega)$ telle que $v_n \xrightarrow[]{D_0^{1,2}} C$. Alors $\|\nabla v_n - \nabla C\|_{L^2} = \|\nabla v_n\|_{L^2} \xrightarrow[n \to +\infty]{} 0$.
+Par inégalité de Sobolev, si $d \geq 3$, alors pour $p^* = \frac{2d}{d - 2}$, il existe une constante $M > 0$ telle que :
+\begin{align*}
+    &\|v_n\|_{L^{p^*}} \leq M\|\nabla v_n\|_{L^2} \xrightarrow[n \to +\infty]{} 0 \\
+    &\|v_n - C\|_{L^{p^*}} \leq M\|\nabla v_n - \nabla C\|_{L^2} = \|\nabla v_n\|_{L^2} \xrightarrow[n \to +\infty]{} 0
+\end{align*}
+Ainsi, $v_n \xrightarrow[]{L^{p^*}} 0$ et $v_n \xrightarrow[]{L^{p^*}} C$. Par unicité de la limite dans $L^{p^*}$, nous avons $v_n \xrightarrow[n \to +\infty]{} C = 0$.
+Alors finalement $u_1 = u_2$ p.p. et la formulation faible admet une unique solution.
+
+\subsection{Stokes}
+
+Maintenant que nous avons montré existence et unicité des solutions pour l'équation de Poisson, nous allons nous intéresser à l'équation de Stokes en 3D en suivant \cite{Ladyshenskaya},\cite{Temam} et \cite{Galdi}. Dans la démonstration nous allons considérer un domaine $\Omega \subset \R^d$ ($d \geq 3$) quelconque, mais nous souhaitons bien sûr montrer existenc et unicité pour le problème posé en domaine extérieur, donc nous garderons implicitement la définition $\Omega = \R^d \backslash \mathscr{C}$, où $\mathscr{C}$ est le cylindre $\{ (x,y,z) \in \R^3,\ x^2 + y^2 \leq 1 \}$.
+Nous fixons alors une condition asymptotique en plus d'une condition de Dirichlet non-homogène sur $\partial \Omega$. Considérons alors le problème de Stokes suivant :
+$$\begin{cases}
+    -\Delta v + \nabla p = f \quad &\text{ dans } \Omega \\
+    \text{div}(v) = 0 &\text{ dans } \Omega \\
+    v_{|\partial \Omega} = u^* &\text{ sur } \partial \Omega \\
+    v(\mathbf{x}),p(\mathbf{x}) \longrightarrow 0 &\text{ lorsque } |\mathbf{x}| \to +\infty
+\end{cases}$$
+Avec $u^* \in W^{\frac{1}{2},2}(\partial \Omega)$. Nous allons considérer un terme source $f$ de la forme $f = f_0 + \text{div}F$, où $f_0 \in L^2_{loc}(\Omega)^d$ et $F \in L^2(\Omega)^{d^2}$ est un champ matriciel. Pour le terme source, nous définissons le crochet $[\cdot,\cdot]_{\Omega}$ de la façon suivante, pour $v \in \mathcal{D}(\Omega)^d$ :
+$$ [f,v]_{\Omega} = \big<f_0,v\big>_{L^2} + \big< \text{div}F,v \big>_{L^2} = \big< f_0, v \big>_{L^2} - \big< F, \nabla v \big>_{L^2} $$
+Nous allons montrer existence et unicité du problème de Stokes pour un terme source de la forme $f = \text{div}F$, donc avec $f_0 = 0$. Il n'existe pas de résultat d'existence et unicité pour le problème de Stokes dans le cas général $f = f_0 + \text{div}F$. En revanche, il existe
+un certain nombre de conditions suffisantes pour qu'une fonction $f$ puisse s'écrire sous la forme de la divergence d'un champ matriciel $F$ \cite{Sohr}. \\
+Puisque nous nous intéressons au paradoxe de Stokes, il est naturel de consiréer une condition de Dirichlet non-homogène sur le bord $\partial \Omega$, d'une certaine façon cela nous amène à montrer des résultats d'existence et unicité dans un cas plutôt général, comme pour l'équation de Poisson.
+Avant de nous intéresser à l'existence et unicité, nous allons faire un relèvement afin de nous ramener à un problème homogène, plus facile à aborder avec les espaces fonctionnels que nous avons introduit. \\
+Il va donc nous falloir considérer un relèvement $g$ vérifiant $g_{|\partial \Omega} = u^*$ et $\text{div}(g) = 0$. De cette façon, en posant $u := v - g$, nous nous ramenons au problème avec condition de Dirichlet homogène, en modifiant en conséquence le terme source (que nous noterons de la même manière).\\
+Dans les démonstrations d'existence et unicité de problèmes non-homogènes en domaine borné, il est souvent nécessaire d'imposer la condition de flux nul de la condition de bord à travers $\partial \Omega$ pour nous assurer de l'existence d'un relèvement à divergence nulle : 
+$$\int_{\partial \Omega} u^* \cdot n \ d\sigma = 0 $$
+Pour un domaine extérieur, cela n'est pas nécessaire, nous allons pouvoir construire un relèvement en nous ramenant à cette même condition sans supposer quoi que ce soit de nouveau.
+Pour commencer, définissons les deux termes suivants :
+\begin{align*}
+    &\phi = \int_{\partial \Omega} u^* \cdot n \ d\sigma \\
+    &\zeta(x) = - \phi \nabla G(x)
+\end{align*}
+Où $G$ est la solution fondamentale de l'équation de Laplace dans $\R^3$, avec la singularité choisie dans $\Omega^c$ (dans notre cas, la singularité se trouve en 0 et $0 \notin \Omega$).
+A l'aide de ces deux termes, nous allons pouvoir créer une nouvelle donnée de bord à flux nul sur $\partial \Omega$ pour ensuite construire un champ à divergence nulle valant $w^*$ sur $\partial \Omega$.
+Nous remarquons d'une part que :
+$$ \int_{\partial \Omega} \zeta \cdot n \ d\sigma = \phi $$
+Pour $n$ la normale sortante à la surface $\partial \Omega$, orientée vers $\Omega$. Puis d'une autre part que :
+$$ \Delta \zeta = 0 $$
+Montrons la première affirmation. Posons $K_r := \Omega^c \backslash B(0,r)$ :
+\begin{align*}
+    \int_{\partial \Omega} \zeta \cdot n \ d\sigma &= - \phi \int_{\partial \Omega} \nabla G \cdot n \ d\sigma \\
+\end{align*}
+Par la formule de Stokes, puisque la normale est prise pour le domaine $\Omega^c$ nous avons :
+$$ \int_{\partial \Omega} \nabla G \cdot n \ d\sigma = \underset{r \to 0}{\lim}  \int_{K_r} \Delta G \ dx $$
+Calculons la limite. Remarquons d'abord que $\Delta G = 0$ dans $K_r$ :
+\begin{align*}
+    \int_{K_r} \Delta G \ dx &= \int_{\partial K_r} \nabla G \cdot n \ d\sigma \\
+    &= \int_{\partial B(0,r)} \nabla G \cdot n \ d\sigma + \int_{\partial \Omega} \nabla G \cdot n \ d\sigma \\
+    &= \int_{|x| = r} \frac{x}{4\pi |x|^3} \cdot \frac{x}{|x|} \ d\sigma + \int_{\partial \Omega} \nabla G \cdot n \ d\sigma \\
+    &= \frac{1}{4\pi r^2} \int_{|x| = r} \ d\sigma + \int_{\partial \Omega} \nabla G \cdot n \ d\sigma = 1 + \int_{\partial \Omega} \nabla G \cdot n \ d\sigma = 0
+\end{align*}
+Et finalement, 
+$$ \int_{\partial \Omega} \nabla G \cdot n \ d\sigma = -1 $$
+Nous retrouvons alors le résultat annoncé. Nous montrons maintenant la deuxième affirmation :
+\begin{align*}
+    \Delta \zeta = - \phi \Delta \nabla G = - \phi \nabla \Delta G = 0
+\end{align*}
+Puisque la singularité de la fonction de Green se trouve dans $\Omega^c$, nous avons $\Delta G = 0$ dans $\Omega$, et ainsi nous obtenons le résultat.
+Nous pouvons maintenant définir une donnée de bord $w^* := u^* - \zeta $, qui vérifie :
+$$ \int_{\partial \Omega} w^* \cdot n \ d\sigma = \int_{\partial \Omega} u^* \cdot n \ d\sigma - \int_{\partial \Omega} \zeta \cdot n \ d\sigma = \phi - \phi = 0 $$
+Cela nous permet donc d'appliquer le résultat suivant \cite{Galdi} :
+\begin{lemmabox}
+    \begin{lemma}
+        Soit $\Omega \subset \R^d, \ d \geq 2$, un domaine extérieur localement Lipschitz.\\
+        Pour $f \in L^q(\Omega)$ et $w^* \in W^{1 - \frac{1}{q},q}(\partial \Omega)$, il existe au moins une solution $w \in D^{1,q}(\Omega)$ au problème :
+        $$\begin{cases}
+            \nabla \cdot w = f &\text{ dans } \Omega \\
+            w = w^* &\text{ sur } \partial \Omega
+        \end{cases}$$
+        Si, de plus, $f = 0$ et $\displaystyle \int_{\partial \Omega} w^* \cdot n \ d\sigma = 0 $, alors $w$ peut être choisit à support compact dans $\Omega$.
+    \end{lemma}
+\end{lemmabox}
+
+\begin{remarkbox}
+    \begin{remark}
+        Ce théorème fournit des conditions d'existence pour un inverse à droite de l'opérateur de divergence. Ce type de résultat appartient à une théorie élaborée par Mikhail Bogovski\v{i} en 1979 autour de l'équation $\text{div}u = g$ avec des conditions de bord.
+    \end{remark}
+\end{remarkbox}
+Ainsi, nous nous plaçons directement dans les conditions d'application du lemme, il existe alors $w \in D^{1,2}(\Omega)$ vérifiant $\nabla \cdot w = 0$ et $w_{|\partial \Omega} = w^*$. De plus, nous pouvons choisir $w$ à support compact dans $\Omega$. Puisque $w$ est à support compact, nous avons alors 
+$w \in W^{1,2}(\Omega)$. \\
+Nous allons maintenant pouvoir définir une nouvelle inconnue $u \in \widehat{W}^{1,2}_{0,\sigma}(\Omega)$ à partir des constructions précédentes :
+$$ u := v - w - \zeta $$
+Nous vérifions d'une part que $u$ satisfait la condition de Dirichlet homogène sur $\partial \Omega$ :
+$$ u_{|\partial \Omega} = u^* - w^* - \zeta^* = u^* - u^* + \zeta^* - \zeta^* = 0$$
+Et $u$ satisfait la condition d'incompressibilité sur $\Omega$ :
+$$ \text{div}(u) = \text{div}(v) - \text{div}(w) - \text{div}(\zeta) = - \text{div}(\zeta) = \phi \Delta G = 0 $$
+Nous venons donc de construire un relèvement $u$ à divergence nulle permettant de nous ramener au problème homogène. $u$ satisfait le problème de Stokes homogène avec terme source $\tilde{f} = f + \Delta(w + \zeta)$.
+Dans la suite nous prendrons $\tilde{f} = f$.
+
+\vspace{1em}
+Maintenant que nous nous sommes ramenés à un cadre d'étude plus abordable, nous allons détailler la méthode pour déterminer l'existence et unicité du problème de Stokes.
+Commençons par préciser la définition de solution faible pour le problème de Stokes.
+\begin{definitionbox}
+    \begin{definition}
+        Soit $\Omega \subset \R^d, \ d \geq 2$, et soit $f = f_0 + \text{div}F$, avec :
+        $$ f_0 \in L^2_{loc}(\Omega)^d, \quad F \in L^2(\Omega)^{d^2} $$
+        Alors $u \in \widehat{W}_{0,\sigma}^{1,2}(\Omega)$ est une solution faible du problème de Stokes si et seulement si :
+        $$ \big< \nabla u,\nabla v \big>_{L^2} = [f,v]_{\Omega}, \quad \forall v \in \mathcal{D}_{\sigma}(\Omega) $$
+        De plus, si $u$ est une solution faible et $p \in L^2_{loc}(\Omega)$ vérifient au sens des distributions :
+        $$ - \Delta u + \nabla p = f $$
+        Alors $(u,p)$ est appelé paire de solution faible du problème de Stokes. $p$ est appelé la pression associé à $u$.
+    \end{definition}
+\end{definitionbox}
+\begin{remarkbox}
+    Remarquons que lorsque nous travaillons dans un domaine extérieur, nous devons prescrire une condition asymptotique. Dans ce cadre, l'espace fonctionnel $\widehat{W}_{0,\sigma}^{1,2}(\Omega)$ permet de satisfaire une condition 
+    de Dirichlet homogène sur $\partial \Omega$ mais pas d'assurer la décroissance asymptotique. Pour cela il faut adapter la condition asymptotique pour la définition de solution faible, en prenant :
+    $$ \underset{r \to +\infty}{\lim} \int_{\partial B(0,r)} |u| \ d\sigma = 0$$
+\end{remarkbox}
+Nous allons établir la formulation faible du problème de Stokes afin de justifier le dernier point de la définition ci-dessus. Soit $(u,p)$ solutions du problème de Stokes et $v \in \mathcal{D}_{\sigma}(\Omega)$ :
+\begin{align*}
+    &-\Delta u + \nabla p = f \\
+    \Rightarrow -&\int_{\Omega} \Delta u \cdot v \ dx - \int_{\Omega} \nabla p \cdot v \ dx = \int_{\Omega} f \cdot v \ dx \\
+    \Rightarrow &\int_{\Omega} \nabla u : \nabla v \ dx - \int_{\Omega} p \nabla \cdot v \ dx = \int_{\Omega} \nabla u : \nabla v \ dx = \int_{\Omega} f\cdot v \ dx
+\end{align*}
+Nous obtenons alors la formulation :
+$$ \int_{\Omega} \nabla u : \nabla v \ dx = \int_{\Omega} f \cdot v \ dx, \quad \forall v \in \mathcal{D}_{\sigma}(\Omega)$$
+Maintenant, par définition, $\mathcal{D}_{\sigma}(\Omega)$ est dense dans $\widehat{W}_0^{1,2}(\Omega)$. Alors par continuité des termes définis de chaque côté de l'égalité ci-dessus, nous étendons la formulation $\forall v \in \widehat{W}_0^{1,2}(\Omega)$.
+En posant les formes bilinéaires et linéaires suivantes :
+\begin{align*}
+    a : 
+    \begin{cases}
+        \widehat{W}_{0,\sigma}^{1,2}(\Omega) \times \widehat{W}_{0,\sigma}^{1,2}(\Omega) \longrightarrow \R \\
+        \displaystyle (u,v) \quad \longmapsto \quad \int_{\Omega} \nabla u : \nabla v \ dx
+    \end{cases}; \quad l :
+    \begin{cases}
+        \widehat{W}_{0,\sigma}^{1,2}(\Omega) \longrightarrow \R \\
+        \displaystyle v \quad \longmapsto \quad  \int_{\Omega} f \cdot v \ dx 
+    \end{cases}
+\end{align*}
+Nous reformulons le problème en :
+$$ a(u,v) = l(v), \quad \forall v \in \widehat{W}_0^{1,2}(\Omega)$$
+De façon évidente, tout champ de vitesse $u$ satisfaisant l'équation de Stokes (en sens fort ou au sens des distributions) est solution de la formulation faible. \\
+Commençons par énoncer le théorème d'existence et unicité pour le problème de Stokes :
+\begin{theorembox}
+    \begin{theorem}
+        Soit $\Omega \subset \R^d, \ d \geq 2$.\\ 
+        Soit $\Omega_0 \subseteq \Omega$ un sous ensemble borné de $\Omega$ tel que $\overline{\Omega}_0 \subseteq \Omega$. Soit $f = \text{div}F$ avec $F \in L^2(\Omega)^{d^2}$.
+        \\
+        \\
+        Alors il existe une unique paire $(u,p) \in \widehat{W}_{0,\sigma}^{1,2}(\Omega) \times L^2_{loc}(\Omega) $ vérifiant au sens des distributions :
+        \begin{enumerate}
+            \item $\displaystyle \int_{\Omega_0} p \ dx = 0$ 
+            \item $\begin{cases}
+                -\Delta u + \nabla p = f \\
+                \text{div}(u) = 0
+            \end{cases}$
+        \end{enumerate}
+        \vspace{1em}
+        Ainsi $u$ est solution faible et $p$ est la pression associée pour le problème de Stokes.
+    \end{theorem}
+\end{theorembox} 
+Nous pouvons, dans un premier temps, montrer que le problème admet une unique solution faible $u$ par le théorème de Lax-Milgram.
+La continuité et coercivité de $a$ sont immédiates :
+$$|a(u,v)| \leq \|\nabla u\|_{L^2}\|\nabla v\|_{L^2} = |u|_{1,2}|v|_{1,2}$$
+$$a(u,u) = \int_{\Omega} |\nabla u|^2 \ dx = \|\nabla u\|^2_{L^2} = |u|_{1,2}^2 $$
+Pour montrer la continuité de $l$, il n'y a pas beaucoup plus à faire, étant donné que nous choisissons le terme source $f$ comme étant la divergence d'un champ matriciel $F$, nous pouvons réecrire la forme linéaire de la façon suivante :
+\begin{align*}
+    l(v) = \int_{\Omega} f \cdot v \ dx &= \int_{\Omega} \text{div} F \cdot v \ dx \\
+    &= - \int_{\Omega} F : \nabla v \ dx
+\end{align*}
+Maintenant, $\forall v \in \widehat{W}_{0,\sigma}^{1,2}(\Omega)$ :
+$$|l(v)| \leq \int_{\Omega} |F : \nabla v| \ dx \leq \|F\|_{L^2}\|\nabla v\|_{L^2} $$
+Par le théorème de Lax-Milgram \big(ou bien par le théorème de Riesz pour la forme linéaire $l$ sur l'espace de Hilbert $\widehat{W}^{1,2}_{0,\sigma}(\Omega)$\big), il existe un unique $u \in \widehat{W}_{0,\sigma}^{1,2}(\Omega)$ vérifiant :
+$$ \big<\nabla u, \nabla v\big>_{L^2} = - \big< F, \nabla v \big>_{L^2} , \quad \forall v \in \widehat{W}_{0,\sigma}^{1,2}(\Omega)$$
+Afin de retrouver la pression $p$, nous allons introduire un lemme fondammental et appartenant à une vaste théorie, le lemme de de Rham :
+\begin{lemmabox}
+    \begin{lemma}
+        \textbf{de Rham :}\\
+        Soit $\Omega \subset \R^d, \ d \geq 2$ et $\Omega_0 \subseteq \Omega$ un sous-domaine borné tel que $\overline{\Omega}_0 \subseteq \Omega$, $\Omega_0 \neq \varnothing$ et soit $1 < q < \infty$. \\
+        Supposons que $f \in W^{-1,q}_{loc}(\Omega)^d$ satisfasse :
+        $$ [f,v] = 0, \quad \forall v \in \mathcal{D}_{\sigma}(\Omega) $$
+        \vspace{1em}
+        Alors il existe un unique $p \in L^q_{loc}(\Omega)$ satisfaisant $\nabla p = f$ au sens des distributions et $\displaystyle \int_{\Omega_0} p \ dx = 0$
+    \end{lemma}
+\end{lemmabox}
+Nous allons utiliser ce lemme pour extraire la pression associée au champ des vitesse $u$. Pour cela, posons la forme linéaire $\psi$ :
+$$ \psi : 
+\begin{cases}
+    \mathcal{D}_{\sigma}(\Omega) \quad \longrightarrow \quad \R \\
+    v \quad \longmapsto \quad [\psi,v] = [f + \Delta u,v]
+\end{cases} $$
+Notons qu'à partir du moment où nous montrons que $\psi$ est uniformément continue (ce qui est équivalent à la continuité par linéarité) sur $\mathcal{D}_{\sigma}$, nous pouvons étendre la forme linéaire $\psi$ définie sur $\mathcal{D}_{\sigma}(\Omega)$ en une forme linéaire continue (que nous noterons toujours $\psi$) sur $\widehat{W}^{1,2}_{0,\sigma}(\Omega)$ par densité.
+Le crochet $[\psi,v]$ se réecrit :
+$$ [\psi,v] = [f,v] + [\Delta u,v] = \big< f_0, v \big>_{L^2(\Omega)} -\big< F,\nabla v \big>_{L^2(\Omega)} - \big< \nabla u, \nabla v \big>_{L^2(\Omega)} $$
+Pour tout $\Omega' \subseteq \Omega$ sous-domaine borné tel que $\overline{\Omega'} \subseteq \Omega$ nous obtenons :
+\begin{align*}
+    \Big|[\psi,v]\Big| \leq C(\Omega') \|f_0\|_{L^2(\Omega')}\|\nabla v\|_{L^2(\Omega')} + \|F\|_{L^2(\Omega)}\|\nabla v\|_{L^2(\Omega)} + \|\nabla u\|_{L^2(\Omega)}\|\nabla v\|_{L^2(\Omega)} \\
+    \leq \big( C(\Omega') \|f_0\|_{L^2(\Omega')} + \|F\|_{L^2(\Omega)} + \|\nabla u\|_{L^2(\Omega)} \big)\|\nabla v\|_{L^2(\Omega)}
+\end{align*}
+Avec $C(\Omega')$ constante de Poincaré sur le domaine borné $\Omega'$.
+Nous venons donc de montrer que $\psi \in \widehat{W}_{loc}^{-1,2}(\Omega)^d$. Maintenant, si $u$ est la solution faible donné par le théorème de Lax-Milgram, nous avons : 
+$$\forall v \in \widehat{W}_{0,\sigma}^{1,2}(\Omega), \quad [\psi, v] = a(u,v) - l(v) = 0 $$
+Par le lemme de de Rham, il existe un unique $p \in L^2_{loc}(\Omega)$ tel que $\nabla p = \psi$ au sens des distributions et satisfaisant $\displaystyle \int_{\Omega_0} p \ dx = 0$.
+Directement nous obtenons alors une paire $(u,p) \in \widehat{W}_{0,\sigma}^{1,2}(\Omega)\times L^2_{loc}(\Omega)$ vérifiant au sens des distributions l'équation de Stokes. Il ne reste qu'à vérifier que $u$ satsifait la condition d'incompressibilité au sens des distributions. \\
+% Nous allons montrer que les éléments de $\widehat{W}^{1,2}_{0,\sigma}(\Omega)$ sont encore à divergence nulle après fermeture par la semi-norme $\|\nabla \cdot \|_{L^2}$. Par densité, il existe une suite $(u_n)_n \subset \mathcal{D}_{\sigma}(\Omega)$ telle que $u_n \xrightarrow[]{\|\nabla \cdot \|_{L^2}} u$. 
+% Pour tout $n \in \N$, $\text{div}(u_n) = 0$.\\
+% Soit $\varphi \in \mathcal{D}(\Omega)$ :
+% \begin{align*}
+%     \big<\text{div}(u), \varphi\big> &= \big< \text{div}(u) - \text{div}(u_n), \varphi \big> \\
+%     &= \big< u_n - u, \nabla \varphi \big>
+% \end{align*}
+% Soit $K \subset \Omega$ un compact tel que $\text{supp}(\varphi) \subset K$.
+% \begin{align*}
+%     \Big| \big< \text{div}(u), \varphi \big> \Big| &\leq \int_{K} \big| (u - u_n) \cdot \nabla \varphi \big| \ dx \\
+%     &\leq \|u - u_n\|_{L^2(K)}\|\nabla \varphi\|_{L^2} \leq C(K)\| \nabla u - \nabla u_n \|_{L^2}\|\nabla \varphi\|_{L^2} \xrightarrow[n \to +\infty]{} 0
+% \end{align*}
+% Ainsi nous obtenons $\text{div}(u) = 0$ au sens des distributions.
+D'après \cite{Sohr}, nous avons $\text{div}(u) = 0$ au sens des distributions.
+Nous citons maintenant \cite{Galdi} pour justifier que $u$ vérifie : 
+$$\int_{\partial B(0,r)} |u| \ d\sigma = o\bigg(\frac{1}{\sqrt{|x|}}\bigg) \quad \text{lorsque } r \to +\infty$$ 
+Ainsi $u$ satisfait la condition asymptotique $\displaystyle \underset{r \to +\infty}{\lim} \int_{\partial B(0,r)} |u| \ d\sigma = 0$.
+Finalement, nous nous retrouvons avec $(u,p) \in \widehat{W}_{0,\sigma}^{1,2}(\Omega)\times L^2_{loc}(\Omega)$ solution faible du problème de Stokes :
+$$ \begin{cases}
+    -\Delta u + \nabla p = f \\
+    \text{div}(u) = 0 \\
+    u_{|\partial \Omega} = 0 \\
+    u(\mathbf{x}) \xrightarrow[|\mathbf{x}|\to +\infty]{} 0
+\end{cases} $$
+En revenant à la solution du problème non-homogène, nous avons $v = g + u$, avec $g$ le relèvement introduit en début de sous-section. 
+Nous allons montrer que la solution du problème non-homogène est unique par le même argument que pour le problème de Poisson.
+Considérons $(v,p),(\tilde{v},\tilde{p}) \in \widehat{W}_{0,\sigma}^{1,2}(\Omega) \times L^2_{loc}(\Omega)$ deux paires de solutions du même problème de Stokes avec condition non-homogène sur $\partial \Omega$. Alors $v - \tilde{v}$ vérifie le problème :
+$$ \big< \nabla (v - \tilde{v}), w \big> = 0, \quad \forall w \in \mathcal{D}_{\sigma}(\Omega) $$
+Puis par densité nous étendons cette formulation à $\widehat{W}_{0,\sigma}^{1,2}(\Omega)$. Et en prenant $w = v - \tilde{v}$ nous obtenons $\nabla(v - \tilde{v}) = 0 \ p.p.$, donc $v - \tilde{v} = C \in \R \ p.p.$ \\
+Maintenant nous allons montrer que la seule constante que $\widehat{W}_{0,\sigma}^{1,2}(\Omega)$ contient est 0.
+Par densité, il existe une suite $(\varphi_n)_n \subset \mathcal{D}_{\sigma}(\Omega)$ telle que $\varphi_n \xrightarrow[]{\|\nabla \cdot \|_{L^2}} C$. \\ 
+Considérons le corollaire de l'inégalité de Sobolev suivant :
+\begin{propositionbox}
+    \begin{corollary}
+        \textbf{Injection de Sobolev :}\\
+        L'injection $i : \widehat{W}_{0,\sigma}^{1,2}(\Omega) \hookrightarrow L^{p^*}(\Omega) $ est définie et continue, où $p^* = \frac{2d}{d - 2} $ est l'exposant de Sobolev de 2. \\
+        \\
+        En particulier, cela signifie qu'en dimension 3, $\widehat{W}_{0,\sigma}^{1,2}(\Omega)$ s'injecte continûment dans $L^6(\Omega)$. 
+    \end{corollary}
+\end{propositionbox} 
+\begin{proof}
+    Soit $u \in \widehat{W}_{0,\sigma}^{1,2}(\Omega)$. Il existe une suite $(u_n)_n \subset \mathcal{D}_{\sigma}(\Omega)$ telle que $u_n \xrightarrow[]{\|\nabla \cdot\|_{L^2}} u$.
+    Par l'inégalité de Gagliardo-Nirenberg-Sobolev énoncée plus tôt, $\forall n \in \N$ :
+    $$ \|u_n\|_{L^{p^*}} \leq M\|\nabla u_n\|_{L^2} $$
+    D'une part, nous montrons facilement à partir de cette inégalité que $(u_n)_n$ est de Cauchy dans $L^{p^*}(\Omega)$. Par complétude des espaces $L^p$, il existe un $v \in L^{p^*}(\Omega)$ tel que $u_n \xrightarrow[]{L^{p^*}} v$. Définissons l'injection $i : \widehat{W}_{0,\sigma}^{1,2}(\Omega) \longrightarrow L^{p^*}(\Omega)$ par $i(u) = v$.
+    Nous allons montrer que cette injection est bien définie en montrant que la limite $v$ ne dépend pas de la suite $(u_n)_n$ choisie. Prenons $(v_n)_n \subset \mathcal{D}_{\sigma}(\Omega)$ telle que $v_n \xrightarrow[]{\|\nabla \cdot \|} u$.
+    Alors d'une part :
+    $$ \|\nabla u_n - \nabla v_n\|_{L^2} \leq \| \nabla u_n - \nabla u \|_{L^2} + \| \nabla u - \nabla v_n \|_{L^2} \xrightarrow[n \to +\infty]{} 0 $$
+    Et d'une autre part :
+    $$ \| u_n - v_n \|_{L^{p^*}} \leq M \| \nabla u_n - \nabla v_n \|_{L^2} \xrightarrow[n \to +\infty]{} 0$$
+    Ainsi, l'injection est bien définie. Nous pouvons identifier les éléments de $\widehat{W}_{0,\sigma}^{1,2}(\Omega)$ à un unique élément de $L^{p^*}(\Omega)$. Et finalement, par passage à la limite nous obtenons le résultat souhaité :
+    $$ \|i(u)\|_{L^{p^*}} \leq M \|\nabla u\|_{L^2} $$
+\end{proof}
+Par le corollaire, $\varphi_n - C \in L^q(\Omega)$, où $q$ est l'exposant conjugué de Sobolev de 2 et :
+\begin{align*}
+    &\|\varphi_n - C\|_{L^q} \leq M \|\nabla \varphi_n - \nabla C \|_{L^2} = M\|\nabla \varphi_n\|_{L^2} \xrightarrow[n \to +\infty]{} 0 \\
+    &\|\varphi_n\|_{L^q} \leq M \|\nabla \varphi_n\|_{L^2} \xrightarrow[n \to +\infty]{} 0
+\end{align*}
+De cette façon, 
+\begin{align*}
+    &\varphi_n \xrightarrow[]{L^q} C \\
+    &\varphi_n \xrightarrow[]{L^q} 0
+\end{align*}
+Et par unicité de la limite dans $L^q(\Omega)$, nous avons finalement $C = 0$. Et donc $v = \tilde{v} \ p.p.$
+Puisque la pression est déterminée de façon unique pour un champ de vitesse, alors $p = \tilde{p}$. Et nous venons de montrer existence et unicité du problème de Stokes pour une condition de Dirichlet non-homogène sur $\partial \Omega$.
